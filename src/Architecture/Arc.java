@@ -1,4 +1,20 @@
 package Architecture;
 
+import Architecture.Sommet.Sommets;
+
 public class Arc {
+    private String nom_rue;
+    private int nb_habitations;
+    private int longueur;
+    private boolean sensUnique;
+    private Sommets[] sommets =  new Sommets[2];
+
+    public Arc(String nom_rue, int nb_habitations, int longueur, boolean sensUnique, Sommets sommet1, Sommets sommet2) {
+        this.nom_rue = nom_rue;
+        this.nb_habitations = nb_habitations;
+        this.longueur = longueur;
+        this.sensUnique = sensUnique;
+        this.sommets[0] = sommet1;
+        this.sommets[1] = sommet2;
+    }
 }
