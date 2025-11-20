@@ -17,4 +17,20 @@ public class Arc {
         this.sommets[0] = sommet1;
         this.sommets[1] = sommet2;
     }
+
+    public String getNom_rue() {
+        return nom_rue;
+    }
+    public int  getNb_habitations() {
+        return nb_habitations;
+    }
+    public int getLongueur() {
+        return longueur;
+    }
+    public boolean isSensUnique() {
+        return sensUnique;
+    }
+    public Sommets[] getSommets() {
+        return sommets;
+    }
 }

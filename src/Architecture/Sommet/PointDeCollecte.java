@@ -15,4 +15,14 @@ public class PointDeCollecte {
         this.poubelles = poubelles;
     }
 
+    public String getNom_voie() {
+        return nom_voie;
+    }
+    public int getNombre_poubelles() {
+        return nombre_poubelles;
+    }
+    public ArrayList<Poubelle> getPoubelles() {
+        return poubelles;
+    }
+
 }

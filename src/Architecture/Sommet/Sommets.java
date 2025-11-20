@@ -16,5 +16,15 @@ public class Sommets {
         this.nom_rue = nom_rue;
     }
 
+    public ArrayList<Arc> getArcs_sortants() {
+        return arcs_sortants;
+    }
+    public ArrayList<Arc> getArcs_entrant() {
+        return arcs_entrant;
+    }
+    public HashSet<String> getNom_rue() {
+        return nom_rue;
+    }
+
 
 }
