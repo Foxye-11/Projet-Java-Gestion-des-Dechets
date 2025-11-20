@@ -17,25 +17,13 @@ public class Camion {
         this.charge_max = 100;
         this.charge_actuelle = 0;
     }
-    public int getId() {
-        return id;
-    }
-    public int getCharge_max() {
-        return charge_max;
-    }
-    public int getCharge_actuelle() {
-        return charge_actuelle;
-    }
-    public Rue getRue_actuelle() {
-        return rue_actuelle;
-    }
-    public Arc getArc_actuelle() {
-        return arc_actuel;
-    }
-    public String getDepot() {
-        return depot;
-    }
-    public void setArc_actuelle(Arc arc_actuelle) {
-        this.arc_actuel = arc_actuelle;
-    }
+
+
+    public int getId() {return id;}
+    public int getCharge_max() {return charge_max;}
+    public int getCharge_actuelle() {return charge_actuelle;}
+    public Rue getRue_actuelle() {return rue_actuelle;}
+    public Arc getArc_actuelle() {return arc_actuel;}
+    public String getDepot() {return depot;}
+    public void setArc_actuelle(Arc arc_actuelle) {this.arc_actuel = arc_actuelle;}
 }
