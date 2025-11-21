@@ -12,13 +12,8 @@ public class PointDeDepot {
         this.nombre_poubelles = nombre_poubelles;
     }
 
-    public String getNom_voie() {
-        return nom_voie;
-    }
-    public int getNombre_poubelles() {
-        return nombre_poubelles;
-    }
-    public ArrayList<String> getPoubelles() {
-        return poubelles;
-    }
+
+    public String getNom_voie() {return nom_voie;}
+    public int getNombre_poubelles() {return nombre_poubelles;}
+    public ArrayList<String> getPoubelles() {return poubelles;}
 }

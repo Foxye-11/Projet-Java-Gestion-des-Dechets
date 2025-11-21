@@ -10,10 +10,8 @@ public class Rue {
         this.nom = nom;
         this.ensemble_rue = ensemble_rue;
     }
-    public String getNom() {
-        return nom;
-    }
-    public LinkedList<Arc> getEnsemble_rue() {
-        return ensemble_rue;
-    }
+
+
+    public String getNom() {return nom;}
+    public LinkedList<Arc> getEnsemble_rue() {return ensemble_rue;}
 }

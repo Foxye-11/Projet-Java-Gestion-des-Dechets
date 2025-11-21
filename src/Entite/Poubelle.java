@@ -8,7 +8,5 @@ public class Poubelle {
         this.type = type;
     }
 
-    public String getType() {
-        return type;
-    }
+    public String getType() {return type;}
 }
