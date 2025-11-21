@@ -10,4 +10,3 @@ public class Poubelle {
 
     public String getType() {return type;}
 }
-//bruh
