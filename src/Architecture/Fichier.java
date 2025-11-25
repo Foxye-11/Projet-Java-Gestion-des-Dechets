@@ -10,7 +10,10 @@ import java.util.Set;
 
 public class Fichier {
     private String nomFichier = "MontBrunlesBains.txt";
-    public Map<String, Set<String>> reseau = new LinkedHashMap<>();
+    public Map<String, Set<String>> listeRues = new LinkedHashMap<>();
+    public Map<String, Set<String>> listeIntersections = new LinkedHashMap<>();
+    public Map<String, Set<String>> listePointsCollectes = new LinkedHashMap<>();
+    public Map<String, Set<String>> listePointsDepots = new LinkedHashMap<>();
 
     public Fichier() throws IOException {
         chargerAgglo();
@@ -68,9 +71,9 @@ public class Fichier {
                 String nb_maison = parties[1].trim();
                 String longueur = parties[2].trim();
 
-                reseau.putIfAbsent(rues, new LinkedHashSet<>());
-                reseau.get(rues).add(nb_maison);
-                reseau.get(rues).add(longueur);
+                listeRues.putIfAbsent(rues, new LinkedHashSet<>());
+                listeRues.get(rues).add(nb_maison);
+                listeRues.get(rues).add(longueur);
             }
 
             if (lecture2) {
@@ -80,9 +83,9 @@ public class Fichier {
                 String nb_maison = parties[1].trim();
                 String longueur = parties[2].trim();
 
-                reseau.putIfAbsent(intersection, new LinkedHashSet<>());
-                reseau.get(intersection).add(nb_maison);
-                reseau.get(intersection).add(longueur);
+                listeIntersections.putIfAbsent(intersection, new LinkedHashSet<>());
+                listeIntersections.get(intersection).add(nb_maison);
+                listeIntersections.get(intersection).add(longueur);
             }
 
             if (lecture3) {
@@ -93,10 +96,10 @@ public class Fichier {
                 String rue = parties[2].trim();
                 Integer longueur = Integer.parseInt(parties[3].trim());
 
-                reseau.putIfAbsent(p_collecte, new LinkedHashSet<>());
-                reseau.get(p_collecte).add(capacite.toString());
-                reseau.get(p_collecte).add(rue);
-                reseau.get(p_collecte).add(longueur.toString());
+                listePointsCollectes.putIfAbsent(p_collecte, new LinkedHashSet<>());
+                listePointsCollectes.get(p_collecte).add(capacite.toString());
+                listePointsCollectes.get(p_collecte).add(rue);
+                listePointsCollectes.get(p_collecte).add(longueur.toString());
             }
 
             if (lecture4) {
@@ -106,19 +109,52 @@ public class Fichier {
                 String rue = parties[1].trim();
                 Integer longueur = Integer.parseInt(parties[2].trim());
 
-                reseau.putIfAbsent(p_depot, new LinkedHashSet<>());
-                reseau.get(p_depot).add(rue);
-                reseau.get(p_depot).add(longueur.toString());
+                listePointsDepots.putIfAbsent(p_depot, new LinkedHashSet<>());
+                listePointsDepots.get(p_depot).add(rue);
+                listePointsDepots.get(p_depot).add(longueur.toString());
             }
         }
     }
 
-    public void afficherAgglo(){
-
+    public void afficherRues(){
+        for (Map.Entry<String, Set<String>> entry : listeRues.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        System.out.println("======================================");
     }
 
-    public Map<String, Set<String>> reseauAgglo(){
-        return reseau;
+    public void afficherIntersections(){
+        for (Map.Entry<String, Set<String>> entry : listeIntersections.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        System.out.println("======================================");
+    }
+    public void afficherPointsCollectes(){
+        for (Map.Entry<String, Set<String>> entry : listePointsCollectes.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        System.out.println("======================================");
+    }
+    public void afficherPointsDepots(){
+        for (Map.Entry<String, Set<String>> entry : listePointsDepots.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+    }
+
+    public Map<String, Set<String>> getListeRues(){
+        return listeRues;
+    }
+
+    public Map<String, Set<String>> getListeIntersections(){
+        return listeIntersections;
+    }
+
+    public Map<String, Set<String>> getListePointsCollectes(){
+        return listePointsCollectes;
+    }
+    
+    public Map<String, Set<String>> getListePointsDepots(){
+        return listePointsDepots;
     }
 
 
