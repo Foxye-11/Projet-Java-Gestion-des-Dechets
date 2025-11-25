@@ -2,21 +2,22 @@ package Architecture.Sommet;
 
 import Architecture.Arc;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Map;
 
 public class Sommets {
-    private ArrayList<Arc> arcs_sortants;
-    private ArrayList<Arc> arcs_entrant;
-    private HashSet<String> nom_rue;
+    private Map<String, Arc> arcs_sortants;
+    private Map<String , Arc> arcs_entrant;
+    private String nom_rue;
 
-    public Sommets(ArrayList<Arc> arcs_sortants, ArrayList<Arc> arcs_entrant, HashSet<String> nom_rue) {
+    public Sommets(Map<String,Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue) {
         this.arcs_sortants = arcs_sortants;
         this.arcs_entrant = arcs_entrant;
         this.nom_rue = nom_rue;
     }
 
-    public ArrayList<Arc> getArcs_sortants() {return arcs_sortants;}
-    public ArrayList<Arc> getArcs_entrant() {return arcs_entrant;}
-    public HashSet<String> getNom_rue() {return nom_rue;}
+    public Map<String,Arc> getArcs_sortants() {return arcs_sortants;}
+    public Map<String,Arc> getArcs_entrant() {return arcs_entrant;}
+    public String getNom_rue() {return nom_rue;}
+
+
 }
