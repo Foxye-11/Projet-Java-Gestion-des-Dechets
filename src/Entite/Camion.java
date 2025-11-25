@@ -18,6 +18,18 @@ public class Camion {
         this.charge_actuelle = 0;
     }
 
+    public void charger(int quantite_D){
+        if (charge_actuelle + quantite_D > charge_max){
+            System.out.println("Impossible de charger le camion, celui-ci est déjà plein");
+            return;
+        }
+        charge_actuelle += quantite_D;
+    }
+
+    public int decharger_camion(){
+        charge_actuelle = 0;
+        return charge_actuelle;
+    }
 
     public int getId() {return id;}
     public int getCharge_max() {return charge_max;}
