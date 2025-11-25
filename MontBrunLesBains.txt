@@ -50,6 +50,15 @@ Chemin d’Entressargue-Seramian , Route de Ferrassières ; 159 ; 37.6
 Mail du Château , Route du Château ; 39 ; 314.0
 Mail du Château , Rue de la Bourgade ; 37 ; 0.0
 Mail du Château , Rue Notre-Dame ; 74 ; 320.2
+Maiil du Château , Montée de la Saute ; 25 ; 200.0
+La Condamine , Route de Montbrun ; 30 ; 500.0
+Chemin d’Entressargue-Seramian , Route des Alpes ; 20 ; 450.0
+Le Chabrérieux , Rue de la Bourgade ; 40 ; 300.0
+Calade du Mouret , Calade du Château ; 35 ; 250.0
+Rue Petite Fontaine , Montée de la Calade ; 22 ; 180.0
+Rue du Grand Soleil , Rue de la Bourgade ; 15 ; 120.0
+La Condamine , Montée de la Saute ; 18 ; 220.0
+Basse Rue , Route du Château ; 50 ; 400.0
 
 POINTS DE COLLECTE:
 Mairie ; 6 ; Rue Notre-Dame ; 13.83
