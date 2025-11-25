@@ -13,7 +13,7 @@ public class Main {
         Map<String, Set<String>> graph = new LinkedHashMap<>();
 
         for (String ligne : fichier.getListeIntersections().keySet()) {
-            String[] rues = ligne.split("-");
+            String[] rues = ligne.split(",");
             if (rues.length < 2) continue;
 
             String rue1 = rues[0].trim();

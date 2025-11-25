@@ -30,26 +30,26 @@ Route du Clôt ; 52 ; 514.4
 Chemin de la Citadelle ; 14 ; 353.1
 
 INTERSECTIONS ENTRE RUES:
-La Condamine - Le Chabrérieux ; 62 ; 409.2
-Montée de la Calade - Rue de la Bourgade ; 29 ; 151.4
-Montée de la Saute - Rue du Beffroi ; 8 ; 62.3
-Maiil du Château - Route du Château ; 30 ; 0.0
-Maiil du Château - Mail du Château ; 15 ; 449.4
-Maiil du Château - Mail du Château ; 15 ; 314.0
-Basse Rue - Montée de la Calade ; 47 ; 149.2
-Basse Rue - Calade du Mouret ; 47 ; 421.0
-Basse Rue - Le Chabrérieux ; 46 ; 51.3
-Calade du Château - Montée de la Saute ; 9 ; 121.4
-Calade du Château - Maiil du Château ; 10 ; 71.5
-Rue Notre-Dame - Rue Sous Notre-Dame ; 75 ; 41.5
-Rue Notre-Dame - Rue Petite Fontaine ; 68 ; 380.4
-Rue Notre-Dame - Rue de la Bourgade ; 87 ; 320.2
-Route de Montbrun - Route des Alpes ; 74 ; 3263.1
-Rue du Beffroi - Rue du Grand Soleil ; 11 ; 5.1
-Chemin d’Entressargue-Seramian - Route de Ferrassières ; 159 ; 37.6
-Mail du Château - Route du Château ; 39 ; 314.0
-Mail du Château - Rue de la Bourgade ; 37 ; 0.0
-Mail du Château - Rue Notre-Dame ; 74 ; 320.2
+La Condamine , Le Chabrérieux ; 62 ; 409.2
+Montée de la Calade , Rue de la Bourgade ; 29 ; 151.4
+Montée de la Saute , Rue du Beffroi ; 8 ; 62.3
+Maiil du Château , Route du Château ; 30 ; 0.0
+Maiil du Château , Mail du Château ; 15 ; 449.4
+Maiil du Château , Mail du Château ; 15 ; 314.0
+Basse Rue , Montée de la Calade ; 47 ; 149.2
+Basse Rue , Calade du Mouret ; 47 ; 421.0
+Basse Rue , Le Chabrérieux ; 46 ; 51.3
+Calade du Château , Montée de la Saute ; 9 ; 121.4
+Calade du Château , Maiil du Château ; 10 ; 71.5
+Rue Notre-Dame , Rue Sous Notre-Dame ; 75 ; 41.5
+Rue Notre-Dame , Rue Petite Fontaine ; 68 ; 380.4
+Rue Notre-Dame , Rue de la Bourgade ; 87 ; 320.2
+Route de Montbrun , Route des Alpes ; 74 ; 3263.1
+Rue du Beffroi , Rue du Grand Soleil ; 11 ; 5.1
+Chemin d’Entressargue-Seramian , Route de Ferrassières ; 159 ; 37.6
+Mail du Château , Route du Château ; 39 ; 314.0
+Mail du Château , Rue de la Bourgade ; 37 ; 0.0
+Mail du Château , Rue Notre-Dame ; 74 ; 320.2
 
 POINTS DE COLLECTE:
 Mairie ; 6 ; Rue Notre-Dame ; 13.83
