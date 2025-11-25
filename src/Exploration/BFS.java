@@ -40,9 +40,9 @@ public class BFS {
             PriorityQueue<Etat> file = new PriorityQueue<>();
             Set<String> visites = new HashSet<>();
 
-            for (String ligne : depart.getLignes()) { //On a besoin de la map totale de la ville!!!
-                file.add(new Etat(depart, ligne, new ArrayList<>(List.of(depart.getNom_rue())), 0, 0));
-            }
+            //Init depart
+            file.add(new Etat(depart, depart.getNom_rue(), new ArrayList<>(List.of(depart.getNom_rue())), 0, 0));
+
 
             Etat resultat = null;
             //BFS
