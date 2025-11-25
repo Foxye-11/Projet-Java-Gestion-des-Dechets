@@ -4,7 +4,7 @@ import Architecture.Arc;
 
 import java.util.Map;
 
-public class Sommets {
+public abstract class Sommets {
     private Map<String, Arc> arcs_sortants;
     private Map<String , Arc> arcs_entrant;
     private String nom_rue;
@@ -14,6 +14,19 @@ public class Sommets {
         this.arcs_entrant = arcs_entrant;
         this.nom_rue = nom_rue;
     }
+
+    public void addArcSortant(Arc arc) {
+        if (arc != null) {
+            arcs_sortants.put(arc.getNom_rue(), arc);
+        }
+    }
+
+    public void addArcEntrant(Arc arc) {
+        if (arc != null) {
+            arcs_entrant.put(arc.getNom_rue(), arc);
+        }
+    }
+
 
     public Map<String,Arc> getArcs_sortants() {return arcs_sortants;}
     public Map<String,Arc> getArcs_entrant() {return arcs_entrant;}
