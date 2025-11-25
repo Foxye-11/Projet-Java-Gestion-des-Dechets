@@ -24,4 +24,17 @@ public class Arc {
     public int getLongueur() {return longueur;}
     public boolean isSensUnique() {return sensUnique;}
     public Sommets[] getSommets() {return sommets;}
+
+    public Sommets chgtSommet(Sommets s) { //permet la transition entre deux sommets sur la même rue
+        Sommets newSommet = null;
+
+        if ( s.equals(this.sommets[0])){
+            newSommet = this.sommets[1];
+        }
+        if (s.equals(this.sommets[1])){
+            newSommet = this.sommets[0];
+        }
+
+        return newSommet;
+    }
 }
