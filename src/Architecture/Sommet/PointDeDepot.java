@@ -1,5 +1,7 @@
 package Architecture.Sommet;
 
+import Entite.Camion;
+
 import java.util.ArrayList;
 
 public class PointDeDepot {
@@ -10,6 +12,14 @@ public class PointDeDepot {
     public PointDeDepot(String nom_voie, int nombre_poubelles) {
         this.nom_voie = nom_voie;
         this.nombre_poubelles = nombre_poubelles;
+    }
+
+    public void chargerCamion(Camion camion, int quantite_dechets){
+        camion.charger(quantite_dechets);
+    }
+
+    public void dechargerCamion(Camion camion){
+        camion.decharger_camion();
     }
 
 
