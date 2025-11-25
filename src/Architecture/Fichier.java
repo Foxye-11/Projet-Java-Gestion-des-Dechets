@@ -7,8 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.lang.Integer;
 
-public class Fichier {
+public class Fichier{
     private String nomFichier = "MontBrunlesBains.txt";
     public Map<String, Set<String>> listeRues = new LinkedHashMap<>();
     public Map<String, Set<String>> listeIntersections = new LinkedHashMap<>();
@@ -63,9 +64,11 @@ public class Fichier {
             if (line.contains(motCle4)) {
                 lecture4 = true;
             }
+            if (line.trim().isEmpty()) continue;
 
             if (lecture1) {
                 String[] parties = line.split(";");
+                if (parties.length < 3) continue;
 
                 String rues = parties[0].trim();
                 String nb_maison = parties[1].trim();
@@ -78,6 +81,7 @@ public class Fichier {
 
             if (lecture2) {
                 String[] parties = line.split(";");
+                if (parties.length < 3) continue;
 
                 String intersection = parties[0].trim();
                 String nb_maison = parties[1].trim();
@@ -90,11 +94,12 @@ public class Fichier {
 
             if (lecture3) {
                 String[] parties = line.split(";");
+                if (parties.length < 3) continue;
 
                 String p_collecte = parties[0].trim();
-                Integer capacite = Integer.parseInt(parties[1].trim());
+                Float capacite = Float.parseFloat(parties[1].trim());
                 String rue = parties[2].trim();
-                Integer longueur = Integer.parseInt(parties[3].trim());
+                Float longueur = Float.parseFloat(parties[3].trim());
 
                 listePointsCollectes.putIfAbsent(p_collecte, new LinkedHashSet<>());
                 listePointsCollectes.get(p_collecte).add(capacite.toString());
@@ -104,10 +109,11 @@ public class Fichier {
 
             if (lecture4) {
                 String[] parties = line.split(";");
+                if (parties.length < 3) continue;
 
                 String p_depot = parties[0].trim();
                 String rue = parties[1].trim();
-                Integer longueur = Integer.parseInt(parties[2].trim());
+                Float longueur = Float.parseFloat(parties[2].trim());
 
                 listePointsDepots.putIfAbsent(p_depot, new LinkedHashSet<>());
                 listePointsDepots.get(p_depot).add(rue);
@@ -117,23 +123,24 @@ public class Fichier {
     }
 
     public void afficherRues(){
+        System.out.println("============================RUES==============================");
         for (Map.Entry<String, Set<String>> entry : listeRues.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-        System.out.println("======================================");
+        System.out.println("===================INTERSECTIONS===================");
     }
 
     public void afficherIntersections(){
         for (Map.Entry<String, Set<String>> entry : listeIntersections.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-        System.out.println("======================================");
+        System.out.println("===================POINTS DE COLLECTE===================");
     }
     public void afficherPointsCollectes(){
         for (Map.Entry<String, Set<String>> entry : listePointsCollectes.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-        System.out.println("======================================");
+        System.out.println("==================POINTS DE DEPOT====================");
     }
     public void afficherPointsDepots(){
         for (Map.Entry<String, Set<String>> entry : listePointsDepots.entrySet()) {
@@ -152,7 +159,7 @@ public class Fichier {
     public Map<String, Set<String>> getListePointsCollectes(){
         return listePointsCollectes;
     }
-    
+
     public Map<String, Set<String>> getListePointsDepots(){
         return listePointsDepots;
     }

@@ -1,4 +1,4 @@
-PAR RUE:
+MAISONS PAR RUE:
 Rue du Grand Soleil ; 5 ; 5.1
 La Condamine ; 59 ; 409.2
 Route Vallée du Toulourenc ; 15 ; 29.6
