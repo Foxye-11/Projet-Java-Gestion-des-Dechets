@@ -10,21 +10,16 @@ public class Fichier {
     private String nomFichier = "MontBrunlesBainsv2.txt";
 
     public Map<String, Set<String>> listeRues = new LinkedHashMap<>();
-    public Map<String, Set<String>> listeIntersections = new LinkedHashMap<>();
     public Map<String, Set<String>> listePointsCollectes = new LinkedHashMap<>();
     public Map<String, Set<String>> listePointsDepots = new LinkedHashMap<>();
-
-    // --- NOUVEAU ---
     public Map<String, Set<String>> listeVertices = new LinkedHashMap<>();
     public Map<String, Set<String>> listeArcs = new LinkedHashMap<>();
-
 
     public Fichier() throws IOException {
         chargerAgglo();
     }
 
     private void chargerAgglo() throws IOException {
-
         String motCle1 = "MAISONS PAR RUE:";
         String motCle2 = "CARREFOURS";
         String motCle3 = "ARCS";
@@ -41,43 +36,38 @@ public class Fichier {
         String line;
 
         while ((line = br.readLine()) != null) {
-
             line = line.trim();
-            System.out.println("LU : >" + line + "<");
             if (line.isEmpty()) continue;
 
             String upper = line.toUpperCase();
 
-            if (upper.startsWith("MAISONS PAR RUE")) {
+            if (upper.startsWith(motCle1)) {
                 lectureRues = true;
                 lectureVertices = lectureArcs = lectureCollecte = lectureDepot = false;
                 continue;
             }
-
-            if (upper.startsWith("CARREFOURS")) {       // <<<<<<<<<<<<<<
+            if (upper.startsWith(motCle2)) {
                 lectureVertices = true;
                 lectureRues = lectureArcs = lectureCollecte = lectureDepot = false;
                 continue;
             }
-
-            if (upper.startsWith("ARCS")) {           // <<<<<<<<<<<<<<
+            if (upper.startsWith(motCle3)) {
                 lectureArcs = true;
                 lectureRues = lectureVertices = lectureCollecte = lectureDepot = false;
                 continue;
             }
-
-            if (upper.startsWith("POINTS DE COLLECTE")) {
+            if (upper.startsWith(motCle4)) {
                 lectureCollecte = true;
                 lectureVertices = lectureArcs = lectureRues = lectureDepot = false;
                 continue;
             }
-
-            if (upper.startsWith("DEPOT")) {
+            if (upper.startsWith(motCle5)) {
                 lectureDepot = true;
                 lectureVertices = lectureArcs = lectureCollecte = lectureRues = false;
                 continue;
             }
-            // ---- LECTURE DES RUES ----
+
+            // Lecture des rues
             if (lectureRues) {
                 String[] parts = line.split(";");
                 if (parts.length < 3) continue;
@@ -89,13 +79,11 @@ public class Fichier {
                 listeRues.putIfAbsent(rue, new LinkedHashSet<>());
                 listeRues.get(rue).add(nbMaisons);
                 listeRues.get(rue).add(longueur);
-
                 continue;
             }
 
-            // ---- LECTURE DES VERTICES ----
+            // Lecture des sommets / carrefours
             if (lectureVertices) {
-                // Format : A ; 44.174745,5.441666 ; Rue1;Rue2;Rue3
                 String[] parts = line.split(";");
                 if (parts.length < 2) continue;
 
@@ -105,31 +93,26 @@ public class Fichier {
                 listeVertices.putIfAbsent(sommet, new LinkedHashSet<>());
                 listeVertices.get(sommet).add(coords);
 
-                // Ajout des rues associées au carrefour
                 for (int i = 2; i < parts.length; i++)
                     listeVertices.get(sommet).add(parts[i].trim());
-
                 continue;
             }
 
-            // ---- LECTURE DES ARCS ----
+            // Lecture des arcs avec champ type
             if (lectureArcs) {
-                // Format :
-                // D-E ; Rue ; nbMaisons ; longueur ; lat1,lng1 ; lat2,lng2
-
                 String[] parts = line.split(";");
-                if (parts.length < 6) continue;
+                if (parts.length < 7) continue;
 
                 String nomArc = parts[0].trim();
-                listeArcs.putIfAbsent(nomArc, new LinkedHashSet<>());
-
-                for (int i = 1; i < parts.length; i++)
-                    listeArcs.get(nomArc).add(parts[i].trim());
-
+                Set<String> arcData = new LinkedHashSet<>();
+                for (int i = 1; i < parts.length; i++) {
+                    arcData.add(parts[i].trim());
+                }
+                listeArcs.put(nomArc, arcData);
                 continue;
             }
 
-            // ---- LECTURE DES POINTS DE COLLECTE ----
+            // Lecture des points de collecte
             if (lectureCollecte) {
                 String[] parts = line.split(";");
                 if (parts.length < 4) continue;
@@ -143,11 +126,10 @@ public class Fichier {
                 listePointsCollectes.get(nom).add(capacite);
                 listePointsCollectes.get(nom).add(rue);
                 listePointsCollectes.get(nom).add(longueur);
-
                 continue;
             }
 
-            // ---- LECTURE DU DEPOT ----
+            // Lecture du dépôt
             if (lectureDepot) {
                 String[] parts = line.split(";");
                 if (parts.length < 3) continue;
@@ -159,24 +141,18 @@ public class Fichier {
                 listePointsDepots.putIfAbsent(nom, new LinkedHashSet<>());
                 listePointsDepots.get(nom).add(rue);
                 listePointsDepots.get(nom).add(longueur);
-
                 continue;
             }
-        }
 
+        }
         br.close();
+
     }
 
-
     // --- GETTERS ---
-
     public Map<String, Set<String>> getListeRues() { return listeRues; }
-
     public Map<String, Set<String>> getListeVertices() { return listeVertices; }
-
     public Map<String, Set<String>> getListeArcs() { return listeArcs; }
-
     public Map<String, Set<String>> getListePointsCollectes() { return listePointsCollectes; }
-
     public Map<String, Set<String>> getListePointsDepots() { return listePointsDepots; }
 }

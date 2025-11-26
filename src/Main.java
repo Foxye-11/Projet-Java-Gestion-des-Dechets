@@ -1,63 +1,51 @@
 import Architecture.Fichier;
 import Graphique.GraphiqueFenetre;
+import Graphique.GraphismeControle;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
+    public static Map<String, Set<GraphismeControle.Arc>> construireGraphe(Fichier fichier) {
 
-    public static Map<String, Set<String>> construireGraphe(Fichier fichier) {
-
-        Map<String, Set<String>> graph = new LinkedHashMap<>();
+        Map<String, Set<GraphismeControle.Arc>> graph = new LinkedHashMap<>();
 
         // --- Initialisation des sommets ---
         for (String sommet : fichier.getListeVertices().keySet()) {
             graph.putIfAbsent(sommet.trim(), new LinkedHashSet<>());
         }
 
-        // --- Ajout des arcs (D-E) ---
-        for (String arc : fichier.getListeArcs().keySet()) {
+        // --- Ajout des arcs ---
+        for (String arcNom : fichier.getListeArcs().keySet()) {
+            String[] parts = arcNom.split("-"); // "D-E"
+            if (parts.length != 2) continue;
 
-            String cleanArc = arc.trim(); // IMPORTANT
-            if (!cleanArc.contains("-")) continue;
+            String a = parts[0].trim();
+            String b = parts[1].trim();
 
-            String[] s = cleanArc.split("-");
-            if (s.length != 2) continue;
-
-            String a = s[0].trim();
-            String b = s[1].trim();
-
-            // Vérifier que les sommets existent dans listeVertices
-            if (!graph.containsKey(a) || !graph.containsKey(b)) {
-                System.out.println("Arc ignoré : " + a + " - " + b);
-                continue;
+            Set<String> info = fichier.getListeArcs().get(arcNom);
+            int type = 2; // par défaut bidirectionnel
+            for (String s : info) {
+                try {
+                    int t = Integer.parseInt(s);
+                    if (t >= 0 && t <= 2) type = t;
+                } catch (NumberFormatException ignored) {}
             }
 
-            graph.get(a).add(b);
-            graph.get(b).add(a);
+            // Ajouter dans les deux sens si bidirectionnel
+            if (type == 0 || type == 2) graph.get(a).add(new GraphismeControle.Arc(b, type));
+            if (type == 1 || type == 2) graph.get(b).add(new GraphismeControle.Arc(a, type));
         }
 
         return graph;
     }
 
-
     public static void main(String[] args) {
-
         try {
-            Fichier fichier = new Fichier(); // si un chemin est requis, ajoute-le ici
-            System.out.println("=== VERTICES ===");
-            System.out.println(fichier.getListeVertices());
+            Fichier fichier = new Fichier();
 
-            System.out.println("=== ARCS ===");
-            System.out.println(fichier.getListeArcs());
-
-            Map<String, Set<String>> graph = construireGraphe(fichier);
-            System.out.println("=== GRAPH FINAL ===");
-            System.out.println(graph);
+            Map<String, Set<GraphismeControle.Arc>> graph = construireGraphe(fichier);
 
             new GraphiqueFenetre(graph);
 
