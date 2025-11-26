@@ -8,7 +8,7 @@ public class GraphiqueFenetre extends JFrame {
 
     public GraphiqueFenetre(Map<String, Set<String>> adjacency) {
 
-        setTitle("Graphe sommets");
+        setTitle("Graphe des Sommets");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GraphismeControle panel = new GraphismeControle(adjacency);

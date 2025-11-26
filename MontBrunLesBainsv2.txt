@@ -1,0 +1,77 @@
+MAISONS PAR RUE:
+Rue du Grand Soleil ; 5 ; 5.051
+La Condamine ; 59 ; 409.185
+Route Vallée du Toulourenc ; 15 ; 29.601
+Rue de la Bourgade ; 25 ; 97.142
+Basse Rue ; 43 ; 299.514
+Montée de la Calade ; 4 ; 108.587
+Montée de la Saute ; 2 ; 64.955
+Rue du Beffroi ; 6 ; 62.264
+Calade du Mouret ; 4 ; 122.653
+Place du Grand Soleil ; 7 ; 0.0
+Calade du Château ; 7 ; 56.398
+Le Chabrérieux ; 3 ; 51.28
+Promenade de l'Anary ; 105 ; 238.402
+Maiil du Château ; 3 ; 158.964
+L'Autin ; 35 ; 105.689
+Rue Sous Notre-Dame ; 13 ; 73.298
+Rue Notre-Dame ; 62 ; 320.159
+Mail du Château ; 12 ; 314.005
+Rue Petite Fontaine ; 6 ; 128.084
+Route du Château ; 27 ; 948.468
+Soustet de l'Église ; 5 ; 6.655
+Route des Alpes ; 74 ; 2495.962
+Chemin d’Entressargue-Seramian ; 134 ; 1584.095
+Route de Ferrassières ; 25 ; 37.601
+Route de la Justice ; 29 ; 4.575
+La Boucoule ; 9 ; 417.911
+Chemin de la Vilette ; 78 ; 320.046
+Route du Clôt ; 52 ; 514.362
+Chemin de la Citadelle ; 14 ; 353.111
+
+CARREFOURS
+A ; 44.174745,5.441666 ; Le Chabrérieux ; Chemin d’Entressargue-Seramian
+B ; 44.175994,5.444351 ; Rue Notre-Dame ; Route de Ferrassières
+C ; 44.174459,5.445122 ; Chemin d’Entressargue-Seramian ; Route de Ferrassières ; Le Chabrérieux ; Rue Notre-Dame
+D ; 44.175417,5.4398 ; Basse Rue ; Montée de la Calade
+E ; 44.17571,5.440413 ; Montée de la Calade ; Rue de la Bourgade
+F ; 44.175777,5.441776 ; Rue Notre-Dame
+G ; 44.175869,5.439376 ; Calade du Château ; Montée de la Saute
+H ; 44.175776,5.438574 ; Montée de la Saute ; Rue du Beffroi
+I ; 44.175649,5.439317 ; Rue du Beffroi
+J ; 44.176372,5.439352 ; Calade du Château ; Maiil du Château
+K ; 44.176519,5.440152 ; Maiil du Château ; Mail du Château
+L ; 44.176464,5.440421 ; Maiil du Château ; Mail du Château
+M ; 44.175436,5.437957 ; Basse Rue
+N ; 44.175189,5.441624 ; Basse Rue ; Le Chabrérieux
+O ; 44.175726,5.440943 ; Mail du Château ; Rue Notre-Dame ; Rue de la Bourgade ; Route des Alpes
+P ; 44.187385,5.470729 ; Route de Montbrun ; Route des Alpes ; Mail du Château
+
+
+ARCS (segments entre sommets) :
+D-E ; Montée de la Calade ; 4 ; 107.367 ; 44.175417,5.4398 ; 44.17571,5.440413
+H-G ; Montée de la Saute ; 2 ; 64.955 ; 44.175776,5.438574 ; 44.175869,5.439376
+K-J ; Maiil du Château ; 0 ; 65.982 ; 44.176519,5.440152 ; 44.176372,5.439352
+J-L ; Maiil du Château ; 3 ; 86.071 ; 44.176372,5.439352 ; 44.176464,5.440421
+N-D ; Basse Rue ; 29 ; 149.846 ; 44.175189,5.441624 ; 44.175417,5.4398
+D-M ; Basse Rue ; 12 ; 148.267 ; 44.175417,5.4398 ; 44.175436,5.437957
+J-G ; Calade du Château ; 7 ; 55.98 ; 44.176372,5.439352 ; 44.175869,5.439376
+O-E ; Rue de la Bourgade ; 10 ; 42.709 ; 44.175726,5.440943 ; 44.17571,5.440413
+A-N ; Le Chabrérieux ; 3 ; 51.014 ; 44.174745,5.441666 ; 44.175189,5.441624
+B-F ; Rue Notre-Dame ; 30 ; 208.277 ; 44.175994,5.444351 ; 44.175777,5.441776
+F-O ; Rue Notre-Dame ; 0 ; 66.822 ; 44.175777,5.441776 ; 44.175726,5.440943
+I-H ; Rue du Beffroi ; 6 ; 62.262 ; 44.175649,5.439317 ; 44.175776,5.438574
+O-L ; Mail du Château ; 12 ; 291.483 ; 44.175726,5.440943 ; 44.176464,5.440421
+L-K ; Mail du Château ; 0 ; 22.355 ; 44.176464,5.440421 ; 44.176519,5.440152
+C-A ; Chemin d’Entressargue-Seramian ; 0 ; 210.0 ; 44.174459,5.445122 ; 44.174745,5.441666
+C-B ; Route de Ferrassières ; 0 ; 170.0 ; 44.174459,5.445122 ; 44.175994,5.444351
+P-O ; Route des Alpes ; 0 ; 3550.0 ; 44.187385,5.470729 ; 44.175726,5.440943
+
+POINTS DE COLLECTE:
+Mairie ; 6 ; Chemin de la Vilette ; 549936.73
+Camping ; 8 ; Chemin de la Vilette ; 548764.69
+École ; 4 ; Chemin de la Vilette ; 549644.08
+Zone industrielle ; 10 ; Chemin de la Vilette ; 548021.97
+
+DEPOT:
+Dépôt principal ; Chemin de la Vilette ; 549991.15

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.*;
 
 public class GraphismeControle extends JPanel {
+
     private final Map<String, Set<String>> adjacencyList;
     private final Map<String, Point> positions = new LinkedHashMap<>();
 
@@ -16,8 +17,8 @@ public class GraphismeControle extends JPanel {
 
     private void genererPositionsCirculaires() {
         int n = adjacencyList.size();
-        int radius = 250;      // rayon du cercle
-        int centerX = 450;     // centre de la fenêtre
+        int radius = 250;
+        int centerX = 450;
         int centerY = 350;
 
         int i = 0;
@@ -30,29 +31,50 @@ public class GraphismeControle extends JPanel {
         }
     }
 
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.DARK_GRAY);
+        // Anti-aliasing pour un rendu plus propre
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Dessin des arêtes
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.DARK_GRAY);
+
+        Set<String> drawn = new HashSet<>();
+
         for (String src : adjacencyList.keySet()) {
             Point p1 = positions.get(src);
             for (String dest : adjacencyList.get(src)) {
+
+                // éviter les doublons (a-b == b-a)
+                String id1 = src + ":" + dest;
+                String id2 = dest + ":" + src;
+                if (drawn.contains(id1) || drawn.contains(id2)) continue;
+
                 Point p2 = positions.get(dest);
                 if (p2 != null) {
-                    g.drawLine(p1.x, p1.y, p2.x, p2.y);
+                    g2.drawLine(p1.x, p1.y, p2.x, p2.y);
+                    drawn.add(id1);
                 }
             }
         }
 
+        // Dessin des sommets
         for (String node : adjacencyList.keySet()) {
             Point p = positions.get(node);
-            g.setColor(new Color(80, 120, 255));
-            g.fillOval(p.x - 15, p.y - 15, 30, 30);
 
-            g.setColor(Color.BLACK);
-            g.drawOval(p.x - 15, p.y - 15, 30, 30);
+            // Cercle du noeud
+            g2.setColor(new Color(80, 120, 255));
+            g2.fillOval(p.x - 15, p.y - 15, 30, 30);
 
-            g.drawString(node, p.x + 20, p.y);
+            g2.setColor(Color.BLACK);
+            g2.drawOval(p.x - 15, p.y - 15, 30, 30);
+
+            // Nom du noeud
+            g2.drawString(node, p.x + 20, p.y);
         }
     }
 }
