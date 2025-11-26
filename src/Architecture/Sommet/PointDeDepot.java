@@ -1,16 +1,17 @@
 package Architecture.Sommet;
 
+import Architecture.Arc;
 import Entite.Camion;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class PointDeDepot {
-    private String nom_voie;
+public class PointDeDepot extends Sommets {
     private int nombre_poubelles;
     private ArrayList<String> poubelles;
 
-    public PointDeDepot(String nom_voie, int nombre_poubelles) {
-        this.nom_voie = nom_voie;
+    public PointDeDepot(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue, int nombre_poubelles) {
+        super(arcs_sortants,arcs_entrant,nom_rue);
         this.nombre_poubelles = nombre_poubelles;
     }
 
@@ -22,8 +23,6 @@ public class PointDeDepot {
         camion.decharger_camion();
     }
 
-
-    public String getNom_voie() {return nom_voie;}
     public int getNombre_poubelles() {return nombre_poubelles;}
     public ArrayList<String> getPoubelles() {return poubelles;}
 }
