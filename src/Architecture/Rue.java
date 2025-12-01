@@ -5,11 +5,14 @@ import java.util.LinkedList;
 public class Rue {
     private String nom;
     private LinkedList<Arc> ensemble_rue;
+    private int longueur;
+    private int nbMaisons;
 
     public Rue(String nom, LinkedList<Arc> ensemble_rue) {
         this.nom = nom;
         this.ensemble_rue = ensemble_rue;
     }
+
 
 
     public String getNom() {return nom;}
