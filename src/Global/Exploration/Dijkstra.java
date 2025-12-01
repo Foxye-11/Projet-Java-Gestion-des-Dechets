@@ -10,6 +10,7 @@ import java.util.PriorityQueue;
 
 public class Dijkstra {
 
+    /*
     public Map<Sommet, Integer> dijkstra_map(Sommet source) {
 
         Map<Sommet, Integer> distance = new HashMap<>();
@@ -29,10 +30,10 @@ public class Dijkstra {
 
             Sommet u = file.poll();
 
-            for (Arc arc : u.getArcs_sortants().values()) {
+            for (Arc arc : u.getArcsSortants().values()) {
 
                 Sommet v = arc.chgtSommet(u);
-                int poids = arc.getNb_habitations();
+                int poids = arc.getNbMaisons();
 
                 int newDist = distance.get(u) + poids;
 
@@ -70,10 +71,10 @@ public class Dijkstra {
                 break;
             }
 
-            for (Arc arc : u.getArcs_sortants().values()) {
+            for (Arc arc : u.getArcsSortants().values()) {
 
                 Sommet v = arc.chgtSommet(u);
-                int poids = arc.getNb_habitations();
+                int poids = arc.getNbMaisons();
 
                 int newDist = distance.get(u) + poids;
 
@@ -87,6 +88,7 @@ public class Dijkstra {
 
         return parent; // Sert à reconstruire le chemin
     }
+    */
 
 }
 

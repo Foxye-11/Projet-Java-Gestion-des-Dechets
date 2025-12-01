@@ -24,6 +24,7 @@ public class PointDeDepot {
         camion.decharger_camion();
     }
 
+    public String getNom() {return nom;}
     public int getCapacite() {return capacite;}
     public ArrayList<String> getPoubelles() {return poubelles;}
 }

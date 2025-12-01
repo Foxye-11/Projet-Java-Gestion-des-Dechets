@@ -19,6 +19,10 @@ public class PointDeCollecte {
         this.capacite = capacite;
     }
 
+    // getter
+    public String getRue() { return rue;}
+    public String getNom() { return nom;}
+    public int getCapacite() { return capacite;}
     public int getNombre_poubelles() {return capacite;}
     public ArrayList<Poubelle> getPoubelles() {return poubelles;}
 }

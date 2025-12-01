@@ -4,25 +4,26 @@ import java.util.LinkedList;
 
 public class Rue {
     private String nom;
-    private LinkedList<Arc> ensemble_rue;
+    private LinkedList<Arc> ensembleRue;
     private int nbHabitations;
     private float longueur;
 
-    public Rue(String nom, LinkedList<Arc> ensemble_rue, int nbHabitations,  float longueur) {
+    public Rue(String nom, LinkedList<Arc> ensembleRue, int nbHabitations,  float longueur) {
         this.nom = nom;
-        this.ensemble_rue = ensemble_rue;
+        this.ensembleRue = ensembleRue;
         this.nbHabitations = nbHabitations;
         this.longueur = longueur;
     }
 
     // getter
     public String getNom() {return nom;}
-    public LinkedList<Arc> getEnsemble_rue() {return ensemble_rue;}
-
+    public LinkedList<Arc> getEnsemble_rue() {return ensembleRue;}
+        public int getNbHabitations() {return nbHabitations;}
+    public float getLongueur() {return longueur;}
     //setter
     public void addArc(Arc arc) {
-        if (!ensemble_rue.contains(arc))
-            ensemble_rue.add(arc);
+        if (!ensembleRue.contains(arc))
+            ensembleRue.add(arc);
         else System.out.println("Arc deja present");
     }
 }
