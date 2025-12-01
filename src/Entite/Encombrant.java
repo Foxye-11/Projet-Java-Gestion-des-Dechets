@@ -27,7 +27,7 @@ public class Encombrant {
             }
         }
     }
-    
+
     public Rue getRue() {return rue;}
     public int getNumero_domicile() {return numero_domicile;}
     public Arc getLocalisation() {return localisation;}

@@ -12,7 +12,7 @@ public class Main {
         Map<String, Set<GraphismeControle.Arc>> graph = new LinkedHashMap<>();
 
         // --- Initialisation des sommets ---
-        for (String sommet : fichier.getListeVertices().keySet()) {
+        for (String sommet : fichier.getListeCarrefours().keySet()) {
             graph.putIfAbsent(sommet.trim(), new LinkedHashSet<>());
         }
 
@@ -43,7 +43,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Fichier fichier = new Fichier();
+            Fichier fichier = new Fichier("MontBrunlesBainsv2.txt");
 
             Map<String, Set<GraphismeControle.Arc>> graph = construireGraphe(fichier);
 

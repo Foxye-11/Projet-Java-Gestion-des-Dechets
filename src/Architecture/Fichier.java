@@ -7,15 +7,16 @@ import java.util.*;
 
 public class Fichier {
 
-    private String nomFichier = "MontBrunlesBainsv2.txt";
+    private String nomFichier ;
 
     public Map<String, Set<String>> listeRues = new LinkedHashMap<>();
     public Map<String, Set<String>> listePointsCollectes = new LinkedHashMap<>();
     public Map<String, Set<String>> listePointsDepots = new LinkedHashMap<>();
-    public Map<String, Set<String>> listeVertices = new LinkedHashMap<>();
+    public Map<String, Set<String>> listeCarrefours = new LinkedHashMap<>();
     public Map<String, Set<String>> listeArcs = new LinkedHashMap<>();
 
-    public Fichier() throws IOException {
+    public Fichier(String nomFichier) throws IOException {
+        this.nomFichier = nomFichier;
         chargerAgglo();
     }
 
@@ -27,7 +28,7 @@ public class Fichier {
         String motCle5 = "DEPOT:";
 
         boolean lectureRues = false;
-        boolean lectureVertices = false;
+        boolean lectureCarrefours = false;
         boolean lectureArcs = false;
         boolean lectureCollecte = false;
         boolean lectureDepot = false;
@@ -43,27 +44,27 @@ public class Fichier {
 
             if (upper.startsWith(motCle1)) {
                 lectureRues = true;
-                lectureVertices = lectureArcs = lectureCollecte = lectureDepot = false;
+                lectureCarrefours = lectureArcs = lectureCollecte = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle2)) {
-                lectureVertices = true;
+                lectureCarrefours = true;
                 lectureRues = lectureArcs = lectureCollecte = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle3)) {
                 lectureArcs = true;
-                lectureRues = lectureVertices = lectureCollecte = lectureDepot = false;
+                lectureRues = lectureCarrefours = lectureCollecte = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle4)) {
                 lectureCollecte = true;
-                lectureVertices = lectureArcs = lectureRues = lectureDepot = false;
+                lectureCarrefours = lectureArcs = lectureRues = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle5)) {
                 lectureDepot = true;
-                lectureVertices = lectureArcs = lectureCollecte = lectureRues = false;
+                lectureCarrefours = lectureArcs = lectureCollecte = lectureRues = false;
                 continue;
             }
 
@@ -81,18 +82,18 @@ public class Fichier {
                 continue;
             }
 
-            if (lectureVertices) {
+            if (lectureCarrefours) {
                 String[] parts = line.split(";");
                 if (parts.length < 2) continue;
 
                 String sommet = parts[0].trim();
                 String coords = parts[1].trim();
 
-                listeVertices.putIfAbsent(sommet, new LinkedHashSet<>());
-                listeVertices.get(sommet).add(coords);
+                listeCarrefours.putIfAbsent(sommet, new LinkedHashSet<>());
+                listeCarrefours.get(sommet).add(coords);
 
                 for (int i = 2; i < parts.length; i++)
-                    listeVertices.get(sommet).add(parts[i].trim());
+                    listeCarrefours.get(sommet).add(parts[i].trim());
                 continue;
             }
 
@@ -145,7 +146,7 @@ public class Fichier {
     }
 
     public Map<String, Set<String>> getListeRues() { return listeRues; }
-    public Map<String, Set<String>> getListeVertices() { return listeVertices; }
+    public Map<String, Set<String>> getListeCarrefours() { return listeCarrefours; }
     public Map<String, Set<String>> getListeArcs() { return listeArcs; }
     public Map<String, Set<String>> getListePointsCollectes() { return listePointsCollectes; }
     public Map<String, Set<String>> getListePointsDepots() { return listePointsDepots; }
