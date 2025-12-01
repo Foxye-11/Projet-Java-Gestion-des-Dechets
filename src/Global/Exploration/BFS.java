@@ -1,20 +1,20 @@
 package Global.Exploration;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Sommet.Sommets;
+import Global.Architecture.Sommet.Sommet;
 
 import java.util.*;
 
 public class BFS {
     // Classe interne pour représenter un état dans la recherche
     private static class Etat implements Comparable<Etat> {
-        Sommets sommet;
+        Sommet sommet;
         String nom_rue;
         List<String> chemin;
         int changements;
         int distance;
 
-        Etat(Sommets sommet, String nom_rue, List<String> chemin, int changements, int distance) {
+        Etat(Sommet sommet, String nom_rue, List<String> chemin, int changements, int distance) {
             this.sommet = sommet;
             this.nom_rue = nom_rue;
             this.chemin = chemin;
@@ -29,7 +29,7 @@ public class BFS {
             return Integer.compare(this.distance, other.distance);
         }
     }
-    public void bfs(Sommets depart, Sommets arrivee){
+    public void bfs(Sommet depart, Sommet arrivee){
         //Fais le BFS et l'affichage du chemin trouvé
 
             if (depart == null || arrivee == null) {
@@ -41,14 +41,14 @@ public class BFS {
             Set<String> visites = new HashSet<>();
 
             //Init depart
-            file.add(new Etat(depart, depart.getNom_rue(), new ArrayList<>(List.of(depart.getNom_rue())), 0, 0));
+            file.add(new Etat(depart, depart.getRue(), new ArrayList<>(List.of(depart.getRue())), 0, 0));
 
 
             Etat resultat = null;
             //BFS
             while (!file.isEmpty()) {
                 Etat courant = file.poll();
-                String cle = courant.sommet.getNom_rue() + "_" + courant.nom_rue;
+                String cle = courant.sommet.getRue() + "_" + courant.nom_rue;
                 if (visites.contains(cle)) continue;
                 visites.add(cle);
 
@@ -58,7 +58,7 @@ public class BFS {
                 }
                 //Parcours du graphe avec les arcs
                 for (Arc arc : courant.sommet.getArcs_sortants().values()) {
-                    Sommets voisin = arc.chgtSommet(courant.sommet);
+                    Sommet voisin = arc.chgtSommet(courant.sommet);
                     String ligneArc = arc.getNom_rue();
                     int nouveauxChangements = courant.changements;
 
@@ -67,7 +67,7 @@ public class BFS {
                     }
                     //Ajout du chemin dans la file
                     List<String> nouveauChemin = new ArrayList<>(courant.chemin);
-                    nouveauChemin.add(voisin.getNom_rue());
+                    nouveauChemin.add(voisin.getRue());
 
                     file.add(new Etat(voisin, ligneArc, nouveauChemin, nouveauxChangements, courant.distance + 1));
                 }

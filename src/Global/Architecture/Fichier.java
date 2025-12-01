@@ -1,5 +1,9 @@
 package Global.Architecture;
 
+import Global.Architecture.Sommet.PointDeCollecte;
+import Global.Architecture.Sommet.PointDeDepot;
+import Global.Architecture.Sommet.Sommet;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,11 +13,11 @@ public class Fichier {
 
     private String nomFichier ;
 
-    public Map<String, Set<String>> listeRues = new LinkedHashMap<>();
-    public Map<String, Set<String>> listePointsCollectes = new LinkedHashMap<>();
-    public Map<String, Set<String>> listePointsDepots = new LinkedHashMap<>();
-    public Map<String, Set<String>> listeCarrefours = new LinkedHashMap<>();
-    public Map<String, Set<String>> listeArcs = new LinkedHashMap<>();
+    public Map<String, Rue> listeRues = new LinkedHashMap<>();
+    public Map<String, PointDeCollecte> listePointsCollectes = new LinkedHashMap<>();
+    public Map<String, PointDeDepot> listePointsDepots = new LinkedHashMap<>();
+    public Map<String, Sommet> listeSommets = new LinkedHashMap<>();
+    public Map<String, Arc> listeArcs = new LinkedHashMap<>();
 
     public Fichier(String nomFichier) throws IOException {
         this.nomFichier = nomFichier;
@@ -28,7 +32,7 @@ public class Fichier {
         String motCle5 = "DEPOT:";
 
         boolean lectureRues = false;
-        boolean lectureCarrefours = false;
+        boolean lectureSommets = false;
         boolean lectureArcs = false;
         boolean lectureCollecte = false;
         boolean lectureDepot = false;
@@ -42,58 +46,60 @@ public class Fichier {
 
             String upper = line.toUpperCase();
 
+            // trouve la catégorie dans laquelle on est
             if (upper.startsWith(motCle1)) {
                 lectureRues = true;
-                lectureCarrefours = lectureArcs = lectureCollecte = lectureDepot = false;
+                lectureSommets = lectureArcs = lectureCollecte = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle2)) {
-                lectureCarrefours = true;
+                lectureSommets = true;
                 lectureRues = lectureArcs = lectureCollecte = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle3)) {
                 lectureArcs = true;
-                lectureRues = lectureCarrefours = lectureCollecte = lectureDepot = false;
+                lectureRues = lectureSommets = lectureCollecte = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle4)) {
                 lectureCollecte = true;
-                lectureCarrefours = lectureArcs = lectureRues = lectureDepot = false;
+                lectureSommets = lectureArcs = lectureRues = lectureDepot = false;
                 continue;
             }
             if (upper.startsWith(motCle5)) {
                 lectureDepot = true;
-                lectureCarrefours = lectureArcs = lectureCollecte = lectureRues = false;
+                lectureSommets = lectureArcs = lectureCollecte = lectureRues = false;
                 continue;
             }
 
+            // Lit et creer les objets selon la categorie dans laquelle on est
             if (lectureRues) {
                 String[] parts = line.split(";");
                 if (parts.length < 3) continue;
 
                 String rue = parts[0].trim();
-                String nbMaisons = parts[1].trim();
-                String longueur = parts[2].trim();
+                int nbMaisons = Integer.parseInt(parts[1].trim());
+                float longueur = Float.parseFloat(parts[2].trim());
 
-                listeRues.putIfAbsent(rue, new LinkedHashSet<>());
-                listeRues.get(rue).add(nbMaisons);
-                listeRues.get(rue).add(longueur);
+                Rue newRue = new Rue(rue, null, nbMaisons, longueur);
+                listeRues.putIfAbsent(rue, newRue);
                 continue;
             }
 
-            if (lectureCarrefours) {
+            if (lectureSommets) {
                 String[] parts = line.split(";");
                 if (parts.length < 2) continue;
 
                 String sommet = parts[0].trim();
                 String coords = parts[1].trim();
-
-                listeCarrefours.putIfAbsent(sommet, new LinkedHashSet<>());
-                listeCarrefours.get(sommet).add(coords);
+                Set<String> rues = new LinkedHashSet<>();
 
                 for (int i = 2; i < parts.length; i++)
-                    listeCarrefours.get(sommet).add(parts[i].trim());
+                    rues.add(parts[i].trim());
+
+                Sommet newSommet = new Sommet(null, null, rues, sommet);
+                listeSommets.putIfAbsent(sommet, newSommet);
                 continue;
             }
 
@@ -102,11 +108,38 @@ public class Fichier {
                 if (parts.length < 7) continue;
 
                 String nomArc = parts[0].trim();
-                Set<String> arcData = new LinkedHashSet<>();
-                for (int i = 1; i < parts.length; i++) {
-                    arcData.add(parts[i].trim());
+                String[] sommet = nomArc.split("-");
+                Sommet sommet1 = listeSommets.get(sommet[0]);
+                Sommet sommet2 = listeSommets.get(sommet[1]);
+
+                String nomRue = parts[1].trim();
+                int nbMaisons = Integer.parseInt(parts[2].trim());
+                float longueur = Float.parseFloat(parts[3].trim());
+                float cooX = Float.parseFloat(parts[4].trim());
+                float cooY = Float.parseFloat(parts[5].trim());
+                int sens =  Integer.parseInt(parts[6].trim());
+
+                Arc newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommet1, sommet2);
+                listeArcs.put(nomArc, newArc);
+
+                Rue rue = listeRues.get(nomRue);
+                rue.addArc(newArc);
+
+                if (sens == 0){ // sens direct
+
+                    sommet1.addArcSortant(newArc);
+                    sommet2.addArcEntrant(newArc);
                 }
-                listeArcs.put(nomArc, arcData);
+                else if (sens == 1) { // sens opposé
+                    sommet1.addArcEntrant(newArc);
+                    sommet2.addArcSortant(newArc);
+                }
+                else if (sens == 2) { // bidirectionnel
+                    sommet1.addArcEntrant(newArc);
+                    sommet1.addArcSortant(newArc);
+                    sommet2.addArcEntrant(newArc);
+                    sommet2.addArcSortant(newArc);
+                }
                 continue;
             }
 
@@ -115,14 +148,12 @@ public class Fichier {
                 if (parts.length < 4) continue;
 
                 String nom = parts[0].trim();
-                String capacite = parts[1].trim();
+                int capacite = Integer.parseInt(parts[1].trim());
                 String rue = parts[2].trim();
-                String longueur = parts[3].trim();
+                float longueur = Float.parseFloat(parts[3].trim());
 
-                listePointsCollectes.putIfAbsent(nom, new LinkedHashSet<>());
-                listePointsCollectes.get(nom).add(capacite);
-                listePointsCollectes.get(nom).add(rue);
-                listePointsCollectes.get(nom).add(longueur);
+                PointDeCollecte pointDeCollecte = new PointDeCollecte(rue, nom, capacite);
+                listePointsCollectes.putIfAbsent(nom, pointDeCollecte);
                 continue;
             }
 
@@ -134,9 +165,8 @@ public class Fichier {
                 String rue = parts[1].trim();
                 String longueur = parts[2].trim();
 
-                listePointsDepots.putIfAbsent(nom, new LinkedHashSet<>());
-                listePointsDepots.get(nom).add(rue);
-                listePointsDepots.get(nom).add(longueur);
+                PointDeDepot pointDeDepot = new PointDeDepot(nom);
+                listePointsDepots.putIfAbsent(nom, pointDeDepot);
                 continue;
             }
 
@@ -144,10 +174,9 @@ public class Fichier {
         br.close();
 
     }
-
-    public Map<String, Set<String>> getListeRues() { return listeRues; }
-    public Map<String, Set<String>> getListeCarrefours() { return listeCarrefours; }
-    public Map<String, Set<String>> getListeArcs() { return listeArcs; }
-    public Map<String, Set<String>> getListePointsCollectes() { return listePointsCollectes; }
-    public Map<String, Set<String>> getListePointsDepots() { return listePointsDepots; }
+    public Map<String, Rue> getListeRues() { return listeRues; }
+    public Map<String, Sommet> getListeSommets() { return listeSommets; }
+    public Map<String, Arc> getListeArcs() { return listeArcs; }
+    public Map<String, PointDeCollecte> getListePointsCollectes() { return listePointsCollectes; }
+    public Map<String, PointDeDepot> getListePointsDepots() { return listePointsDepots; }
 }

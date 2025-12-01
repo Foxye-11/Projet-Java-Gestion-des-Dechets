@@ -14,7 +14,7 @@ public class Main {
         Map<String, Set<GraphismeControle.Arc>> graph = new LinkedHashMap<>();
 
         // --- Initialisation des sommets ---
-        for (String sommet : fichier.getListeCarrefours().keySet()) {
+        for (String sommet : fichier.getListeSommets().keySet()) {
             graph.putIfAbsent(sommet.trim(), new LinkedHashSet<>());
         }
 

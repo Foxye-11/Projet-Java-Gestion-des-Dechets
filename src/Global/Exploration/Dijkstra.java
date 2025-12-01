@@ -1,7 +1,7 @@
 package Global.Exploration;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Sommet.Sommets;
+import Global.Architecture.Sommet.Sommet;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,15 +10,15 @@ import java.util.PriorityQueue;
 
 public class Dijkstra {
 
-    public Map<Sommets, Integer> dijkstra_map(Sommets source) {
+    public Map<Sommet, Integer> dijkstra_map(Sommet source) {
 
-        Map<Sommets, Integer> distance = new HashMap<>();
-        Map<Sommets, Sommets> parent = new HashMap<>();
-        PriorityQueue<Sommets> file = new PriorityQueue<>(Comparator.comparingInt(distance::get));
+        Map<Sommet, Integer> distance = new HashMap<>();
+        Map<Sommet, Sommet> parent = new HashMap<>();
+        PriorityQueue<Sommet> file = new PriorityQueue<>(Comparator.comparingInt(distance::get));
 
         // Initialisation
         // Warning : besoin d'une liste globale des sommets du graphe
-        for (Sommets s : graphe.getTousLesSommets()) {
+        for (Sommet s : graphe.getTousLesSommets()) {
             distance.put(s, Integer.MAX_VALUE);
         }
 
@@ -27,11 +27,11 @@ public class Dijkstra {
 
         while (!file.isEmpty()) {
 
-            Sommets u = file.poll();
+            Sommet u = file.poll();
 
             for (Arc arc : u.getArcs_sortants().values()) {
 
-                Sommets v = arc.chgtSommet(u);
+                Sommet v = arc.chgtSommet(u);
                 int poids = arc.getNb_habitations();
 
                 int newDist = distance.get(u) + poids;
@@ -47,15 +47,15 @@ public class Dijkstra {
         return distance; // ou parent si tu veux reconstruire les chemins
     }
 
-    public Map<Sommets, Sommets> dijkstra(Sommets source, Sommets destination) {
+    public Map<Sommet, Sommet> dijkstra(Sommet source, Sommet destination) {
 
-        Map<Sommets, Integer> distance = new HashMap<>();
-        Map<Sommets, Sommets> parent = new HashMap<>();
-        PriorityQueue<Sommets> file = new PriorityQueue<>(Comparator.comparingInt(distance::get));
+        Map<Sommet, Integer> distance = new HashMap<>();
+        Map<Sommet, Sommet> parent = new HashMap<>();
+        PriorityQueue<Sommet> file = new PriorityQueue<>(Comparator.comparingInt(distance::get));
 
         // Initialisation
         // Warning : besoin d'une liste globale des sommets du graphe
-        for (Sommets s : graphe.getTousLesSommets()) {
+        for (Sommet s : graphe.getTousLesSommets()) {
             distance.put(s, Integer.MAX_VALUE);
         }
 
@@ -63,7 +63,7 @@ public class Dijkstra {
         file.add(source);
 
         while (!file.isEmpty()) {
-            Sommets u = file.poll();
+            Sommet u = file.poll();
 
             // 🔥 Condition d'arrêt : on a atteint la destination
             if (u.equals(destination)) {
@@ -72,7 +72,7 @@ public class Dijkstra {
 
             for (Arc arc : u.getArcs_sortants().values()) {
 
-                Sommets v = arc.chgtSommet(u);
+                Sommet v = arc.chgtSommet(u);
                 int poids = arc.getNb_habitations();
 
                 int newDist = distance.get(u) + poids;

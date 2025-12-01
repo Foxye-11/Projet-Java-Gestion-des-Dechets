@@ -5,14 +5,15 @@ import Global.Entite.Camion;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
-public class PointDeDepot extends Sommets {
-    private int nombre_poubelles;
+public class PointDeDepot {
+    private String nom;
+    private int capacite;
     private ArrayList<String> poubelles;
 
-    public PointDeDepot(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue, int nombre_poubelles) {
-        super(arcs_sortants,arcs_entrant,nom_rue);
-        this.nombre_poubelles = nombre_poubelles;
+    public PointDeDepot(String nom) {
+        this.nom = nom;
     }
 
     public void chargerCamion(Camion camion, int quantite_dechets){
@@ -23,6 +24,6 @@ public class PointDeDepot extends Sommets {
         camion.decharger_camion();
     }
 
-    public int getNombre_poubelles() {return nombre_poubelles;}
+    public int getCapacite() {return capacite;}
     public ArrayList<String> getPoubelles() {return poubelles;}
 }

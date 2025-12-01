@@ -5,17 +5,20 @@ import Global.Entite.Poubelle;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
-public class PointDeCollecte extends Sommets {
-    private int nombre_poubelles;
+public class PointDeCollecte {
+    private String rue;
+    private String nom;
+    private int capacite;
     private ArrayList<Poubelle> poubelles;
 
-    public PointDeCollecte(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue,String nom_voie, int nombre_poubelles, ArrayList<Poubelle> poubelles) {
-        super(arcs_sortants, arcs_entrant, nom_rue);
-        this.nombre_poubelles = nombre_poubelles;
-        this.poubelles = poubelles;
+    public PointDeCollecte(String rue, String nom, int capacite) {
+        this.rue = rue;
+        this.nom = nom;
+        this.capacite = capacite;
     }
 
-    public int getNombre_poubelles() {return nombre_poubelles;}
+    public int getNombre_poubelles() {return capacite;}
     public ArrayList<Poubelle> getPoubelles() {return poubelles;}
 }
