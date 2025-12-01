@@ -78,7 +78,7 @@ public class BFS {
                 return;
             }
             //Affichage du résumé du chemin trouvé
-            System.out.println("\n Chemin trouvé (" + resultat.distance + " stations, " + resultat.changements + " changements)");
+            System.out.println("\n Chemin trouvé (" + resultat.distance + " intersections, " + resultat.changements + " changements)");
             System.out.println(" Itinéraire détaillé :");
 
             String derniereLigne = null;
