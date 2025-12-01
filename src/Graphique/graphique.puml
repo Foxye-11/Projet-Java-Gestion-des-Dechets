@@ -1,0 +1,7 @@
+@startuml
+class GraphiqueFenetre
+JFrame <|-- GraphiqueFenetre
+
+class GraphismeControle
+JPanel <|-- GraphismeControle
+@enduml

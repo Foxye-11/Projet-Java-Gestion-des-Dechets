@@ -67,7 +67,6 @@ public class Fichier {
                 continue;
             }
 
-            // Lecture des rues
             if (lectureRues) {
                 String[] parts = line.split(";");
                 if (parts.length < 3) continue;
@@ -82,7 +81,6 @@ public class Fichier {
                 continue;
             }
 
-            // Lecture des sommets / carrefours
             if (lectureVertices) {
                 String[] parts = line.split(";");
                 if (parts.length < 2) continue;
@@ -98,7 +96,6 @@ public class Fichier {
                 continue;
             }
 
-            // Lecture des arcs avec champ type
             if (lectureArcs) {
                 String[] parts = line.split(";");
                 if (parts.length < 7) continue;
@@ -112,7 +109,6 @@ public class Fichier {
                 continue;
             }
 
-            // Lecture des points de collecte
             if (lectureCollecte) {
                 String[] parts = line.split(";");
                 if (parts.length < 4) continue;
@@ -129,7 +125,6 @@ public class Fichier {
                 continue;
             }
 
-            // Lecture du dépôt
             if (lectureDepot) {
                 String[] parts = line.split(";");
                 if (parts.length < 3) continue;
@@ -149,7 +144,6 @@ public class Fichier {
 
     }
 
-    // --- GETTERS ---
     public Map<String, Set<String>> getListeRues() { return listeRues; }
     public Map<String, Set<String>> getListeVertices() { return listeVertices; }
     public Map<String, Set<String>> getListeArcs() { return listeArcs; }

@@ -3,7 +3,6 @@ package Graphique;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class GraphismeControle extends JPanel {
 
@@ -48,7 +47,7 @@ public class GraphismeControle extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(2));
 
-        int arrowSize = 10; // taille de la flèche
+        int arrowSize = 10;
         Set<String> drawn = new HashSet<>();
 
         for (String src : adjacencyList.keySet()) {
@@ -61,29 +60,25 @@ public class GraphismeControle extends JPanel {
                 Point p2 = positions.get(dest);
                 if (p2 == null) continue;
 
-                // couleur et dessin selon le type
                 switch (type) {
                     case 0 -> g2.setColor(Color.RED);        // sortante
                     case 1 -> g2.setColor(Color.GREEN);      // entrante
                     case 2 -> g2.setColor(Color.DARK_GRAY);  // bidirectionnelle
                 }
 
-                // tracer la ligne entre les sommets
                 g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
-                // tracer flèches
                 if (type == 0) {
-                    drawArrow(g2, p1, p2, arrowSize); // sortante
+                    drawArrow(g2, p1, p2, arrowSize);
                 } else if (type == 1) {
-                    drawArrow(g2, p1, p2, arrowSize); // entrante
+                    drawArrow(g2, p1, p2, arrowSize);
                 } else {
-                    drawArrow(g2, p1, p2, arrowSize); // bidirectionnelle
+                    drawArrow(g2, p1, p2, arrowSize);
                     drawArrow(g2, p2, p1, arrowSize);
                 }
             }
         }
 
-        // Dessin des sommets
         for (String node : adjacencyList.keySet()) {
             Point p = positions.get(node);
 
@@ -94,7 +89,6 @@ public class GraphismeControle extends JPanel {
             g2.setColor(Color.BLACK);
             g2.drawOval(p.x - 15, p.y - 15, 30, 30);
 
-            // Lettre centrée dans le cercle
             FontMetrics fm = g2.getFontMetrics();
             int textWidth = fm.stringWidth(node);
             int textHeight = fm.getAscent();
@@ -102,9 +96,6 @@ public class GraphismeControle extends JPanel {
         }
     }
 
-    /**
-     * Dessine une flèche de p1 vers p2
-     */
     private void drawArrow(Graphics2D g2, Point p1, Point p2, int arrowSize) {
         double angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
