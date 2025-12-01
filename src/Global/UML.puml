@@ -1,15 +1,11 @@
 @startuml
+top to bottom direction
 package Global {
     !include Entite/entite.puml
     !include Architecture/architecture.puml
     !include Exploration/exploration.puml
     !include Plannification/plannification.puml
     !include Graphique/graphique.puml
-
-    class Main {
-        + static Map<String, Set<GraphismeControle.Arc>> construireGraphe(Fichier fichier)
-        + static void main(String[] args)
-    }
 
     Camion --> Rue
     Camion --> Arc
@@ -19,4 +15,5 @@ package Global {
     BFS --> Sommets
     GraphismeControle --> Arc : "utilise"
 }
+
 @enduml
