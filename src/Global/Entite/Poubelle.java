@@ -1,4 +1,4 @@
-package Entite;
+package Global.Entite;
 
 public class Poubelle {
     //ordures ménagères, recyclables, encombrants, verres

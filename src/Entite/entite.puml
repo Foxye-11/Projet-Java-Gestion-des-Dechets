@@ -1,5 +1,0 @@
-@startuml
-class Camion
-class Encombrant
-class Poubelle
-@enduml

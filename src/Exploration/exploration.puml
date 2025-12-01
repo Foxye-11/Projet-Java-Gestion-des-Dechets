@@ -1,4 +1,0 @@
-@startuml
-class BFS
-class Dijkstra
-@enduml

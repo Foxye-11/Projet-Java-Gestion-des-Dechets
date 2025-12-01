@@ -1,7 +1,7 @@
-package Architecture.Sommet;
+package Global.Architecture.Sommet;
 
-import Architecture.Arc;
-import Entite.Poubelle;
+import Global.Architecture.Arc;
+import Global.Entite.Poubelle;
 
 import java.util.ArrayList;
 import java.util.Map;

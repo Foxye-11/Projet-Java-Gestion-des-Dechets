@@ -1,0 +1,35 @@
+@startuml
+package Global.Plannification {
+
+    class Calendrier {
+        - Tournee[][][] planning
+        + Calendrier()
+        + void addObject(int m, int s, int j, Tournee objet)
+        + Tournee getObject(int m, int s, int j)
+        + void affichage_planning()
+    }
+
+    class Plannifier {
+        - String[] type_dechet
+        - int[] NbJourParMois
+        - boolean[] type_frequence
+        - int[] frequence_passage
+        - Calendrier calendrier
+        + Plannifier(boolean[] type_frequence, int[] frequence_passage)
+        + void creerPlanning()
+        + void addTournee(int m, int s, int j, String type_dechet, String type_tournee)
+    }
+
+    class Tournee {
+        - int[] date
+        - String type_dechet
+        - String type_tournee
+        + Tournee(int m, int s, int j, String type_dechet, String type_tournee)
+    }
+
+    ' Relations
+    Plannifier --> Calendrier : "utilise"
+    Calendrier --> Tournee : "contient"
+    Plannifier --> Tournee : "crée"
+}
+@enduml

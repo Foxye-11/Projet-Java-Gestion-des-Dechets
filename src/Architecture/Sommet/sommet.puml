@@ -1,7 +1,0 @@
-@startuml
-class PointDeCollecte
-Sommets <|-- PointDeCollecte
-class PointDeDepot
-Sommets <|-- PointDeDepot
-class Sommets
-@enduml

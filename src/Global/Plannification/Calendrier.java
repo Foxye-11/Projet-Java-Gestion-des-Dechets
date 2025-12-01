@@ -1,4 +1,4 @@
-package Plannification;
+package Global.Plannification;
 
 public class Calendrier {
     private Tournee[][][] planning = new Tournee[12][5][7];

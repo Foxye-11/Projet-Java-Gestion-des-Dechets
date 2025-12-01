@@ -1,7 +1,7 @@
-package Exploration;
+package Global.Exploration;
 
-import Architecture.Arc;
-import Architecture.Sommet.Sommets;
+import Global.Architecture.Arc;
+import Global.Architecture.Sommet.Sommets;
 
 import java.util.Comparator;
 import java.util.HashMap;

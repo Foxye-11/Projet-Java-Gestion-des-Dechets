@@ -1,0 +1,13 @@
+@startuml
+package Global.Exploration {
+
+    class BFS {
+        + void bfs(Sommets depart, Sommets arrivee)
+    }
+
+    class Dijkstra {
+        + Map<Sommets, Integer> dijkstra_map(Sommets source)
+        + Map<Sommets, Sommets> dijkstra(Sommets source, Sommets destination)
+    }
+}
+@enduml

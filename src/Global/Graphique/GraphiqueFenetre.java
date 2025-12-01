@@ -1,4 +1,4 @@
-package Graphique;
+package Global.Graphique;
 
 import javax.swing.*;
 import java.util.Map;

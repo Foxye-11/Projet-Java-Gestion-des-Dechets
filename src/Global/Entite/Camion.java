@@ -1,7 +1,7 @@
-package Entite;
+package Global.Entite;
 
-import Architecture.Arc;
-import Architecture.Rue;
+import Global.Architecture.Arc;
+import Global.Architecture.Rue;
 
 public class Camion {
     private int id;

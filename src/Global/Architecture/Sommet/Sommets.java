@@ -1,6 +1,6 @@
-package Architecture.Sommet;
+package Global.Architecture.Sommet;
 
-import Architecture.Arc;
+import Global.Architecture.Arc;
 
 import java.util.Map;
 

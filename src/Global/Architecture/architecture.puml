@@ -1,0 +1,56 @@
+@startuml
+package Global.Architecture {
+
+    !include Sommet/sommet.puml
+
+        class Fichier {
+            - String nomFichier
+            - Map<String, Set<String>> listeRues
+            - Map<String, Set<String>> listePointsCollectes
+            - Map<String, Set<String>> listePointsDepots
+            - Map<String, Set<String>> listeVertices
+            - Map<String, Set<String>> listeArcs
+
+            + Fichier() throws IOException
+            + Map<String, Set<String>> getListeRues()
+            + Map<String, Set<String>> getListePointsCollectes()
+            + Map<String, Set<String>> getListePointsDepots()
+            + Map<String, Set<String>> getListeVertices()
+            + Map<String, Set<String>> getListeArcs()
+        }
+
+        class Arc {
+            - String nom_rue
+            - int nb_habitations
+            - int longueur
+            - boolean sensUnique
+            - Sommets[2] sommets
+
+            + Arc(String nom_rue, int nb_habitations, int longueur, boolean sensUnique, Sommets sommet1, Sommets sommet2)
+            + String getNom_rue()
+            + int getNb_habitations()
+            + int getLongueur()
+            + boolean isSensUnique()
+            + Sommets[] getSommets()
+            + Sommets chgtSommet(Sommets s)
+        }
+
+        class Rue {
+            - String nom
+            - LinkedList<Arc> ensemble_rue
+
+            + Rue(String nom, LinkedList<Arc> ensemble_rue)
+            + String getNom()
+            + LinkedList<Arc> getEnsemble_rue()
+        }
+
+        Arc --> Sommets : "associe deux"
+        Rue --> Arc : "contient"
+        Fichier ..> PointDeDepot : "initialise"
+        Fichier ..> PointDeCollecte : "initialise"
+        Fichier ..> Sommets : "initialise"
+        Fichier ..> Arc : "initialise"
+        Fichier ..> Rue : "initialise"
+
+}
+@enduml

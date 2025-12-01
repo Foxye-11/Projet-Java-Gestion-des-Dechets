@@ -1,0 +1,39 @@
+@startuml
+package Global.Architecture.Sommet {
+
+    class Sommets {
+        - Map<String, Arc> arcs_sortants
+        - Map<String, Arc> arcs_entrant
+        - String nom_rue
+
+        + Sommets(Map<String,Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue)
+        + void addArcSortant(Arc arc)
+        + void addArcEntrant(Arc arc)
+        + Map<String,Arc> getArcs_sortants()
+        + Map<String,Arc> getArcs_entrant()
+        + String getNom_rue()
+    }
+
+    class PointDeCollecte {
+        - int nombre_poubelles
+        - ArrayList<Poubelle> poubelles
+
+        + PointDeCollecte(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue, int nombre_poubelles, ArrayList<Poubelle> poubelles)
+        + int getNombre_poubelles()
+        + ArrayList<Poubelle> getPoubelles()
+    }
+
+    class PointDeDepot {
+        - int nombre_poubelles
+        - ArrayList<String> poubelles
+
+        + PointDeDepot(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue, int nombre_poubelles)
+        + void chargerCamion(Camion camion, int quantite_dechets)
+        + void dechargerCamion(Camion camion)
+        + int getNombre_poubelles()
+        + ArrayList<String> getPoubelles()
+    }
+    Sommets <|-- PointDeCollecte
+    Sommets <|-- PointDeDepot
+}
+@enduml

@@ -1,4 +1,4 @@
-package Plannification;
+package Global.Plannification;
 
 public class Plannifier {
     public String[] type_dechet = {"om", "recyclable", "verre", "dechets vert"};

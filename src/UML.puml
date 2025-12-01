@@ -1,7 +1,0 @@
-@startuml
-!include Architecture/Sommet/sommet.puml
-!include Entite/entite.puml
-!include Exploration/exploration.puml
-!include Graphique/graphique.puml
-!include Plannification/plannification.puml
-@enduml

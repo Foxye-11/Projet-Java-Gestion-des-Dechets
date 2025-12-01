@@ -1,4 +1,4 @@
-package Architecture;
+package Global.Architecture;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

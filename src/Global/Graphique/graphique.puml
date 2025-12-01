@@ -1,0 +1,34 @@
+@startuml
+package Global.Graphique {
+
+    class GraphismeControle {
+        - Map<String, Set<Arc>> adjacencyList
+        - Map<String, Point> positions
+        + GraphismeControle(Map<String, Set<Arc>> adjacencyList)
+        - void genererPositionsCirculaires()
+        + void paintComponent(Graphics g)
+        - void drawArrow(Graphics2D g2, Point p1, Point p2, int arrowSize)
+    }
+
+    class GraphiqueFenetre {
+        + GraphiqueFenetre(Map<String, Set<GraphismeControle.Arc>> adjacency)
+    }
+
+    interface Swing {
+        - JFrame
+        - JPanel
+        + setTitle(String)
+        + setDefaultCloseOperation(int)
+        + add(Component)
+        + pack()
+        + setLocationRelativeTo(Component)
+        + setVisible(boolean)
+        + setPreferredSize(Dimension)
+        + paintComponent(Graphics)
+    }
+    Swing <|.. GraphiqueFenetre
+    Swing <|.. GraphismeControle
+
+    GraphiqueFenetre --> GraphismeControle : "instancie"
+}
+@enduml

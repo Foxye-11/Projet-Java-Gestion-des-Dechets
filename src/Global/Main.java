@@ -1,6 +1,8 @@
-import Architecture.Fichier;
-import Graphique.GraphiqueFenetre;
-import Graphique.GraphismeControle;
+package Global;
+
+import Global.Architecture.Fichier;
+import Global.Graphique.GraphiqueFenetre;
+import Global.Graphique.GraphismeControle;
 
 import java.io.IOException;
 import java.util.*;

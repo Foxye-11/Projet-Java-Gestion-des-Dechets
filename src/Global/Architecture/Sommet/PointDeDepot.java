@@ -1,7 +1,7 @@
-package Architecture.Sommet;
+package Global.Architecture.Sommet;
 
-import Architecture.Arc;
-import Entite.Camion;
+import Global.Architecture.Arc;
+import Global.Entite.Camion;
 
 import java.util.ArrayList;
 import java.util.Map;
