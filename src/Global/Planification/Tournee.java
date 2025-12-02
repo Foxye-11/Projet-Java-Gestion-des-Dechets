@@ -1,4 +1,4 @@
-package Global.Plannification;
+package Global.Planification;
 
 public class Tournee {
     public int[] date = new int[3];

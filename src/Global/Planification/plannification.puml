@@ -1,5 +1,5 @@
 @startuml
-package Global.Plannification {
+package Global.Planification {
 
     class Calendrier {
         - Tournee[][][] planning
@@ -9,7 +9,7 @@ package Global.Plannification {
         + void affichage_planning()
     }
 
-    class Plannifier {
+    class Planifier {
         - String[] type_dechet
         - int[] NbJourParMois
         - boolean[] type_frequence

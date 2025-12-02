@@ -1,13 +1,13 @@
-package Global.Plannification;
+package Global.Planification;
 
-public class Plannifier {
+public class Planifier {
     public String[] type_dechet = {"om", "recyclable", "verre", "dechets vert"};
     public int[] NbJourParMois = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     public boolean[] type_frequence = new boolean[4];
     public int[] frequence_passage = new int[4];
     private Calendrier calendrier = new Calendrier();
 
-    public Plannifier(boolean[] type_frequence, int[]frequence_passage){
+    public Planifier(boolean[] type_frequence, int[]frequence_passage){
         this.type_frequence = type_frequence;
         this.frequence_passage = frequence_passage;
     }
