@@ -296,7 +296,7 @@ for vname in vertices.keys():
     if vname in vertices_streets:
         vertices[vname]['streets'] = sorted(list(vertices_streets[vname]))
     else:
-        # si sommet isolé (rare), garder la liste précédente
+        # si sommets isolé (rare), garder la liste précédente
         vertices[vname]['streets'] = vertices[vname].get('streets', [])
 
 collect_points = [

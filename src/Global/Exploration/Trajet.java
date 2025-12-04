@@ -1,24 +1,24 @@
 package Global.Exploration;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Sommet.Sommet;
+import Global.Architecture.Sommet.Sommets;
 
 import java.util.List;
 
 public class Trajet {
-    private Sommet depart;
-    private Sommet destination;
+    private Sommets depart;
+    private Sommets destination;
     private List<Arc> chemin;
 
-    public Trajet(Sommet depart, Sommet destination, List<Arc> chemin) {
+    public Trajet(Sommets depart, Sommets destination, List<Arc> chemin) {
         this.depart = depart;
         this.destination = destination;
         this.chemin = chemin;
     }
 
     // getter
-    public Sommet getDepart() {return depart;}
-    public Sommet getDestination() {return destination;}
+    public Sommets getDepart() {return depart;}
+    public Sommets getDestination() {return destination;}
     public List<Arc> getChemin() {return chemin;}
 
 

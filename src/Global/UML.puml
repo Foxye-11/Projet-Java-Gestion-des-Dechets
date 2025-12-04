@@ -4,7 +4,7 @@ package Global {
     !include Entite/entite.puml
     !include Architecture/architecture.puml
     !include Exploration/exploration.puml
-    !include Plannification/plannification.puml
+    !include Planification/plannification.puml
     !include Graphique/graphique.puml
 
     Camion --> Rue

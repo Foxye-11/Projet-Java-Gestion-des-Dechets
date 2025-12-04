@@ -2,7 +2,7 @@ package Global.Architecture;
 
 import Global.Architecture.Sommet.PointDeCollecte;
 import Global.Architecture.Sommet.PointDeDepot;
-import Global.Architecture.Sommet.Sommet;
+import Global.Architecture.Sommet.Sommets;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +16,7 @@ public class Fichier {
     public Map<String, Rue> listeRues = new LinkedHashMap<>();
     public Map<String, PointDeCollecte> listePointsCollectes = new LinkedHashMap<>();
     public Map<String, PointDeDepot> listePointsDepots = new LinkedHashMap<>();
-    public Map<String, Sommet> listeSommets = new LinkedHashMap<>();
+    public Map<String, Sommets> listeSommets = new LinkedHashMap<>();
     public Map<String, Arc> listeArcs = new LinkedHashMap<>();
 
     public Fichier(String nomFichier) throws IOException {
@@ -102,8 +102,8 @@ public class Fichier {
                 for (int i = 2; i < parts.length; i++)
                     rues.add(parts[i].trim());
 
-                Sommet newSommet = new Sommet(ArcsSortants, arcsEntrant, rues, sommet);
-                listeSommets.putIfAbsent(sommet, newSommet);
+                Sommets newSommets = new Sommets(ArcsSortants, arcsEntrant, rues, sommet);
+                listeSommets.putIfAbsent(sommet, newSommets);
                 continue;
             }
 
@@ -114,8 +114,8 @@ public class Fichier {
 
                 String nomArc = parts[0].trim();
                 String[] sommet = nomArc.split("-");
-                Sommet sommet1 = listeSommets.get(sommet[0]);
-                Sommet sommet2 = listeSommets.get(sommet[1]);
+                Sommets sommets1 = listeSommets.get(sommet[0]);
+                Sommets sommets2 = listeSommets.get(sommet[1]);
 
                 String nomRue = parts[1].trim();
                 int nbMaisons = Integer.parseInt(parts[2].trim());
@@ -124,7 +124,7 @@ public class Fichier {
                 String cooY = parts[5].trim();
                 int sens =  Integer.parseInt(parts[6].trim());
 
-                Arc newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommet1, sommet2);
+                Arc newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets1, sommets2);
                 listeArcs.put(nomArc, newArc);
 
                 Rue rue = listeRues.get(nomRue);
@@ -132,18 +132,18 @@ public class Fichier {
                 else rue.addArc(newArc);
 
                 if (sens == 0){ // sens direct
-                    sommet1.addArcSortant(newArc);
-                    sommet2.addArcEntrant(newArc);
+                    sommets1.addArcSortant(newArc);
+                    sommets2.addArcEntrant(newArc);
                 }
                 else if (sens == 1) { // sens opposé
-                    sommet1.addArcEntrant(newArc);
-                    sommet2.addArcSortant(newArc);
+                    sommets1.addArcEntrant(newArc);
+                    sommets2.addArcSortant(newArc);
                 }
                 else if (sens == 2) { // bidirectionnel
-                    sommet1.addArcEntrant(newArc);
-                    sommet1.addArcSortant(newArc);
-                    sommet2.addArcEntrant(newArc);
-                    sommet2.addArcSortant(newArc);
+                    sommets1.addArcEntrant(newArc);
+                    sommets1.addArcSortant(newArc);
+                    sommets2.addArcEntrant(newArc);
+                    sommets2.addArcSortant(newArc);
                 }
                 continue;
             }
@@ -190,21 +190,21 @@ public class Fichier {
         }
 
         System.out.println("\n=== LISTE DES SOMMETS ===");
-        for (Sommet sommet : listeSommets.values()) {
-            System.out.println("Sommet: " + sommet.getNom() +
-                    ", Rues reliées: " + sommet.getRues());
+        for (Sommets sommets : listeSommets.values()) {
+            System.out.println("Sommet: " + sommets.getNom() +
+                    ", Rues reliées: " + sommets.getRues());
         }
 
         System.out.println("\n=== LISTE DES ARCS ===");
         for (Arc arc : listeArcs.values()) {
-            Sommet sommet1 = arc.getSommet1();
-            Sommet sommet2 = arc.getSommet2();
+            Sommets sommets1 = arc.getSommet1();
+            Sommets sommets2 = arc.getSommet2();
             System.out.println("Arc: " + arc.getNomRue() +
                     ", Longueur: " + arc.getLongueur() +
                     ", Maisons: " + arc.getNbMaisons() +
                     ", Sens: " + arc.getSens() +
-                    ", De: " + sommet1.getNom() +
-                    " -> " + sommet2.getNom());
+                    ", De: " + sommets1.getNom() +
+                    " -> " + sommets2.getNom());
         }
 
         System.out.println("\n=== POINTS DE COLLECTE ===");
@@ -221,7 +221,7 @@ public class Fichier {
     }
     // getter
     public Map<String, Rue> getListeRues() { return listeRues; }
-    public Map<String, Sommet> getListeSommets() { return listeSommets; }
+    public Map<String, Sommets> getListeSommets() { return listeSommets; }
     public Map<String, Arc> getListeArcs() { return listeArcs; }
     public Map<String, PointDeCollecte> getListePointsCollectes() { return listePointsCollectes; }
     public Map<String, PointDeDepot> getListePointsDepots() { return listePointsDepots; }
