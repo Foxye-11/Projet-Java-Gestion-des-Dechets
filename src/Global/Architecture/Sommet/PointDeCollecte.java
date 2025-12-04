@@ -1,11 +1,9 @@
 package Global.Architecture.Sommet;
 
-import Global.Architecture.Arc;
 import Global.Entite.Poubelle;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+
 
 public class PointDeCollecte {
     private String rue;

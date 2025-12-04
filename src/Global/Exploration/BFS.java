@@ -1,15 +1,15 @@
 package Global.Exploration;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Sommet.Sommet;
+import Global.Architecture.Sommet.Sommets;
 
 import java.util.*;
 
 public class BFS {
 
-    public static List<Arc> bfs(String nomDepart, String nomDestination, Map<String, Sommet> sommets, Map<String, Arc> arcs) {
-        Sommet depart = sommets.get(nomDepart);
-        Sommet destination = sommets.get(nomDestination);
+    public static List<Arc> bfs(String nomDepart, String nomDestination, Map<String, Sommets> sommets, Map<String, Arc> arcs) {
+        Sommets depart = sommets.get(nomDepart);
+        Sommets destination = sommets.get(nomDestination);
 
         // Vérification des sommets
         if (depart == null || destination == null) {
@@ -33,7 +33,7 @@ public class BFS {
         while (!file.isEmpty()) {
             // Recupération de la station d'arrivé de l'arc
             Arc arc = file.poll();
-            Sommet arrivee = arc.getSommet2();
+            Sommets arrivee = arc.getSommet2();
 
             // Marquage des stations non découverte
             if (!decouvertParArc.containsKey(arrivee.getNom())) {
@@ -62,7 +62,7 @@ public class BFS {
         }
 
         List<Arc> chemin = new LinkedList<>();
-        Sommet courant = destination;
+        Sommets courant = destination;
 
         while (!courant.equals(depart)) {
             Arc arc = decouvertParArc.get(courant.getNom());
@@ -74,26 +74,26 @@ public class BFS {
     }
 
 
-    public static List<Sommet> bfsAll(
+    public static List<Sommets> bfsAll(
             String nomDepart,
-            Map<String, Sommet> sommets) {
+            Map<String, Sommets> sommets) {
 
-        Sommet depart = sommets.get(nomDepart);
+        Sommets depart = sommets.get(nomDepart);
         if (depart == null) throw new IllegalArgumentException("Sommet inconnu.");
 
-        List<Sommet> ordreVisite = new ArrayList<>();
+        List<Sommets> ordreVisite = new ArrayList<>();
         Set<String> visites = new HashSet<>();
-        Queue<Sommet> file = new LinkedList<>();
+        Queue<Sommets> file = new LinkedList<>();
 
         visites.add(depart.getNom());
         file.add(depart);
 
         while (!file.isEmpty()) {
-            Sommet courant = file.poll();
+            Sommets courant = file.poll();
             ordreVisite.add(courant);
 
             for (Arc arc : courant.getArcsSortants()) {
-                Sommet voisin = arc.getSommet2();
+                Sommets voisin = arc.getSommet2();
                 if (!visites.contains(voisin.getNom())) {
                     visites.add(voisin.getNom());
                     file.add(voisin);
@@ -107,11 +107,11 @@ public class BFS {
     public static List<Arc> dfs(
             String nomDepart,
             String nomDestination,
-            Map<String, Sommet> sommets,
+            Map<String, Sommets> sommets,
             Map<String, Arc> arcs) {
 
-        Sommet depart = sommets.get(nomDepart);
-        Sommet destination = sommets.get(nomDestination);
+        Sommets depart = sommets.get(nomDepart);
+        Sommets destination = sommets.get(nomDestination);
 
         if (depart == null || destination == null) {
             throw new IllegalArgumentException("Sommet inconnu.");
@@ -133,7 +133,7 @@ public class BFS {
         // Parcours DFS
         while (!pile.isEmpty()) {
             Arc arc = pile.pop();
-            Sommet arrivee = arc.getSommet2();
+            Sommets arrivee = arc.getSommet2();
 
             if (!decouvertParArc.containsKey(arrivee.getNom())) {
                 decouvertParArc.put(arrivee.getNom(), arc);
@@ -154,7 +154,7 @@ public class BFS {
         }
 
         List<Arc> chemin = new LinkedList<>();
-        Sommet courant = destination;
+        Sommets courant = destination;
 
         while (!courant.equals(depart)) {
             Arc arc = decouvertParArc.get(courant.getNom());
@@ -166,21 +166,21 @@ public class BFS {
     }
 
 
-    public static List<Sommet> dfsAll(
+    public static List<Sommets> dfsAll(
             String nomDepart,
-            Map<String, Sommet> sommets) {
+            Map<String, Sommets> sommets) {
 
-        Sommet depart = sommets.get(nomDepart);
+        Sommets depart = sommets.get(nomDepart);
         if (depart == null) throw new IllegalArgumentException("Sommet inconnu.");
 
-        List<Sommet> ordreVisite = new ArrayList<>();
+        List<Sommets> ordreVisite = new ArrayList<>();
         Set<String> visites = new HashSet<>();
-        Stack<Sommet> pile = new Stack<>();
+        Stack<Sommets> pile = new Stack<>();
 
         pile.push(depart);
 
         while (!pile.isEmpty()) {
-            Sommet courant = pile.pop();
+            Sommets courant = pile.pop();
             if (!visites.contains(courant.getNom())) {
                 visites.add(courant.getNom());
                 ordreVisite.add(courant);
@@ -197,11 +197,11 @@ public class BFS {
     public static List<Arc> dijkstra(
             String nomDepart,
             String nomDestination,
-            Map<String, Sommet> sommets,
+            Map<String, Sommets> sommets,
             Map<String, Arc> arcs) {
 
-        Sommet depart = sommets.get(nomDepart);
-        Sommet destination = sommets.get(nomDestination);
+        Sommets depart = sommets.get(nomDepart);
+        Sommets destination = sommets.get(nomDestination);
 
         if (depart == null || destination == null) {
             throw new IllegalArgumentException("Sommet inconnu.");
@@ -211,26 +211,26 @@ public class BFS {
         }
 
         // Distances et prédécesseurs
-        Map<Sommet, Double> distance = new HashMap<>();
-        Map<Sommet, Arc> precedent = new HashMap<>();
+        Map<Sommets, Double> distance = new HashMap<>();
+        Map<Sommets, Arc> precedent = new HashMap<>();
 
-        for (Sommet s : sommets.values()) {
+        for (Sommets s : sommets.values()) {
             distance.put(s, Double.POSITIVE_INFINITY);
         }
         distance.put(depart, 0.0);
 
         // File de priorité (min-heap)
-        PriorityQueue<Sommet> file = new PriorityQueue<>(Comparator.comparingDouble(distance::get));
+        PriorityQueue<Sommets> file = new PriorityQueue<>(Comparator.comparingDouble(distance::get));
         file.add(depart);
 
         // Algorithme principal
         while (!file.isEmpty()) {
-            Sommet courant = file.poll();
+            Sommets courant = file.poll();
 
             if (courant.equals(destination)) break; // plus court chemin trouvé
 
             for (Arc arc : courant.getArcsSortants()) {
-                Sommet voisin = arc.getSommet2();
+                Sommets voisin = arc.getSommet2();
                 double coutArc = arc.getLongueur(); // chois du critère (longueur, nbMaisons, etc.)
                 double nouvelleDistance = distance.get(courant) + coutArc;
 
@@ -250,7 +250,7 @@ public class BFS {
         }
 
         List<Arc> chemin = new LinkedList<>();
-        Sommet courant = destination;
+        Sommets courant = destination;
 
         while (!courant.equals(depart)) {
             Arc arc = precedent.get(courant);
@@ -262,27 +262,27 @@ public class BFS {
     }
 
 
-    public static Map<Sommet, Double> dijkstraAll(
+    public static Map<Sommets, Double> dijkstraAll(
             String nomDepart,
-            Map<String, Sommet> sommets) {
+            Map<String, Sommets> sommets) {
 
-        Sommet depart = sommets.get(nomDepart);
+        Sommets depart = sommets.get(nomDepart);
         if (depart == null) throw new IllegalArgumentException("Sommet inconnu.");
 
-        Map<Sommet, Double> distance = new HashMap<>();
-        for (Sommet s : sommets.values()) {
+        Map<Sommets, Double> distance = new HashMap<>();
+        for (Sommets s : sommets.values()) {
             distance.put(s, Double.POSITIVE_INFINITY);
         }
         distance.put(depart, 0.0);
 
-        PriorityQueue<Sommet> file = new PriorityQueue<>(Comparator.comparingDouble(distance::get));
+        PriorityQueue<Sommets> file = new PriorityQueue<>(Comparator.comparingDouble(distance::get));
         file.add(depart);
 
         while (!file.isEmpty()) {
-            Sommet courant = file.poll();
+            Sommets courant = file.poll();
 
             for (Arc arc : courant.getArcsSortants()) {
-                Sommet voisin = arc.getSommet2();
+                Sommets voisin = arc.getSommet2();
                 double coutArc = arc.getLongueur(); // ou autre critère
                 double nouvelleDistance = distance.get(courant) + coutArc;
 

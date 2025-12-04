@@ -3,16 +3,15 @@ package Global.Architecture.Sommet;
 import Global.Architecture.Arc;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-public class Sommet {
+public class Sommets {
     private List<Arc> arcsSortants;
     private List<Arc> arcsEntrant;
     private Set<String> rues;
     private String nom;
 
-    public Sommet(List<Arc> arcsSortants, List<Arc> arcsEntrant, Set<String> rues, String nom) {
+    public Sommets(List<Arc> arcsSortants, List<Arc> arcsEntrant, Set<String> rues, String nom) {
         this.arcsSortants = arcsSortants;
         this.arcsEntrant = arcsEntrant;
         this.rues = rues;
