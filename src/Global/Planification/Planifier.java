@@ -1,5 +1,9 @@
 package Global.Planification;
 
+import Global.Architecture.Quartier;
+
+import java.util.LinkedList;
+
 public class Planifier {
     public String[] type_dechet = {"om", "recyclable", "verre", "dechets vert"};
     public int[] NbJourParMois = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -12,7 +16,7 @@ public class Planifier {
         this.frequence_passage = frequence_passage;
     }
 
-    public void creerPlanning(){
+    public void creerPlanning(LinkedList<Quartier> quartiers){
         for(int i=0; i<type_dechet.length; i++){
             if(frequence_passage[i] <= 0) continue; // pas de tournée
             for (int mois = 0; mois < 12; mois++) {
@@ -21,7 +25,9 @@ public class Planifier {
                     int interval = 7 / frequence_passage[i];
                     for (int semaine = 0; semaine < 5; semaine++) {
                         for (int jour = 0; jour < 6; jour += interval) {
-                            addTournee(mois, semaine, jour, type_dechet[i], "Particulier");
+                            for (Quartier q : quartiers){
+                                addTournee(mois, semaine, jour, type_dechet[i], "Particulier",q);
+                            }
                         }
                     }
                 }
@@ -30,16 +36,18 @@ public class Planifier {
                     for (int jourDuMois = 0; jourDuMois < NbJourParMois[mois]; jourDuMois += interval) {
                         int semaine = jourDuMois / 7;
                         int jour = jourDuMois % 7;
-                        addTournee(mois, semaine, jour, type_dechet[i], "Particulier");
+                        for (Quartier q : quartiers){
+                            addTournee(mois, semaine, jour, type_dechet[i], "Particulier",q);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void addTournee (int m, int s, int j, String type_dechet, String type_tournee){
+    public void addTournee (int m, int s, int j, String type_dechet, String type_tournee, Quartier q){
         // Décaler d’un jour si déjà occupé
-        while (calendrier.getObject(m, s, j) != null){
+        while (calendrier.getObject(m, s, j) != null || !q.estLibre(m, s, j)){
             j++;
             if (j > 5){
                 j = 0;
@@ -56,5 +64,6 @@ public class Planifier {
         }
         Tournee t = new Tournee(m, s, j, type_dechet, type_tournee);
         calendrier.addObject(m, s, j, t);
+        q.occuper(m, s, j);
     }
 }
