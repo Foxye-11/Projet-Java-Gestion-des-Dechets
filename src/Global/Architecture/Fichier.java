@@ -46,7 +46,6 @@ public class Fichier {
 
             String upper = line.toUpperCase();
 
-            // trouve la catégorie dans laquelle on est
             if (upper.startsWith(motCle1)) {
                 lectureRues = true;
                 lectureSommets = lectureArcs = lectureCollecte = lectureDepot = false;
@@ -74,7 +73,6 @@ public class Fichier {
             }
 
 
-            // Lit et creer les objets selon la categorie dans laquelle on est
             if (lectureRues) {
                 String[] parts = line.split(";");
                 if (parts.length < 3) continue;
@@ -128,7 +126,7 @@ public class Fichier {
                 listeArcs.put(nomArc, newArc);
 
                 Rue rue = listeRues.get(nomRue);
-                if (rue == null) System.err.println("⚠️ Rue introuvable : '" + nomRue + "' dans l'arc '" + nomArc + "'");
+                if (rue == null) System.err.println("Rue introuvable : '" + nomRue + "' dans l'arc '" + nomArc + "'");
                 else rue.addArc(newArc);
 
                 if (sens == 0){ // sens direct
@@ -219,28 +217,10 @@ public class Fichier {
             System.out.println("Point de Dépôt: " + pd.getNom());
         }
     }
-    // getter
     public Map<String, Rue> getListeRues() { return listeRues; }
     public Map<String, Sommets> getListeSommets() { return listeSommets; }
     public Map<String, Arc> getListeArcs() { return listeArcs; }
     public Map<String, PointDeCollecte> getListePointsCollectes() { return listePointsCollectes; }
     public Map<String, PointDeDepot> getListePointsDepots() { return listePointsDepots; }
 
-
-    public static void main(String[] args) {
-        try {
-            // Remplace "data.txt" par le chemin réel de ton fichier
-            String cheminFichier = "MontBrunLesBainsv2.txt";
-
-            // Création de l'objet Fichier (chargement automatique via le constructeur)
-            Fichier fichier = new Fichier(cheminFichier);
-
-            // Appel de la méthode d'affichage
-            fichier.afficherDonnees();
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement du fichier : " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }
