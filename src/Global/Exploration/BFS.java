@@ -1,6 +1,7 @@
 package Global.Exploration;
 
 import Global.Architecture.Arc;
+import Global.Architecture.Quartier;
 import Global.Architecture.Sommet.Sommets;
 
 import java.util.*;
@@ -81,7 +82,7 @@ public class BFS {
         if (depart == null || destination == null) {
             throw new IllegalArgumentException("Sommet inconnu.");
         }
-        if (depart.equals(destination.getSommet1()) || depart.equals(destination.getSommet2())) {
+        if (depart.equals(destination.getSommet1()) ) {
             return new ArrayList<>(); // chemin vide
         }
 
@@ -149,7 +150,7 @@ public class BFS {
             throw new IllegalArgumentException("Sommet inconnu.");
         }
         for (int i = 0; i < destination.length; i++) {
-            if (depart.equals(destination[i].getSommet1()) || depart.equals(destination[i].getSommet2())) {
+            if (depart.equals(destination[i].getSommet1()) ) {
                 return new ArrayList<>(); // chemin vide
             }
         }
@@ -402,21 +403,24 @@ public class BFS {
         return chemin;
     }
 
-    public static List<Arc> dijkstraQuartier(
+    public static List<Arc> dijkstraMultiArc(
             String nomDepart,
-            String nomDestination,
+            Arc [] destination,
             Map<String, Sommets> sommets,
             Map<String, Arc> arcs) {
 
         Sommets depart = sommets.get(nomDepart);
-        Sommets destination = sommets.get(nomDestination);
+
 
         if (depart == null || destination == null) {
             throw new IllegalArgumentException("Sommet inconnu.");
         }
-        if (depart.equals(destination)) {
-            return new ArrayList<>(); // chemin vide
+        for (int j = 0; j < destination.length; j++) {
+            if (depart.equals(destination[j].getSommet1())) {
+                return new ArrayList<>(); // chemin vide
+            }
         }
+
 
         // Distances et prédécesseurs
         Map<Sommets, Double> distance = new HashMap<>();
@@ -431,11 +435,18 @@ public class BFS {
         PriorityQueue<Sommets> file = new PriorityQueue<>(Comparator.comparingDouble(distance::get));
         file.add(depart);
 
+        Arc arrive = null;
         // Algorithme principal
         while (!file.isEmpty()) {
             Sommets courant = file.poll();
 
-            if (courant.equals(destination)) break; // plus court chemin trouvé
+            for (int i = 0; i < destination.length; i++) {
+                if (courant.equals(destination[i].getSommet2())){
+                    arrive = destination[i];
+                    break; // plus court chemin trouvé
+                }
+            }
+
 
             for (Arc arc : courant.getArcsSortants()) {
                 Sommets voisin = arc.getSommet2();
@@ -452,13 +463,13 @@ public class BFS {
         }
 
         // Reconstruction du chemin
-        if (!precedent.containsKey(destination)) {
+        if (!precedent.containsKey(arrive.getSommet2())) {
             System.out.println("Aucun itinéraire trouvé.");
             return null;
         }
 
         List<Arc> chemin = new LinkedList<>();
-        Sommets courant = destination;
+        Sommets courant = arrive.getSommet2();
 
         while (!courant.equals(depart)) {
             Arc arc = precedent.get(courant);
@@ -503,6 +514,67 @@ public class BFS {
         }
         return distance; // distances minimales vers tous les sommets
     }
+
+    //Algorithme de Hierholzer
+    public Sommets getNext(Sommets depart, Arc arc) {
+        if (arc.getSommet1().equals(depart))
+            return arc.getSommet2();
+        return null;  // L’arc ne part pas de ce sommet
+    }
+
+    public List<Arc> hierholzerArcs(String nomDepart, Map<String, Sommets> mapSommet) {
+
+        //Initialisation de l'origine
+        Sommets start = mapSommet.get(nomDepart);
+
+        if (start == null) return Collections.emptyList();
+
+        Stack<Sommets> stack = new Stack<>();
+        Stack<Arc> stackArcs = new Stack<>();
+        List<Arc> resultat = new ArrayList<>();
+        Set<Arc> utilises = new HashSet<>();
+
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+
+            Sommets u = stack.peek();
+
+            // Cherche un arc sortant non utilisé
+            Arc arcDispo = null;
+            for (Arc arc : u.getArcsSortants()) {
+                if (!utilises.contains(arc)) {
+                    arcDispo = arc;
+                    break;
+                }
+            }
+
+            if (arcDispo != null) {
+
+                utilises.add(arcDispo);
+                Sommets v = getNext(u, arcDispo);
+
+                if (v == null) {
+                    throw new IllegalStateException("Arc " + arcDispo.getNomRue() + " ne part pas du sommet " + u.getNom());
+                }
+
+                stack.push(v);
+                stackArcs.push(arcDispo);
+            }
+            else {
+                // Aucun arc sortant restant donc on revient sur nos pas (sur les arcs déjà explorés)
+                stack.pop();
+                if (!stackArcs.isEmpty()) {
+                    resultat.add(stackArcs.pop());
+                }
+            }
+        }
+
+        Collections.reverse(resultat);
+
+        return resultat;
+    }
+
 
 
     public static List<Arc> kruskal(List<Sommets> sommets, List<Arc> aretes) {

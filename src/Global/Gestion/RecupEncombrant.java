@@ -29,7 +29,7 @@ public class RecupEncombrant {
         //Succession de BFS
         while (!encombrant.isEmpty()) {
             //BFS
-            List<Arc> chemin = BFS.bfsMultiArcs(origineBFS, localisations ,mapSommets, mapArcs);
+            List<Arc> chemin = BFS.dijkstraMultiArc(origineBFS, localisations ,mapSommets, mapArcs);
             //Actualisation de la position pour pouvoir enchainer avec un autre BFS
             for (int i = 0; i < encombrant.size(); i++) {
                 if (chemin.contains(encombrant.get(i).getLocalisation())) {
