@@ -81,7 +81,7 @@ public class BFS {
         if (depart == null || destination == null) {
             throw new IllegalArgumentException("Sommet inconnu.");
         }
-        if (depart.equals(destination)) {
+        if (depart.equals(destination.getSommet1()) || depart.equals(destination.getSommet2())) {
             return new ArrayList<>(); // chemin vide
         }
 
@@ -105,7 +105,7 @@ public class BFS {
             if (!decouvertParArc.containsKey(arrivee.getNom())) {
                 decouvertParArc.put(arrivee.getNom(), arc);
                 // Si destination trouvée, fin
-                if (arrivee.equals(destination)) break;
+                if (arc.equals(destination)) break;
                 // Ajout à la file d'attente les nouvelles stations découvertes
                 for (Arc suivant : arrivee.getArcsSortants()) {
                     // BFS classique → file FIFO
@@ -122,7 +122,7 @@ public class BFS {
         }
 
         // Reconstruction du chemin
-        if (!decouvertParArc.containsKey(destination.getSommet1())) {
+        if (!decouvertParArc.containsKey(destination.getSommet1().getNom())|| !decouvertParArc.containsKey(destination.getSommet2().getNom())) {
             System.out.println("Aucun itinéraire trouvé.");
             return null;
         }
@@ -130,10 +130,85 @@ public class BFS {
         List<Arc> chemin = new LinkedList<>();
         Arc courant = destination;
 
-        while (!courant.equals(depart)) {
-            Arc arc = decouvertParArc.get(courant.getSommet1());
+        while (!courant.equals(depart.getArcsEntrant())) {
+            Arc arc = decouvertParArc.get(courant.getSommet1().getNom());
             chemin.add(0, arc);
-            courant = arc; // sommet de départ de l’arc
+            courant = arc; // arc de départ de l’arc
+        }
+
+        return chemin;
+    }
+
+    public static List<Arc> bfsMultiArcs(String nomDepart, Arc[] destination, Map<String, Sommets> sommets, Map<String, Arc> arcs) {
+        Sommets depart = sommets.get(nomDepart);
+
+        Arc destination1 = null;
+
+        // Vérification des sommets
+        if (depart == null || destination == null) {
+            throw new IllegalArgumentException("Sommet inconnu.");
+        }
+        for (int i = 0; i < destination.length; i++) {
+            if (depart.equals(destination[i].getSommet1()) || depart.equals(destination[i].getSommet2())) {
+                return new ArrayList<>(); // chemin vide
+            }
+        }
+
+        // Marquage et file d'attente
+        Map<String, Arc> decouvertParArc = new HashMap<>();
+        Queue<Arc> file = new LinkedList<>();
+
+        // Initialisation au point de départ
+        decouvertParArc.put(depart.getNom(), null);
+        for (Arc arc : depart.getArcsSortants()) {
+            file.add(arc);
+        }
+
+        // Parcours BFS
+        while (!file.isEmpty()) {
+            // Recupération de la station d'arrivé de l'arc
+            Arc arc = file.poll();
+            Sommets arrivee = arc.getSommet2();
+
+            // Marquage des stations non découverte
+            if (!decouvertParArc.containsKey(arrivee.getNom())) {
+                decouvertParArc.put(arrivee.getNom(), arc);
+                // Si destination trouvée, fin
+                for (int  i = 0; i < destination.length; i++) {
+                    if (arc.equals(destination[i])){
+                        destination1 = destination[i];
+                        break;
+                    }
+                }
+
+                // Ajout à la file d'attente les nouvelles stations découvertes
+                for (Arc suivant : arrivee.getArcsSortants()) {
+                    // BFS classique → file FIFO
+                    ///file.add(suivant);
+                    // algorithme BFS 0-1
+                    if (suivant.getNomRue().equals(arc.getNomRue())) {
+                        ((LinkedList<Arc>) file).addFirst(suivant); // même ligne → priorité
+                    } else {
+                        ((LinkedList<Arc>) file).addLast(suivant);  // changement → pénalité
+                    }
+
+                }
+            }
+        }
+
+        // Reconstruction du chemin
+        if (!decouvertParArc.containsKey(destination1.getSommet1().getNom())|| !decouvertParArc.containsKey(destination1.getSommet2().getNom())) {
+            System.out.println("Aucun itinéraire trouvé.");
+            return null;
+        }
+
+        List<Arc> chemin = new LinkedList<>();
+        Arc courant = destination1;
+
+        while (!courant.equals(depart.getArcsEntrant())) {
+            Arc arc = decouvertParArc.get(courant.getSommet1().getNom());
+            chemin.add(0, arc);
+            courant = arc; // arc de départ de l’arc
         }
 
         return chemin;
