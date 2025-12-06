@@ -86,10 +86,10 @@ W-X ; Sentier du Rocher ; 0 ; 75.600 ; 44.178400,5.440600 ; 44.178900,5.441200 ;
 X-U ; Route du Plateau ; 0 ; 195.900 ; 44.178900,5.441200 ; 44.177400,5.442100 ; 2
 
 POINTS DE COLLECTE:
-Mairie ; 6 ; Chemin de la Vilette ; 549936.73
-Camping ; 8 ; Chemin de la Vilette ; 548764.69
-École ; 4 ; Chemin de la Vilette ; 549644.08
-Zone industrielle ; 10 ; Chemin de la Vilette ; 548021.97
+Mairie ; 6 ; Route des Alpes ; 259.73
+Camping ; 8 ; Route du Clôt ; 356.69
+École ; 4 ; Chemin de la Vilette ; 544.08
+Zone industrielle ; 10 ; Basse Rue ; 54.23
 
 DEPOT:
-Dépôt principal ; Chemin de la Vilette ; 549991.15
+Dépôt principal ; La Condamine ; 41.15
