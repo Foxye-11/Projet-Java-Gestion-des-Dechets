@@ -402,6 +402,73 @@ public class BFS {
         return chemin;
     }
 
+    public static List<Arc> dijkstraQuartier(
+            String nomDepart,
+            String nomDestination,
+            Map<String, Sommets> sommets,
+            Map<String, Arc> arcs) {
+
+        Sommets depart = sommets.get(nomDepart);
+        Sommets destination = sommets.get(nomDestination);
+
+        if (depart == null || destination == null) {
+            throw new IllegalArgumentException("Sommet inconnu.");
+        }
+        if (depart.equals(destination)) {
+            return new ArrayList<>(); // chemin vide
+        }
+
+        // Distances et prédécesseurs
+        Map<Sommets, Double> distance = new HashMap<>();
+        Map<Sommets, Arc> precedent = new HashMap<>();
+
+        for (Sommets s : sommets.values()) {
+            distance.put(s, Double.POSITIVE_INFINITY);
+        }
+        distance.put(depart, 0.0);
+
+        // File de priorité (min-heap)
+        PriorityQueue<Sommets> file = new PriorityQueue<>(Comparator.comparingDouble(distance::get));
+        file.add(depart);
+
+        // Algorithme principal
+        while (!file.isEmpty()) {
+            Sommets courant = file.poll();
+
+            if (courant.equals(destination)) break; // plus court chemin trouvé
+
+            for (Arc arc : courant.getArcsSortants()) {
+                Sommets voisin = arc.getSommet2();
+                double coutArc = arc.getLongueur(); // chois du critère (longueur, nbMaisons, etc.)
+                double nouvelleDistance = distance.get(courant) + coutArc;
+
+                if (nouvelleDistance < distance.get(voisin)) {
+                    distance.put(voisin, nouvelleDistance);
+                    precedent.put(voisin, arc);
+                    file.remove(voisin); // mise à jour
+                    file.add(voisin);
+                }
+            }
+        }
+
+        // Reconstruction du chemin
+        if (!precedent.containsKey(destination)) {
+            System.out.println("Aucun itinéraire trouvé.");
+            return null;
+        }
+
+        List<Arc> chemin = new LinkedList<>();
+        Sommets courant = destination;
+
+        while (!courant.equals(depart)) {
+            Arc arc = precedent.get(courant);
+            chemin.add(0, arc);
+            courant = arc.getSommet1();
+        }
+
+        return chemin;
+    }
+
 
     public static Map<Sommets, Double> dijkstraAll(
             String nomDepart,
