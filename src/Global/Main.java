@@ -3,11 +3,39 @@ package Global;
 import Global.Architecture.Fichier;
 import Global.Graphique.GraphiqueFenetre;
 import Global.Graphique.GraphismeControle;
+import Global.Planification.Calendrier;
+import Global.Planification.Planifier;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
+    public static void main(String[] args) {
+
+        // Définition des jours autorisés par type
+        Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
+        joursParType.put("OM", Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
+        joursParType.put("Recyclable", Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY));
+        joursParType.put("Verre", Arrays.asList(DayOfWeek.WEDNESDAY));
+        joursParType.put("Dechets Organiques", Arrays.asList(DayOfWeek.WEDNESDAY));
+
+        // Définition des fréquences
+        Map<String, Double> frequence = new HashMap<>();
+        frequence.put("OM", 2.0);
+        frequence.put("Recyclable", 2.0);
+        frequence.put("Verre", 0.5);
+        frequence.put("Dechets Organiques", 0.3);
+
+        Planifier planifier = new Planifier(joursParType, frequence);
+        Calendrier calendrier = planifier.creerPlanning(2025);
+
+        planifier.addTournee(LocalDate.of(2025, 1, 20), "Dechets Organiques", "collecte", calendrier, null);
+        calendrier.affichage(2025);
+
+        calendrier.setVisible(true);
+    }
     /*
     public static Map<String, Set<GraphismeControle.Arc>> construireGraphe(Fichier fichier) {
 

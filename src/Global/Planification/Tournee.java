@@ -1,15 +1,19 @@
 package Global.Planification;
 
-public class Tournee {
-    public int[] date = new int[3];
-    public String type_dechet;
-    public String type_tournee;
+import java.time.LocalDate;
 
-    public Tournee(int m, int s, int j, String type_dechet, String type_tournee){
-        this.date[0] = m;
-        this.date[1] = s;
-        this.date[2] = j;
+public class Tournee {
+    private LocalDate date;
+    private String type_dechet;
+    private String type_tournee;
+
+    public Tournee(LocalDate date, String type_dechet, String type_tournee) {
+        this.date = date;
         this.type_dechet = type_dechet;
         this.type_tournee = type_tournee;
     }
+
+    public LocalDate getDate() { return date; }
+    public String getType_dechet() { return type_dechet; }
+    public String getType_tournee() { return type_tournee; }
 }
