@@ -31,7 +31,7 @@ public class Main {
         Planifier planifier = new Planifier(joursParType, frequence);
         Calendrier calendrier = planifier.creerPlanning(2025);
 
-        planifier.addTournee(LocalDate.of(2025, 1, 20), "Dechets Organiques", "collecte", calendrier, null);
+        planifier.addTournee(LocalDate.of(2025, 1, 20), "null", "Encombrants", calendrier, null);
         calendrier.affichage(2025);
 
         calendrier.setVisible(true);

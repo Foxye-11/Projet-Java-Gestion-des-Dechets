@@ -56,6 +56,23 @@ public class Calendrier extends JFrame {
                         case "Dechets Organiques": caseJour.setBackground(new Color(139,69,19)); break;
                         default: caseJour.setBackground(Color.WHITE); break;
                     }
+                    // Différenciation selon type de collecte
+                    switch (t.getType_tournee()) {
+                        case "Habitations":
+                            caseJour.setText(caseJour.getText() + " H"); // ajoute un H
+                            caseJour.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+                            break;
+                        case "Points de collecte":
+                            caseJour.setText(caseJour.getText() + " P"); // ajoute un P
+                            caseJour.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+                            break;
+                        case "Encombrants":
+                            caseJour.setBackground(Color.ORANGE); // couleur spéciale
+                            caseJour.setText(caseJour.getText() + " E");
+                            caseJour.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                            break;
+                    }
+
                 } else {
                     caseJour.setBackground(Color.WHITE);
                 }

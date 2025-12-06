@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class Tournee {
     private LocalDate date;
-    private String type_dechet;
-    private String type_tournee;
+    private String type_dechet; // "OM", "Recyclable", "Verre", "Dechets Organiques"
+    private String type_tournee; // "Habitations", "Points de collecte", "Encombrants"
 
     public Tournee(LocalDate date, String type_dechet, String type_tournee) {
         this.date = date;
