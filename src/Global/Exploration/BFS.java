@@ -436,4 +436,42 @@ public class BFS {
         }
         return distance; // distances minimales vers tous les sommets
     }
+
+
+    public static List<Arc> kruskal(List<Sommets> sommets, List<Arc> aretes) {
+        List<Arc> arbre = new ArrayList<>();
+        Map<Sommets, Integer> numCC = new HashMap<>(); // composantes connexes
+        int nb_aretes = 0;
+
+        // Initialiser les numéros de composante connexe
+        int compteur = 0;
+        for (Sommets s : sommets) {
+            numCC.put(s, compteur++);
+        }
+
+        // Trier les aretes par poids croissant
+        aretes.sort(Comparator.comparingDouble(Arc::getLongueur));
+
+        // Tant que nb_aretes < ordre - 1
+        while (nb_aretes < sommets.size() - 1) {
+            Arc a = aretes.remove(0); // prochaine arête
+
+            int cc1 = numCC.get(a.getSommet1()); // num de composante connexe
+            int cc2 = numCC.get(a.getSommet2()); // num de composante connexe
+
+            if (cc1 != cc2) {
+                arbre.add(a);
+
+                // fusion des composantes
+                for (Sommets s : sommets) {
+                    if (numCC.get(s) == cc2) {
+                        numCC.put(s, cc1); // mise à jour vers la composante de s1
+                    }
+                }
+                nb_aretes++;
+            }
+        }
+        return arbre;
+    }
+
 }
