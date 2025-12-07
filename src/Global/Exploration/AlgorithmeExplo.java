@@ -585,6 +585,8 @@ public class AlgorithmeExplo {
     public static Sommets getNext(Sommets depart, Arc arc) {
         if (arc.getSommet1().equals(depart))
             return arc.getSommet2();
+         if  (arc.getSommet2().equals(depart))
+            return arc.getSommet1();
         return null;  // L’arc ne part pas de ce sommet
     }
 
