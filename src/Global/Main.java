@@ -4,13 +4,14 @@ import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
+import Global.Entite.Encombrant;
+import Global.Gestion.RecupEncombrant;
 import Global.Graphique.GraphiqueFenetre;
 import Global.Graphique.GraphismeControle;
 import Global.Planification.Calendrier;
 import Global.Planification.Planifier;
-import Global.Gestion.RecupEncombrant;
 import Global.Gestion.RecupPoubelle;
-import Global.Gestion.RecupPointCollecte;
+import Global.Planification.Tournee;
 
 import java.io.IOException;
 import java.time.*;
@@ -249,6 +250,16 @@ public class Main {
                     System.out.println(q.getNom() + " -> couleur : " + q.getCouleur());
                 }
 
+                // -------------------------------------- Calcul de l'itineraire -------------------------------------- //
+
+                RecupPoubelle rp = new RecupPoubelle();
+                List <Arc> cheminPoubelle = rp.recupPoubelle(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs());
+
+                List <Arc> cheminPoubelle1 = rp.recupPoubelleQuartier(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+                List <Arc> cheminPoubelle2 = rp.recupPoubelleQuartier(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+                List <Arc> cheminPoubelle3 = rp.recupPoubelleQuartier(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+
+
 
                 // -------------------------------------- Creation du planning -------------------------------------- //
                 String[] typesDechets = {"OM", "Recyclable", "Verre", "Dechets Organiques"};
@@ -301,17 +312,17 @@ public class Main {
 
 
                 Planifier p1 = new Planifier(joursParTypeQ1, frequence);
-                Calendrier c1 = p1.creerPlanning(2025);
+                Calendrier c1 = p1.creerPlanning(annee, cheminPoubelle1);
 
                 Planifier p2 = new Planifier(joursParTypeQ2, frequence);
-                Calendrier c2 = p2.creerPlanning(2025);
+                Calendrier c2 = p2.creerPlanning(annee, cheminPoubelle2);
 
                 Planifier p3 = new Planifier(joursParTypeQ3, frequence);
-                Calendrier c3 = p3.creerPlanning(2025);
+                Calendrier c3 = p3.creerPlanning(annee, cheminPoubelle3);
 
 
                 Planifier planifier = new Planifier(joursParType, frequence);
-                Calendrier calendrier = planifier.creerPlanning(2025);
+                Calendrier calendrier = planifier.creerPlanning(annee, cheminPoubelle);
 
 
 
@@ -322,6 +333,10 @@ public class Main {
                 String type = null;
                 String type_tournee = null;
                 int quartier = -1;
+                List<Arc> chemin = null;
+                List<Arc> chemin1 = null;
+                List<Arc> chemin2 = null;
+                List<Arc> chemin3 = null;
 
                 boolean end2 = false;
                 while (!end2) {
@@ -330,6 +345,7 @@ public class Main {
                     System.out.println("2. Ajout d'une collecte auprès de chaque habitation");
                     System.out.println("3. Ajout d'une collecte d'encombrant ");
                     System.out.println("4. Ajout d'une collecte des points de collectes");
+                    System.out.println("5. Obtenir le chemin d'une tournee");
                     System.out.println("0. Quitter");
                     System.out.print("Votre choix : ");
 
@@ -368,6 +384,11 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(type);
                                 date = choisirDate(annee);
                                 type_tournee = "Habitations";
+                                if (quartier==0) chemin = cheminPoubelle;
+                                else if (quartier==1) chemin = cheminPoubelle1;
+                                else if (quartier==2) chemin = cheminPoubelle2;
+                                else if (quartier==3) chemin = cheminPoubelle3;
+
                                 break;
                             case 3:
                                 System.out.println("* --- Ajout d'une collecte d'encombrant --- *");
@@ -375,6 +396,23 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(null);
                                 date = choisirDate(annee);
                                 type_tournee = "Encombrants";
+
+                                System.out.println("Combien y'a t'il d'encombrants ?");
+                                int nombre = sc.nextInt();
+                                List <Encombrant> encombrants = new LinkedList<>();
+                                for (int i = 0; i < nombre; i++) {
+                                    System.out.println("Entrez le numéro de domicile :");
+                                    int domicile = sc.nextInt();
+                                    System.out.println("Entrez la rue du domicile : ");
+                                    String rue_temp = sc.next();
+                                    Rue rue = fichier.getListeRues().get(rue_temp);
+
+                                    Encombrant newEncombrant = new Encombrant(rue, domicile);
+                                    encombrants.add(newEncombrant);
+                                }
+                                RecupEncombrant re = new RecupEncombrant();
+                                chemin = re.recupEncombrant(encombrants, fichier.getListePointsDepots().get(0).getNom(), fichier.getListeSommets(), fichier.getListeArcs());
+
                                 break;
                             case 4:
                                 System.out.println("* --- Ajout d'une collecte des points de collectes --- *");
@@ -383,6 +421,38 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(type);
                                 date = choisirDate(annee);
                                 type_tournee = "Points de collecte";
+                                chemin = cheminPoubelle;
+                                break;
+                            case 5:
+                                try {
+                                    System.out.println("* --- Recuperation d'un chemin d'une tournee via sa date --- *");
+                                    System.out.println("Entrez le mois (1-12) : ");
+                                    int mois = sc.nextInt();
+                                    System.out.println("Entrez le jour : ");
+                                    int jour = sc.nextInt();
+                                    sc.nextLine(); // consommer retour ligne
+
+                                    date = LocalDate.of(annee, mois, jour);
+
+                                    Tournee tournee = calendrier.getTournee(date);
+
+                                    if (tournee != null) {
+                                        List<Arc> arcs = tournee.getListe();
+                                        if (arcs.isEmpty()) {
+                                            System.out.println("Aucun arc dans la tournee du " + date);
+                                        } else {
+                                            System.out.println("Liste des arcs pour la tournee du " + date + " :");
+                                            for (Arc arc : arcs) {
+                                                System.out.println(" - " + arc);
+                                            }
+                                        }
+                                    } else {
+                                        System.out.println("Aucune tournee trouvee pour la date " + date);
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Date invalide !");
+                                    sc.nextLine(); // consommer mauvaise saisie
+                                }
                                 break;
                             case 0:
                                 System.out.println("Fin du programme.");
@@ -394,10 +464,10 @@ public class Main {
 
 
                         if(choix>=2 && choix<=4) {
-                            if (quartier==0) planifier.addTournee(date, type, type_tournee, calendrier, joursAutorises);
-                            else if (quartier==1) p1.addTournee(date, type, type_tournee, c1, joursAutorises);
-                            else if (quartier==2) p2.addTournee(date, type, type_tournee, c2, joursAutorises);
-                            else if (quartier==3) p3.addTournee(date, type, type_tournee, c3, joursAutorises);
+                            if (quartier==0) planifier.addTournee(date, type, type_tournee, calendrier, joursAutorises, chemin);
+                            else if (quartier==1) p1.addTournee(date, type, type_tournee, c1, joursAutorises,  chemin);
+                            else if (quartier==2) p2.addTournee(date, type, type_tournee, c2, joursAutorises, chemin);
+                            else if (quartier==3) p3.addTournee(date, type, type_tournee, c3, joursAutorises, chemin);
                         }
 
                     } else {

@@ -1,4 +1,6 @@
 package Global.Planification;
+import Global.Architecture.Arc;
+
 import java.time.*;
 import java.util.*;
 
@@ -15,7 +17,7 @@ public class Planifier {
 
 
     // Creer le planning general
-    public Calendrier creerPlanning(int annee) {
+    public Calendrier creerPlanning(int annee, List<Arc> arcs) {
         Calendrier calendrier = new Calendrier();
         LocalDate debut = LocalDate.of(annee, 1, 1);
         LocalDate fin = LocalDate.of(annee, 12, 31);
@@ -29,7 +31,7 @@ public class Planifier {
 
             // Ajout de tournee tous les "intervals" sur les jours autorises
             while(date.isBefore(fin)){
-                addTournee(date, type, "habitations", calendrier, joursAutorises);
+                addTournee(date, type, "habitations", calendrier, joursAutorises, arcs);
                 date = date.plusDays(interval);
             }
 
@@ -38,7 +40,7 @@ public class Planifier {
     }
 
     // Ajout d'une tournee individuelle
-    public void addTournee(LocalDate d, String type_dechet, String type_tournee, Calendrier calendrier, List<DayOfWeek> joursAutorises) {
+    public void addTournee(LocalDate d, String type_dechet, String type_tournee, Calendrier calendrier, List<DayOfWeek> joursAutorises, List<Arc> arcs) {
         if (joursAutorises == null) joursAutorises = Arrays.asList(
                 DayOfWeek.MONDAY, DayOfWeek.TUESDAY,DayOfWeek.WEDNESDAY,DayOfWeek.THURSDAY,DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
 
@@ -46,9 +48,11 @@ public class Planifier {
         while (!joursAutorises.contains(d.getDayOfWeek()) || calendrier.getTournee(d) != null) {
             d = d.plusDays(1);
         }
-        // DOuble verification + ajout
+        // Double verification + ajout
         if (joursAutorises.contains(d.getDayOfWeek()) && calendrier.getTournee(d) == null) {
-            calendrier.addTournee(new Tournee(d, type_dechet, type_tournee));
+            Tournee t = new Tournee(d, type_dechet, type_tournee);
+            t.setListe(arcs);
+            calendrier.addTournee(t);
             System.out.println("Tournee de " + type_dechet + " ajoutee à " + d);
         } else {
             System.out.println("Erreur d'ajout de la tournée pour " + type_dechet + " à " + d);
