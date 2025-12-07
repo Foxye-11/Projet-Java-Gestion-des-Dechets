@@ -6,14 +6,32 @@ package Global {
     !include Exploration/exploration.puml
     !include Planification/plannification.puml
     !include Graphique/graphique.puml
-
+    !include Gestion/gestion.puml
     Camion --> Rue
     Camion --> Arc
     Encombrant --> Rue
     Encombrant --> Arc
-    Dijkstra --> Sommets
-    BFS --> Sommets
+    Planifier ..> Calendrier : ""create""
     GraphismeControle --> Arc : "utilise"
+    Exploration <..> Gestion : "utilise"
+    Calendrier --> Tournee : "0..*"
+    Architecture --> Exploration
+    Gestion --> Architecture
+    Exploration ..> Arc
+    Exploration ..> Sommets
+    Exploration ..> Quartier
+    RecupPointCollecte --|> PointDeCollecte
+    RecupPointCollecte --|> Arc
+    RecupPointCollecte --|> Sommets
+    RecupPointCollecte --|> PointDeDepot
+    RecupPoubelle --|> PointDeDepot
+    RecupPoubelle --|> Arc
+    RecupPoubelle --|> Sommets
+    RecupPoubelle --|> Quartier
+    RecupEncombrant --|> Encombrant
+    RecupEncombrant --|> PointDeDepot
+    RecupEncombrant --|> Arc
+    RecupEncombrant --|> Sommets
 }
 
 @enduml

@@ -1,6 +1,27 @@
 @startuml
 package Global.Entite {
 
+    class Poubelle {
+        - String type
+
+        + Poubelle(String type)
+        + String getType()
+    }
+
+    class Encombrant {
+        - Rue rue
+        - Arc localisation
+        - int numero_domicile
+
+        + Encombrant(Arc localisation)
+        + Encombrant(Rue rue, int num_domicile)
+        + Rue getRue()
+        + int getNumero_domicile()
+        + Arc getLocalisation()
+        + Encombrant demande(Rue rue, int num_domicile)
+        + Encombrant demande(Arc localisation)
+    }
+
     class Camion {
         - int id
         - int charge_max
@@ -20,28 +41,6 @@ package Global.Entite {
         + String getDepot()
         + void setArc_actuelle(Arc arc_actuelle)
     }
-
-    class Encombrant {
-        - Rue rue
-        - Arc localisation
-        - int numero_domicile
-
-        + Encombrant(Arc localisation)
-        + Encombrant(Rue rue, int num_domicile)
-        + Rue getRue()
-        + int getNumero_domicile()
-        + Arc getLocalisation()
-        + Encombrant demande(Rue rue, int num_domicile)
-        + Encombrant demande(Arc localisation)
-    }
-
-    class Poubelle {
-        - String type
-
-        + Poubelle(String type)
-        + String getType()
-    }
-
 
 }
 @enduml
