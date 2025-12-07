@@ -4,14 +4,14 @@ import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
-import Global.Exploration.BFS;
+import Global.Exploration.AlgorithmeExplo;
 import Global.Graphique.GraphiqueFenetre;
 import Global.Graphique.GraphismeControle;
 import Global.Planification.Calendrier;
 import Global.Planification.Planifier;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
+import java.time.*;
 import java.util.*;
 
 public class Main {
@@ -46,148 +46,300 @@ public class Main {
         return graph;
     }
 
-    public static void main(String[] args) {
-/*
-        // Définition des jours autorisés par type
-        Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
 
-        // Définition des fréquences
-        Map<String, Double> frequence = new HashMap<>();
-        frequence.put("OM", 2.0);
-        frequence.put("Recyclable", 2.0);
-        frequence.put("Verre", 0.5);
-        frequence.put("Dechets Organiques", 0.3);
-
-        Planifier planifier = new Planifier(joursParType, frequence);
-        Calendrier calendrier = planifier.creerPlanning(2025);
-
-        planifier.addTournee(LocalDate.of(2025, 1, 20), "null", "Encombrants", calendrier, null);
-        calendrier.affichage(2025);
-
-        calendrier.setVisible(true);
+    public static double choisirFrequance(){
+        Scanner sc = new Scanner(System.in);
+        double freq = -1;
+        while (freq < 0) {
+            System.out.print("Entrez la fréquence (>=0, ex: 2 ; 1 ; 0,5 ; 0,3) : ");
+            if (sc.hasNextDouble()) {
+                freq = sc.nextDouble();
+                if (freq < 0) {
+                    System.out.println("Erreur, la fréquence doit être positive !");
+                }
+            } else {
+                System.out.println("Erreur, veuillez entrer un nombre valide !");
+            }
+        }
+        return freq;
     }
 
-    public static Map<String, Set<GraphismeControle.Arc>> construireGraphe(Fichier fichier) {
 
-        Map<String, Set<GraphismeControle.Arc>> graph = new LinkedHashMap<>();
+    public static List<DayOfWeek> choisirJourAutorise(String type){
+        Scanner sc = new Scanner(System.in);
+        List<DayOfWeek> joursAutorises = new ArrayList<>();
+        boolean saisieValide = false;
 
-        // --- Initialisation des sommets ---
-        for (String sommet : fichier.getListeSommets().keySet()) {
-            graph.putIfAbsent(sommet.trim(), new LinkedHashSet<>());
-        }
+        while (!saisieValide) {
+            System.out.println("Entrez les jours autorisés pour " + type + " (séparés par des virgules, ex: MONDAY,THURSDAY) : ");
+            String saisie = sc.nextLine().trim().toUpperCase();
 
-        // --- Ajout des arcs ---
-        for (String arcNom : fichier.getListeArcs().keySet()) {
-            String[] parts = arcNom.split("-"); // "D-E"
-            if (parts.length != 2) continue;
+            String[] jours = saisie.split(",");
+            joursAutorises.clear();
+            saisieValide = true;
 
-            String a = parts[0].trim();
-            String b = parts[1].trim();
-
-            Set<String> info = fichier.getListeArcs().get(arcNom);
-            int type = 2; // par défaut bidirectionnel
-            for (String s : info) {
+            for (String j : jours) {
                 try {
-                    int t = Integer.parseInt(s);
-                    if (t >= 0 && t <= 2) type = t;
-                } catch (NumberFormatException ignored) {}
+                    DayOfWeek jour = DayOfWeek.valueOf(j);
+                    joursAutorises.add(jour);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Erreur, jour invalide : " + j + ". Les jours valides sont MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.");
+                    saisieValide = false;
+                    break;
+                }
             }
-
-            // Ajouter dans les deux sens si bidirectionnel
-            if (type == 0 || type == 2) graph.get(a).add(new GraphismeControle.Arc(b, type));
-            if (type == 1 || type == 2) graph.get(b).add(new GraphismeControle.Arc(a, type));
         }
-
-        return graph;
+        return joursAutorises;
     }
+
+
+    public static String choisirTypeDechet(){
+        Scanner sc = new Scanner(System.in);
+
+        String[] typesDechets = {"OM", "Recyclable", "Verre", "Dechets Organiques"};
+
+        System.out.println("Choisir le type de déchet à collecter :");
+        System.out.println("1. OM");
+        System.out.println("2. Recyclable");
+        System.out.println("3. Verre");
+        System.out.println("4. Déchets Organiques");
+        System.out.println("5. Aucun");
+
+        int choix = -1;
+        boolean saisieValide = false;
+
+        while (!saisieValide) {
+            System.out.print("Votre choix (1-5) : ");
+            if (sc.hasNextInt()) {
+                choix = sc.nextInt();
+
+                if (choix >= 1 && choix <= 5) {
+                    saisieValide = true;
+                } else {
+                    System.out.println("Choix invalide, veuillez entrer un nombre entre 1 et 5.");
+                }
+            } else {
+                System.out.println("Saisie incorrecte, veuillez entrer un nombre.");
+            }
+        }
+        return typesDechets[choix];
+    }
+
+
+    public static LocalDate choisirDate(int annee){
+        Scanner sc = new Scanner(System.in);
+        LocalDate dateChoisie = null;
+        boolean saisieValide = false;
+
+        while (!saisieValide) {
+            try {
+                System.out.println("\nSaisir le mois (1-12) : ");
+                int mois = sc.nextInt();
+
+                System.out.println("Saisir le jour : ");
+                int jour = sc.nextInt();
+
+                // Vérification que la date est valide
+                dateChoisie = LocalDate.of(annee, mois, jour);
+                saisieValide = true; // si pas d'exception, la date est correcte
+            } catch (DateTimeException e) {
+                System.out.println("Date invalide, veuillez entrer un jour et un mois valides pour l'année " + annee + ".");
+            } catch (InputMismatchException e) {
+                System.out.println("Saisie incorrecte, veuillez entrer des nombres.");
+            }
+        }
+        return dateChoisie;
+    }
+
+    public static boolean choisirSortie() {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            String saisie = sc.nextLine().trim().toUpperCase();
+
+            if (saisie.equals("OUI")) {return true;}
+            else if (saisie.equals("NON")) {return false;}
+            else System.out.println("Saisie invalide ! Veuillez entrer OUI ou NON.");
+        }
+    }
+
+
 
     public static void main(String[] args) {
-        try {
-            Fichier fichier = new Fichier("MontBrunlesBainsv2.txt");
+        Scanner sc = new Scanner(System.in);
 
-            Map<String, Set<GraphismeControle.Arc>> graph = construireGraphe(fichier);
+        // ******************************************* Boucle principale ******************************************* //
+        boolean end = false;
+        while (!end) {
 
-            new GraphiqueFenetre(graph);
+            // choix de la ville
+            System.out.println("Bienvenue dans le programme");
+            System.out.println("Veuillez choisir votre ville :"); // "MontBrunlesBainsv2.txt"
+            String fileName = sc.nextLine() + ".txt";
 
-        } catch (IOException e) {
-            System.err.println("Erreur : " + e.getMessage());
+            try {
+                // Chargement de la ville
+                Fichier fichier = new Fichier(fileName);
+                System.out.println("Chargement de la ville effectué");
+                fichier.afficherDonnees();
+
+                Map<String, Set<GraphismeControle.Arc>> graphe = construireGraphe(fichier);
+                new GraphiqueFenetre(graphe);
+
+                // -------------------------------------- Repartition par quartier -------------------------------------- //
+                /*
+                System.out.print("Combien de quartiers voulez-vous créer ? ");
+                int nbQuartiers = sc.nextInt();
+
+                LinkedList<Quartier> quartiers = new LinkedList<>();
+                for (int i = 1; i <= nbQuartiers; i++) {
+                    System.out.print("Nom du quartier " + i + " : ");
+                    String nomQuartier = sc.nextLine();
+                    Quartier q = new Quartier(nomQuartier);
+                    quartiers.add(q);
+                }
+                */
+                Quartier q1 = new Quartier("Centre");
+                Quartier q2 = new Quartier("Nord");
+                Quartier q3 = new Quartier("Sud");
+
+                for (Rue r : fichier.getListeRues().values()) {
+                    if (r.getNom().contains("A")) q1.addRue(r);
+                    else if (r.getNom().contains("B")) q2.addRue(r);
+                    else q3.addRue(r);
+                }
+
+                q1.addVoisin(q2);
+                q1.addVoisin(q3);
+                q2.addVoisin(q3);
+
+                LinkedList<Quartier> quartiers = new LinkedList<>();
+                quartiers.add(q1);
+                quartiers.add(q2);
+                quartiers.add(q3);
+
+                Quartier.colorierQuartiers(quartiers);
+
+                System.out.println("\n--- Couleurs des quartiers ---");
+                for (Quartier q : quartiers) {
+                    System.out.println(q.getNom() + " -> couleur : " + q.getCouleur());
+                }
+
+
+                // -------------------------------------- Creation du planning -------------------------------------- //
+                String[] typesDechets = {"OM", "Recyclable", "Verre", "Dechets Organiques"};
+                Map<String, Double> frequence = new HashMap<>();
+                Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
+
+                System.out.println("\n********************* Creation du planning *********************\n");
+
+                // --- Saisit de l'année --- //
+                int annee = -1;
+                boolean saisieValide = false;
+
+                while (!saisieValide) {
+                    System.out.println("Saisir l'année du calendrier : ");
+
+                    if (sc.hasNextInt()) {
+                        annee = sc.nextInt();
+
+                        if (annee >= 2020 && annee <= 2050) {
+                            saisieValide = true; // sortie de la boucle
+                        } else {
+                            System.out.println(" Année invalide, veuillez entrer une année entre 2020 et 2050.");
+                        }
+                    } else {
+                        System.out.println("Saisie incorrecte, veuillez entrer un nombre.");
+                        sc.next(); // consommer la mauvaise saisie
+                    }
+                }
+
+
+                for (String type : typesDechets) {
+                    System.out.println("\n--- Configuration pour " + type + " ---");
+
+                    // --- Choix de la fréquence --- //
+                    double freq = choisirFrequance();
+                    frequence.put(type, freq);
+
+                    // --- Choix des jours autorisés --- //
+                    List<DayOfWeek> joursAutorises = choisirJourAutorise(type);
+                    joursParType.put(type, joursAutorises);
+                }
+
+                Planifier planifier = new Planifier(joursParType, frequence);
+                Calendrier calendrier = planifier.creerPlanning(2025);
+
+
+                // ******************************************* Choix du Thème ******************************************* //
+
+                List<DayOfWeek> joursAutorises;
+                LocalDate date;
+                String type;
+
+                boolean end2 = false;
+                while (!end2) {
+                    System.out.println("\n=== Menu des choix ===");
+                    System.out.println("1. Afficher la calendrier");
+                    System.out.println("2. Ajout d'une collecte auprès de chaque habitation");
+                    System.out.println("3. Ajout d'une collecte d'encombrant ");
+                    System.out.println("4. Ajout d'une collecte des points de collectes");
+                    System.out.println("0. Quitter");
+                    System.out.print("Votre choix : ");
+
+                    if (sc.hasNextInt()) {
+                        int choix = sc.nextInt();
+
+                        switch (choix) {
+                            case 1:
+                                System.out.println("\n* --- Affichage du calendrier --- *\n");
+                                calendrier.getContentPane().removeAll();
+                                calendrier.affichage(annee);
+                                calendrier.setVisible(true);
+                                break;
+                            case 2:
+                                System.out.println("\n* --- Ajout d'une collecte auprès de chaque habitation --- *\n");
+                                type = choisirTypeDechet();
+                                joursAutorises = choisirJourAutorise(type);
+                                date = choisirDate(annee);
+                                planifier.addTournee(date, type, "collecte", calendrier, joursAutorises);
+                                break;
+                            case 3:
+                                System.out.println("* --- Ajout d'une collecte d'encombrant --- *");
+                                joursAutorises = choisirJourAutorise(null);
+                                date = choisirDate(annee);
+                                planifier.addTournee(date, null, "Encombrants", calendrier, joursAutorises);
+                                break;
+                            case 4:
+                                System.out.println("* --- Ajout d'une collecte des points de collectes --- *");
+                                type = choisirTypeDechet();
+                                joursAutorises = choisirJourAutorise(type);
+                                date = choisirDate(annee);
+                                planifier.addTournee(date, type, "Points de collecte", calendrier, joursAutorises);
+                                break;
+                            case 0:
+                                System.out.println("Fin du programme.");
+                                end2 = true;
+                                break;
+                            default:
+                                System.out.println("Choix invalide, veuillez entrer 0, 1, 2, 3, 4.");
+                        }
+                    } else {
+                        System.out.println("Erreur de saisie, veuillez entrer un nombre !");
+                        sc.next(); // consommer mauvaise saisie
+                    }
+
+                    System.out.println("Voulez-vous quitter la selection des choix ? (OUI / NON)");
+                    end2 = choisirSortie();
+                }
+            }
+            catch (IOException e) {
+                System.err.println("Erreur de chargement du fichier : " + e.getMessage());
+            }
+
+            System.out.println("Voulez-vous quitter le programme ? (OUI / NON)");
+            end = choisirSortie();
         }
-        */
-
-        try{
-            Fichier fichier = new Fichier("MontBrunlesBainsv2.txt");
-            System.out.println("Chargementde la ville effectué");
-            fichier.afficherDonnees();
-
-            Quartier q1 = new Quartier("Centre");
-            Quartier q2 = new Quartier("Nord");
-            Quartier q3 = new Quartier("Sud");
-
-            for (Rue r : fichier.getListeRues().values()){
-                if (r.getNom().contains("A"))q1.addRue(r);
-                else if (r.getNom().contains("B"))q2.addRue(r);
-                else q3.addRue(r);
-            }
-
-            q1.addVoisin(q2);
-            q1.addVoisin(q3);
-            q2.addVoisin(q3);
-
-            LinkedList<Quartier> quartiers = new LinkedList<>();
-            quartiers.add(q1);
-            quartiers.add(q2);
-            quartiers.add(q3);
-
-            Quartier.colorierQuartiers(quartiers);
-
-            System.out.println("\n--- Couleurs des quartiers ---");
-            for (Quartier q : quartiers) {
-                System.out.println(q.getNom() + " -> couleur : " + q.getCouleur());
-            }
-
-            Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
-            joursParType.put("OM", Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
-            joursParType.put("Recyclable", Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY));
-            joursParType.put("Verre", List.of(DayOfWeek.WEDNESDAY));
-            joursParType.put("Dechets Organiques", List.of(DayOfWeek.WEDNESDAY));
-
-            Map<String, Double> frequence = new HashMap<>();
-            frequence.put("OM", 2.0);
-            frequence.put("Recyclable", 1.0);
-            frequence.put("Verre", 0.5);
-            frequence.put("Dechets Organiques", 1.0);
-
-            Planifier planifier = new Planifier(joursParType, frequence);
-            Calendrier calendrier = planifier.creerPlanning(2025);
-
-            planifier.addTournee(
-                    java.time.LocalDate.of(2025, 1, 20),
-                    "Encombrants",
-                    "Encombrants",
-                    calendrier,
-                    null
-            );
-
-            calendrier.affichage(2025);
-            calendrier.setVisible(true);
-
-            Map<String, Set<GraphismeControle.Arc>> graphe = construireGraphe(fichier);
-            new GraphiqueFenetre(graphe);
-
-            System.out.println("\n--- Test BFS du sommet A au sommet D ---");
-            var chemin = BFS.bfsSommet("A", "D",
-                    fichier.getListeSommets(),
-                    fichier.getListeArcs()
-            );
-
-            if (chemin != null) {
-                System.out.println("Chemin trouvé :");
-                chemin.forEach(a -> System.out.println(a.getSommet1().getNom() + " -> " + a.getSommet2().getNom()));
-            }
-        }catch (IOException e) {
-            System.err.println("Erreur de chargement du fichier : " + e.getMessage());
-        }
-
-
+        sc.close();
     }
+
 }
