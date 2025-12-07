@@ -575,6 +575,68 @@ public class BFS {
         return resultat;
     }
 
+    public Sommets getNextInQuartier(Sommets depart, Arc arc, Quartier quartier) {
+        if (arc.getSommet1().equals(depart)) {
+            if (quartier.getRues().getEnsembleRues()){
+                return arc.getSommet2();
+            }
+        }
+        return null;  // L’arc ne part pas de ce sommet
+    }
+
+    public List<Arc> hierholzerArcsQuartier(String nomDepart, Map<String, Sommets> mapSommet, Quartier quartier) {
+
+        //Initialisation de l'origine
+        Sommets start = mapSommet.get(nomDepart);
+
+        if (start == null) return Collections.emptyList();
+
+        Stack<Sommets> stack = new Stack<>();
+        Stack<Arc> stackArcs = new Stack<>();
+        List<Arc> resultat = new ArrayList<>();
+        Set<Arc> utilises = new HashSet<>();
+
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+
+            Sommets u = stack.peek();
+
+            // Cherche un arc sortant non utilisé
+            Arc arcDispo = null;
+            for (Arc arc : u.getArcsSortants()) {
+                if (!utilises.contains(arc)) {
+                    arcDispo = arc;
+                    break;
+                }
+            }
+
+            if (arcDispo != null) {
+
+                utilises.add(arcDispo);
+                Sommets v = getNextInQuartier(u, arcDispo,quartier);
+
+                if (v == null) {
+                    throw new IllegalStateException("Arc " + arcDispo.getNomRue() + " ne part pas du sommet " + u.getNom());
+                }
+
+                stack.push(v);
+                stackArcs.push(arcDispo);
+            }
+            else {
+                // Aucun arc sortant restant donc on revient sur nos pas (sur les arcs déjà explorés)
+                stack.pop();
+                if (!stackArcs.isEmpty()) {
+                    resultat.add(stackArcs.pop());
+                }
+            }
+        }
+
+        Collections.reverse(resultat);
+
+        return resultat;
+    }
+
 
 
     public static List<Arc> kruskal(List<Sommets> sommets, List<Arc> aretes) {
