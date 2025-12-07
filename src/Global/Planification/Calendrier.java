@@ -78,10 +78,8 @@ public class Calendrier extends JFrame {
                 }
                 panelMois.add(caseJour);
             }
-
             add(panelMois);
         }
-
         pack();
         setLocationRelativeTo(null);
     }

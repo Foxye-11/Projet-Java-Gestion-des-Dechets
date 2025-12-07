@@ -50,10 +50,6 @@ public class Main {
 /*
         // Définition des jours autorisés par type
         Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
-        joursParType.put("OM", Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
-        joursParType.put("Recyclable", Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY));
-        joursParType.put("Verre", Arrays.asList(DayOfWeek.WEDNESDAY));
-        joursParType.put("Dechets Organiques", Arrays.asList(DayOfWeek.WEDNESDAY));
 
         // Définition des fréquences
         Map<String, Double> frequence = new HashMap<>();
