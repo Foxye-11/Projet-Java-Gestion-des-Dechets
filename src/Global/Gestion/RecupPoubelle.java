@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class RecupPoubelle {
-    public List<Arc> allerRetourPointDeDepot(PointDeDepot pointDeDepot, Sommets sommet, Map<String, Sommets> mapSommet, Map<String, Arc> mapArc) {
+    public List<Arc> allerRetourPointDeDepot(PointDeDepot pointDeDepot, Sommets sommet,
+                                             Map<String, Sommets> mapSommet, Map<String, Arc> mapArc) {
         List<Arc> allerPointDeDepot = new LinkedList<>();
         List<Arc> retourPointDeDepot = new LinkedList<>();
         List<Arc> allerRetourPointDepot = new LinkedList<>();
@@ -29,7 +30,8 @@ public class RecupPoubelle {
         allerPointDeDepot.addAll(retourPointDeDepot);
         return allerRetourPointDepot;
     }
-    public List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs, Quartier quartier) {
+    public List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets,
+                                   Map<String, Arc> mapArcs, Quartier quartier) {
 
         List<Arc> chemin_total = new LinkedList<>();
         List<Arc> cheminNonBind = BFS.hierholzerArcsQuartier(pointDeDepot.getNom(), mapSommets, quartier);
