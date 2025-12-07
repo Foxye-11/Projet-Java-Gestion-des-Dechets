@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RecupPointCollecte {
-    public List<Arc> RecupPointsCollectes(List<PointDeCollecte> pointsCollecte, String pointDeDepot, Fichier mapVille) {
+    public List<Arc> recupPointsCollectes(List<PointDeCollecte> pointsCollecte, String pointDeDepot, Fichier mapVille) {
         //Initialisation
         List<Arc> chemin_total = new LinkedList<>();
         Arc[] localisations = new Arc[pointsCollecte.size()];

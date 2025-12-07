@@ -17,7 +17,7 @@ import java.util.List;
 
 
 public class RecupEncombrant {
-    public List<Arc> RecupEncombrant(List<Encombrant> encombrant, String pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs) {
+    public List<Arc> recupEncombrant(List<Encombrant> encombrant, String pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs) {
         //Initialisation
         List<Arc> chemin_total = new LinkedList<>();
         Arc[] localisations = new Arc[encombrant.size()];
