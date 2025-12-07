@@ -29,6 +29,8 @@ public class RecupPoubelle {
         allerPointDeDepot.addAll(retourPointDeDepot);
         return allerRetourPointDepot;
     }
+
+
     public List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets,
                                    Map<String, Arc> mapArcs, Quartier quartier) {
 
