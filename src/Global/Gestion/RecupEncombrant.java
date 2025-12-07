@@ -40,11 +40,12 @@ public class RecupEncombrant {
             //Ajout du nouveau chemin à l'ensemble
             if (!chemin.isEmpty()) {
                 chemin_total.addAll(chemin);
-            }
+            }else throw new NullPointerException("Chemin de la requête non trouvé");
         }
         //Retour au dépot
         List <Arc> chemin_fermeture = new LinkedList<>();
-        chemin_fermeture = AlgorithmeExplo.dfs(origineDijkstra,pointDeDepot,mapSommets,mapArcs);
+        chemin_fermeture = AlgorithmeExplo.dijkstra(origineDijkstra,pointDeDepot,mapSommets,mapArcs);
+        if (chemin_fermeture.isEmpty()) throw new NullPointerException("Chemin de fermeture non trouvé");
         chemin_total.addAll(chemin_fermeture);
         //Retour du chemin total
         return chemin_total;
@@ -67,14 +68,11 @@ public class RecupEncombrant {
         if (chemin.isEmpty()) {
             throw new NullPointerException("Chemin d'aller Encombrant1 non trouvé");
         }
-        if (!chemin.contains(encombrant.getLocalisation())) {
-            chemin_total.addAll(chemin);
-            origineDijkstra = encombrant.getLocalisation().getSommet2().getNom();
-            chemin_fermeture = AlgorithmeExplo.dijkstra(origineDijkstra,pointDeDepot,mapSommets,mapArcs);
-        }else{
-            origineDijkstra = encombrant.getLocalisation().getSommet1().getNom();
-            chemin_fermeture = AlgorithmeExplo.dijkstra(origineDijkstra,pointDeDepot,mapSommets,mapArcs);
-        }
+
+        chemin_total.addAll(chemin);
+        origineDijkstra = encombrant.getLocalisation().getSommet2().getNom();
+        chemin_fermeture = AlgorithmeExplo.dijkstra(origineDijkstra,pointDeDepot,mapSommets,mapArcs);
+
         if (chemin_fermeture.isEmpty()) {
             throw new NullPointerException("chemin du retour Encombrant1 non trouvé");
         }
