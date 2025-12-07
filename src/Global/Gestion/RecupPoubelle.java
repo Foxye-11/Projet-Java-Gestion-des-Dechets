@@ -58,11 +58,10 @@ public class RecupPoubelle {
         return chemin_total;
     }
 
-    public static List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets,
-                                   Map<String, Arc> mapArcs) {
+    public static List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs) {
 
         List<Arc> chemin_total = new LinkedList<>();
-        List<Arc> cheminNonBind = AlgorithmeExplo.hierholzerArcs(pointDeDepot.getNom(), mapSommets);
+        List<Arc> cheminNonBind = AlgorithmeExplo.hierholzerArcs(pointDeDepot.getLocalisation().getSommet1().getNom(), mapSommets);
 
         int i=0;
         Camion camion = new Camion(69, pointDeDepot.getNom());

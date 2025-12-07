@@ -4,6 +4,7 @@ import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
+import Global.Architecture.Sommet.PointDeDepot;
 import Global.Entite.Encombrant;
 import Global.Gestion.RecupEncombrant;
 import Global.Graphique.GraphiqueFenetre;
@@ -199,7 +200,7 @@ public class Main {
 
             // choix de la ville
             System.out.println("Bienvenue dans le programme");
-            System.out.println("Veuillez choisir votre ville :"); // "MontBrunlesBainsv2.txt"
+            System.out.println("Veuillez choisir votre ville :"); /// "MontBrunlesBainsv2.txt"
             String fileName = sc.nextLine() + ".txt";
 
             try {
@@ -252,13 +253,16 @@ public class Main {
 
                 // -------------------------------------- Calcul de l'itineraire -------------------------------------- //
 
-                RecupPoubelle rp = new RecupPoubelle();
-                List <Arc> cheminPoubelle = rp.recupPoubelle(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs());
+                //PointDeDepot pd = new PointDeDepot("Dépôt principal", fichier.getListeArcs().get(0));
+                /*
+                List <Arc> cheminPoubelle = RecupPoubelle.recupPoubelle(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs());
 
-                List <Arc> cheminPoubelle1 = rp.recupPoubelleQuartier(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs(), q1);
-                List <Arc> cheminPoubelle2 = rp.recupPoubelleQuartier(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs(), q1);
-                List <Arc> cheminPoubelle3 = rp.recupPoubelleQuartier(fichier.getListePointsDepots().get(0),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+                List <Arc> cheminPoubelle1 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+                List <Arc> cheminPoubelle2 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+                List <Arc> cheminPoubelle3 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
 
+
+                 */
 
 
                 // -------------------------------------- Creation du planning -------------------------------------- //
@@ -312,17 +316,17 @@ public class Main {
 
 
                 Planifier p1 = new Planifier(joursParTypeQ1, frequence);
-                Calendrier c1 = p1.creerPlanning(annee, cheminPoubelle1);
+                Calendrier c1 = p1.creerPlanning(annee, null);
 
                 Planifier p2 = new Planifier(joursParTypeQ2, frequence);
-                Calendrier c2 = p2.creerPlanning(annee, cheminPoubelle2);
+                Calendrier c2 = p2.creerPlanning(annee, null);
 
                 Planifier p3 = new Planifier(joursParTypeQ3, frequence);
-                Calendrier c3 = p3.creerPlanning(annee, cheminPoubelle3);
+                Calendrier c3 = p3.creerPlanning(annee, null);
 
 
                 Planifier planifier = new Planifier(joursParType, frequence);
-                Calendrier calendrier = planifier.creerPlanning(annee, cheminPoubelle);
+                Calendrier calendrier = planifier.creerPlanning(annee, null);
 
 
 
@@ -384,10 +388,10 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(type);
                                 date = choisirDate(annee);
                                 type_tournee = "Habitations";
-                                if (quartier==0) chemin = cheminPoubelle;
-                                else if (quartier==1) chemin = cheminPoubelle1;
-                                else if (quartier==2) chemin = cheminPoubelle2;
-                                else if (quartier==3) chemin = cheminPoubelle3;
+                                if (quartier==0) chemin = null;
+                                else if (quartier==1) chemin = null;
+                                else if (quartier==2) chemin = null;
+                                else if (quartier==3) chemin = null;
 
                                 break;
                             case 3:
@@ -421,7 +425,7 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(type);
                                 date = choisirDate(annee);
                                 type_tournee = "Points de collecte";
-                                chemin = cheminPoubelle;
+                                chemin = null;
                                 break;
                             case 5:
                                 try {

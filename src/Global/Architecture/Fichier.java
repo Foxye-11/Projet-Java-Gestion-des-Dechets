@@ -123,6 +123,7 @@ public class Fichier {
                 int sens =  Integer.parseInt(parts[6].trim());
 
                 Arc newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets1, sommets2);
+                Arc newArc2 = new Arc(nomRue, nbMaisons, longueur, sens, sommets2, sommets1);
                 listeArcs.put(nomArc, newArc);
 
                 Rue rue = listeRues.get(nomRue);
@@ -130,18 +131,22 @@ public class Fichier {
                 else rue.addArc(newArc);
 
                 if (sens == 0){ // sens direct
-                    sommets1.addArcSortant(newArc);
+                    sommets1.addArcEntrant(newArc);
+                    sommets1.addArcSortant(newArc2);
                     sommets2.addArcEntrant(newArc);
+                    sommets2.addArcSortant(newArc2);
                 }
                 else if (sens == 1) { // sens opposé
                     sommets1.addArcEntrant(newArc);
-                    sommets2.addArcSortant(newArc);
+                    sommets1.addArcSortant(newArc2);
+                    sommets2.addArcEntrant(newArc);
+                    sommets2.addArcSortant(newArc2);
                 }
                 else if (sens == 2) { // bidirectionnel
                     sommets1.addArcEntrant(newArc);
-                    sommets1.addArcSortant(newArc);
+                    sommets1.addArcSortant(newArc2);
                     sommets2.addArcEntrant(newArc);
-                    sommets2.addArcSortant(newArc);
+                    sommets2.addArcSortant(newArc2);
                 }
                 continue;
             }
@@ -216,7 +221,13 @@ public class Fichier {
 
         System.out.println("\n=== POINTS DE DEPOT ===");
         for (PointDeDepot pd : listePointsDepots.values()) {
-            System.out.println("Point de Dépôt: " + pd.getNom() + pd.getLocalisation());
+            Arc a = pd.getLocalisation();
+            if (a == null) {
+                System.out.println("Point de Depot n'existe pas");
+            }
+            else{
+                System.out.println("Point de Dépôt: " + a.getSommet1().getNom() + a.getSommet2().getNom() );
+            }
         }
     }
     public Map<String, Rue> getListeRues() { return listeRues; }
