@@ -6,7 +6,7 @@ import Global.Architecture.Sommet.Sommets;
 
 import java.util.*;
 
-public class BFS {
+public class AlgorithmeExplo {
 
     public static List<Arc> bfsSommet(String nomDepart, String nomDestination, Map<String, Sommets> sommets, Map<String, Arc> arcs) {
         Sommets depart = sommets.get(nomDepart);

@@ -1,10 +1,9 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Fichier;
 import Global.Architecture.Sommet.PointDeCollecte;
 import Global.Architecture.Sommet.Sommets;
-import Global.Exploration.BFS;
+import Global.Exploration.AlgorithmeExplo;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class RecupPointCollecte {
         //Succession de BFS
         while (!pointsCollecte.isEmpty()) {
             //BFS
-            List<Arc> chemin = BFS.bfsMultiArcs(origineBFS, localisations ,mapSommets, mapArcs);
+            List<Arc> chemin = AlgorithmeExplo.bfsMultiArcs(origineBFS, localisations ,mapSommets, mapArcs);
             //Actualisation de la position pour pouvoir enchainer avec un autre BFS
             for (int i = 0; i < pointsCollecte.size(); i++) {
                 if (chemin.contains(pointsCollecte.get(i).getLocalisation())) {
@@ -40,7 +39,7 @@ public class RecupPointCollecte {
         }
         //Retour au dépot
         List <Arc> chemin_fermeture = new LinkedList<>();
-        chemin_fermeture = BFS.dfs(origineBFS,pointDeDepot,mapSommets, mapArcs);
+        chemin_fermeture = AlgorithmeExplo.dfs(origineBFS,pointDeDepot,mapSommets, mapArcs);
         chemin_total.addAll(chemin_fermeture);
         //Retour du chemin total
         return chemin_total;

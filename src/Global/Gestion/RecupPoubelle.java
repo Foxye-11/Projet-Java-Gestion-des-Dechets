@@ -1,12 +1,11 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Sommet.PointDeDepot;
 import Global.Architecture.Sommet.Sommets;
 import Global.Entite.Camion;
-import Global.Exploration.BFS;
+import Global.Exploration.AlgorithmeExplo;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +18,8 @@ public class RecupPoubelle {
         List<Arc> retourPointDeDepot = new LinkedList<>();
         List<Arc> allerRetourPointDepot = new LinkedList<>();
 
-        allerPointDeDepot = BFS.bfsSommet(sommet.getNom(), pointDeDepot.getNom(),mapSommet, mapArc);
-        retourPointDeDepot = BFS.bfsSommet(pointDeDepot.getNom(),sommet.getNom(),mapSommet, mapArc);
+        allerPointDeDepot = AlgorithmeExplo.bfsSommet(sommet.getNom(), pointDeDepot.getNom(),mapSommet, mapArc);
+        retourPointDeDepot = AlgorithmeExplo.bfsSommet(pointDeDepot.getNom(),sommet.getNom(),mapSommet, mapArc);
 
         if (allerPointDeDepot.isEmpty() || retourPointDeDepot.isEmpty()){
             throw new NullPointerException();
@@ -34,7 +33,7 @@ public class RecupPoubelle {
                                    Map<String, Arc> mapArcs, Quartier quartier) {
 
         List<Arc> chemin_total = new LinkedList<>();
-        List<Arc> cheminNonBind = BFS.hierholzerArcsQuartier(pointDeDepot.getNom(), mapSommets, quartier);
+        List<Arc> cheminNonBind = AlgorithmeExplo.hierholzerArcsQuartier(pointDeDepot.getNom(), mapSommets, quartier);
 
         int i=0;
         Camion camion = new Camion(69, pointDeDepot.getNom());
