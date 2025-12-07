@@ -1,6 +1,7 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
+import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Sommet.PointDeDepot;
 import Global.Architecture.Sommet.Sommets;
@@ -10,9 +11,10 @@ import Global.Exploration.AlgorithmeExplo;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class RecupPoubelle {
-    public List<Arc> allerRetourPointDeDepot(PointDeDepot pointDeDepot, Sommets sommet,
+    public static List<Arc> allerRetourPointDeDepot(PointDeDepot pointDeDepot, Sommets sommet,
                                              Map<String, Sommets> mapSommet, Map<String, Arc> mapArc) {
         List<Arc> allerPointDeDepot = new LinkedList<>();
         List<Arc> retourPointDeDepot = new LinkedList<>();
@@ -30,7 +32,7 @@ public class RecupPoubelle {
         return allerRetourPointDepot;
     }
 
-    public List<Arc> recupPoubelleQuartier(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs, Quartier quartier) {
+    public static List<Arc> recupPoubelleQuartier(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs, Quartier quartier) {
 
         List<Arc> chemin_total = new LinkedList<>();
         List<Arc> cheminNonBind = AlgorithmeExplo.hierholzerArcsQuartier(pointDeDepot.getNom(), mapSommets, quartier);
@@ -56,7 +58,7 @@ public class RecupPoubelle {
         return chemin_total;
     }
 
-    public List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets,
+    public static List<Arc> recupPoubelle(PointDeDepot pointDeDepot, Map<String, Sommets> mapSommets,
                                    Map<String, Arc> mapArcs) {
 
         List<Arc> chemin_total = new LinkedList<>();

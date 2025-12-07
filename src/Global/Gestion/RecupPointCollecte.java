@@ -1,6 +1,7 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
+import Global.Architecture.Fichier;
 import Global.Architecture.Sommet.PointDeCollecte;
 import Global.Architecture.Sommet.Sommets;
 import Global.Exploration.AlgorithmeExplo;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RecupPointCollecte {
-    public List<Arc> recupPointsCollectes(List<PointDeCollecte> pointsCollecte,
+    public static List<Arc> recupPointsCollectes(List<PointDeCollecte> pointsCollecte,
                                           String pointDeDepot, Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs) {
         //Initialisation
         List<Arc> chemin_total = new LinkedList<>();

@@ -1,11 +1,14 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
+import Global.Architecture.Fichier;
+import Global.Architecture.Rue;
 import Global.Architecture.Sommet.Sommets;
 import Global.Entite.Encombrant;
 import Global.Exploration.AlgorithmeExplo;
 
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -13,9 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-
 public class RecupEncombrant {
-    public List<Arc> recupEncombrant(List<Encombrant> encombrant, String pointDeDepot,
+    public static List<Arc> recupEncombrant(List<Encombrant> encombrant, String pointDeDepot,
                                      Map<String, Sommets> mapSommets, Map<String, Arc> mapArcs) {
         //Initialisation
         List<Arc> chemin_total = new LinkedList<>();
@@ -51,7 +53,7 @@ public class RecupEncombrant {
         return chemin_total;
     }
 
-    public List<Arc> Recup1Encombrant(Encombrant encombrant, String pointDeDepot, Map<String,
+    public static List<Arc> Recup1Encombrant(Encombrant encombrant, String pointDeDepot, Map<String,
             Sommets> mapSommets, Map<String, Arc> mapArcs) {
         //Initialisation
         List<Arc> chemin_total = new LinkedList<>();
