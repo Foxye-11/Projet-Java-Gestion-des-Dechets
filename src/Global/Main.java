@@ -4,11 +4,13 @@ import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
-import Global.Exploration.AlgorithmeExplo;
 import Global.Graphique.GraphiqueFenetre;
 import Global.Graphique.GraphismeControle;
 import Global.Planification.Calendrier;
 import Global.Planification.Planifier;
+import Global.Gestion.RecupEncombrant;
+import Global.Gestion.RecupPoubelle;
+import Global.Gestion.RecupPointCollecte;
 
 import java.io.IOException;
 import java.time.*;
@@ -151,6 +153,7 @@ public class Main {
         return dateChoisie;
     }
 
+
     public static boolean choisirSortie() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -162,6 +165,28 @@ public class Main {
         }
     }
 
+
+    public static int choisirQuartier(){
+        Scanner sc = new Scanner(System.in);
+        int quartier = -1;
+        boolean saisieValide = false;
+
+        while (!saisieValide) {
+            System.out.print("Choisis un quartier 1 à 3 ou 0 si version global : ");
+            if (sc.hasNextInt()) {
+                quartier = sc.nextInt();
+
+                if (quartier >= 0 && quartier <= 3) {
+                    saisieValide = true;
+                } else {
+                    System.out.println("Choix invalide, veuillez entrer un nombre entre 0 et 3.");
+                }
+            } else {
+                System.out.println("Saisie incorrecte, veuillez entrer un nombre.");
+            }
+        }
+        return quartier;
+    }
 
 
     public static void main(String[] args) {
@@ -230,6 +255,10 @@ public class Main {
                 Map<String, Double> frequence = new HashMap<>();
                 Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
 
+                Map<String, List<DayOfWeek>> joursParTypeQ1 = new HashMap<>();
+                Map<String, List<DayOfWeek>> joursParTypeQ2 = new HashMap<>();
+                Map<String, List<DayOfWeek>> joursParTypeQ3 = new HashMap<>();
+
                 System.out.println("\n********************* Creation du planning *********************\n");
 
                 // --- Saisit de l'année --- //
@@ -264,17 +293,35 @@ public class Main {
                     // --- Choix des jours autorisés --- //
                     List<DayOfWeek> joursAutorises = choisirJourAutorise(type);
                     joursParType.put(type, joursAutorises);
+
+                    joursParTypeQ1.put(type, Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
+                    joursParTypeQ2.put(type, Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY));
+                    joursParTypeQ3.put(type, Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY));
                 }
+
+
+                Planifier p1 = new Planifier(joursParTypeQ1, frequence);
+                Calendrier c1 = p1.creerPlanning(2025);
+
+                Planifier p2 = new Planifier(joursParTypeQ2, frequence);
+                Calendrier c2 = p2.creerPlanning(2025);
+
+                Planifier p3 = new Planifier(joursParTypeQ3, frequence);
+                Calendrier c3 = p3.creerPlanning(2025);
+
 
                 Planifier planifier = new Planifier(joursParType, frequence);
                 Calendrier calendrier = planifier.creerPlanning(2025);
 
 
+
                 // ******************************************* Choix du Thème ******************************************* //
 
-                List<DayOfWeek> joursAutorises;
-                LocalDate date;
-                String type;
+                List<DayOfWeek> joursAutorises = null;
+                LocalDate date = null;
+                String type = null;
+                String type_tournee = null;
+                int quartier = -1;
 
                 boolean end2 = false;
                 while (!end2) {
@@ -292,29 +339,50 @@ public class Main {
                         switch (choix) {
                             case 1:
                                 System.out.println("\n* --- Affichage du calendrier --- *\n");
-                                calendrier.getContentPane().removeAll();
-                                calendrier.affichage(annee);
-                                calendrier.setVisible(true);
+                                quartier = choisirQuartier();
+                                if (quartier==0) {
+                                    calendrier.getContentPane().removeAll();
+                                    calendrier.affichage(annee);
+                                    calendrier.setVisible(true);
+                                }
+                                else if (quartier==1) {
+                                    c1.getContentPane().removeAll();
+                                    c1.affichage(annee);
+                                    c1.setVisible(true);
+                                }
+                                else if (quartier==2) {
+                                    c2.getContentPane().removeAll();
+                                    c2.affichage(annee);
+                                    c2.setVisible(true);
+                                }
+                                else if (quartier==3) {
+                                    c3.getContentPane().removeAll();
+                                    c3.affichage(annee);
+                                    c3.setVisible(true);
+                                }
                                 break;
                             case 2:
                                 System.out.println("\n* --- Ajout d'une collecte auprès de chaque habitation --- *\n");
+                                quartier = choisirQuartier();
                                 type = choisirTypeDechet();
                                 joursAutorises = choisirJourAutorise(type);
                                 date = choisirDate(annee);
-                                planifier.addTournee(date, type, "collecte", calendrier, joursAutorises);
+                                type_tournee = "Habitations";
                                 break;
                             case 3:
                                 System.out.println("* --- Ajout d'une collecte d'encombrant --- *");
+                                quartier = choisirQuartier();
                                 joursAutorises = choisirJourAutorise(null);
                                 date = choisirDate(annee);
-                                planifier.addTournee(date, null, "Encombrants", calendrier, joursAutorises);
+                                type_tournee = "Encombrants";
                                 break;
                             case 4:
                                 System.out.println("* --- Ajout d'une collecte des points de collectes --- *");
+                                quartier = choisirQuartier();
                                 type = choisirTypeDechet();
                                 joursAutorises = choisirJourAutorise(type);
                                 date = choisirDate(annee);
-                                planifier.addTournee(date, type, "Points de collecte", calendrier, joursAutorises);
+                                type_tournee = "Points de collecte";
                                 break;
                             case 0:
                                 System.out.println("Fin du programme.");
@@ -323,13 +391,19 @@ public class Main {
                             default:
                                 System.out.println("Choix invalide, veuillez entrer 0, 1, 2, 3, 4.");
                         }
+
+
+                        if(choix>=2 && choix<=4) {
+                            if (quartier==0) planifier.addTournee(date, type, type_tournee, calendrier, joursAutorises);
+                            else if (quartier==1) p1.addTournee(date, type, type_tournee, c1, joursAutorises);
+                            else if (quartier==2) p2.addTournee(date, type, type_tournee, c2, joursAutorises);
+                            else if (quartier==3) p3.addTournee(date, type, type_tournee, c3, joursAutorises);
+                        }
+
                     } else {
                         System.out.println("Erreur de saisie, veuillez entrer un nombre !");
                         sc.next(); // consommer mauvaise saisie
                     }
-
-                    System.out.println("Voulez-vous quitter la selection des choix ? (OUI / NON)");
-                    end2 = choisirSortie();
                 }
             }
             catch (IOException e) {
@@ -341,5 +415,4 @@ public class Main {
         }
         sc.close();
     }
-
 }

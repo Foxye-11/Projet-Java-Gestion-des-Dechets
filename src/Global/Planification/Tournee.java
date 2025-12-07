@@ -18,8 +18,10 @@ public class Tournee {
         this.type_tournee = type_tournee;
     }
 
+    // setter
     public void setListe(List<Arc> liste) {this.liste = liste;}
 
+    //getter
     public LocalDate getDate() { return date; }
     public String getType_dechet() { return type_dechet; }
     public String getType_tournee() { return type_tournee; }
