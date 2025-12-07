@@ -153,10 +153,11 @@ public class Fichier {
 
                 String nom = parts[0].trim();
                 int capacite = Integer.parseInt(parts[1].trim());
-                String rue = parts[2].trim();
+                String arc = parts[2].trim();
                 float longueur = Float.parseFloat(parts[3].trim());
+                Arc location = listeArcs.get(arc);
 
-                PointDeCollecte pointDeCollecte = new PointDeCollecte(rue, nom, capacite);
+                PointDeCollecte pointDeCollecte = new PointDeCollecte(arc, nom, capacite, location);
                 listePointsCollectes.putIfAbsent(nom, pointDeCollecte);
                 continue;
             }
@@ -167,10 +168,11 @@ public class Fichier {
                 if (parts.length < 3) continue;
 
                 String nom = parts[0].trim();
-                String rue = parts[1].trim();
+                String arc = parts[1].trim();
                 String longueur = parts[2].trim();
+                Arc location = listeArcs.get(arc);
 
-                PointDeDepot pointDeDepot = new PointDeDepot(nom);
+                PointDeDepot pointDeDepot = new PointDeDepot(nom, location);
                 listePointsDepots.putIfAbsent(nom, pointDeDepot);
                 continue;
             }
@@ -214,7 +216,7 @@ public class Fichier {
 
         System.out.println("\n=== POINTS DE DEPOT ===");
         for (PointDeDepot pd : listePointsDepots.values()) {
-            System.out.println("Point de Dépôt: " + pd.getNom());
+            System.out.println("Point de Dépôt: " + pd.getNom() + pd.getLocalisation());
         }
     }
     public Map<String, Rue> getListeRues() { return listeRues; }

@@ -124,4 +124,4 @@ Camping ; 8 ; O-L ; 127.69
 Zone industrielle ; 10 ; N-D ; 54.23
 
 DEPOT:
-Dépôt principal ; A.N-O ; 41.15
+Dépôt principal ; N-O ; 41.15

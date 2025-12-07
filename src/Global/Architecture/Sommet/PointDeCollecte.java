@@ -13,10 +13,11 @@ public class PointDeCollecte {
     private int capacite;
     private ArrayList<Poubelle> poubelles;
 
-    public PointDeCollecte(String rue, String nom, int capacite) {
+    public PointDeCollecte(String rue, String nom, int capacite, Arc location) {
         this.rue = rue;
         this.nom = nom;
         this.capacite = capacite;
+        this.localisation = location;
     }
     public PointDeCollecte(Arc localisation, String nom, int capacite) {
         this.localisation = localisation;
