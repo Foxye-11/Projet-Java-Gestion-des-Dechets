@@ -254,15 +254,12 @@ public class Main {
                 // -------------------------------------- Calcul de l'itineraire -------------------------------------- //
 
                 //PointDeDepot pd = new PointDeDepot("Dépôt principal", fichier.getListeArcs().get(0));
-                /*
+                
                 List <Arc> cheminPoubelle = RecupPoubelle.recupPoubelle(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs());
 
                 List <Arc> cheminPoubelle1 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
                 List <Arc> cheminPoubelle2 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
                 List <Arc> cheminPoubelle3 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
-
-
-                 */
 
 
                 // -------------------------------------- Creation du planning -------------------------------------- //
