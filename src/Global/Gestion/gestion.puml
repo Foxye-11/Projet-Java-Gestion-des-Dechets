@@ -1,0 +1,50 @@
+@startuml
+
+package Global.Gestion {
+
+    class RecupEncombrant {
+        + List<Arc> recupEncombrant(
+            List<Encombrant>,
+            String,
+            Map<String, Sommets>,
+            Map<String, Arc>
+        )
+        + List<Arc> Recup1Encombrant(
+            Encombrant,
+            String,
+            Map<String, Sommets>,
+            Map<String, Arc>
+        )
+    }
+
+    class RecupPointCollecte {
+        + List<Arc> recupPointsCollectes(
+            List<PointDeCollecte>,
+            String,
+            Map<String, Sommets>,
+            Map<String, Arc>
+        )
+    }
+
+    class RecupPoubelle {
+        + List<Arc> allerRetourPointDeDepot(
+            PointDeDepot,
+            Sommets,
+            Map<String, Sommets>,
+            Map<String, Arc>
+        )
+        + List<Arc> recupPoubelleQuartier(
+            PointDeDepot,
+            Map<String, Sommets>,
+            Map<String, Arc>,
+            Quartier
+        )
+        + List<Arc> recupPoubelle(
+            PointDeDepot,
+            Map<String, Sommets>,
+            Map<String, Arc>
+        )
+    }
+}
+
+@enduml

@@ -2,37 +2,50 @@
 package Global.Architecture.Sommet {
 
     class Sommets {
-        - Map<String, Arc> arcs_sortants
-        - Map<String, Arc> arcs_entrant
-        - String nom_rue
+        - List<Arc> arcsSortants
+        - List<Arc> arcsEntrant
+        - Set<String> rues
+        - String nom
 
-        + Sommets(Map<String,Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue)
+        + Sommets(List<Arc> arcsSortants, List<Arc> arcsEntrant, Set<String> rues, String nom)
+        + List<Arc> getArcsSortants()
+        + List<Arc> getArcsEntrant()
+        + Set<String> getRues()
+        + String getNom()
         + void addArcSortant(Arc arc)
         + void addArcEntrant(Arc arc)
-        + Map<String,Arc> getArcs_sortants()
-        + Map<String,Arc> getArcs_entrant()
-        + String getNom_rue()
     }
 
     class PointDeCollecte {
-        - int nombre_poubelles
+        - String rue
+        - Arc localisation
+        - String nom
+        - int capacite
         - ArrayList<Poubelle> poubelles
 
-        + PointDeCollecte(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue, int nombre_poubelles, ArrayList<Poubelle> poubelles)
+        + PointDeCollecte(String rue, String nom, int capacite)
+        + PointDeCollecte(Arc localisation, String nom, int capacite)
+        + String getRue()
+        + String getNom()
+        + int getCapacite()
         + int getNombre_poubelles()
         + ArrayList<Poubelle> getPoubelles()
+        + Arc getLocalisation()
     }
 
     class PointDeDepot {
-        - int nombre_poubelles
+        - String nom
+        - int capacite
         - ArrayList<String> poubelles
 
-        + PointDeDepot(Map<String, Arc> arcs_sortants, Map<String, Arc> arcs_entrant, String nom_rue, int nombre_poubelles)
+        + PointDeDepot(String nom)
         + void chargerCamion(Camion camion, int quantite_dechets)
         + void dechargerCamion(Camion camion)
-        + int getNombre_poubelles()
+        + String getNom()
+        + int getCapacite()
         + ArrayList<String> getPoubelles()
     }
+
     Sommets <|-- PointDeCollecte
     Sommets <|-- PointDeDepot
 }

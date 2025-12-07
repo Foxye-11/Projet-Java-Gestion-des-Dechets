@@ -1,35 +1,35 @@
 @startuml
 package Global.Planification {
 
+    class Tournee {
+        - LocalDate date
+        - String type_dechet
+        - String type_tournee
+        - List<Arc> liste
+        + Tournee(LocalDate date, String type_dechet, String type_tournee)
+        + LocalDate getDate()
+        + String getType_dechet()
+        + String getType_tournee()
+        + List<Arc> getListe()
+        + void setListe(List<Arc> liste)
+    }
+
     class Calendrier {
-        - Tournee[][][] planning
-        + Calendrier()
-        + void addObject(int m, int s, int j, Tournee objet)
-        + Tournee getObject(int m, int s, int j)
-        + void affichage_planning()
+        - Map<LocalDate, Tournee> planning
+        + void addTournee(Tournee t)
+        + Tournee getTournee(LocalDate date)
+        + void affichage(int annee)
     }
 
     class Planifier {
-        - String[] type_dechet
-        - int[] NbJourParMois
-        - boolean[] type_frequence
-        - int[] frequence_passage
-        - Calendrier calendrier
-        + Plannifier(boolean[] type_frequence, int[] frequence_passage)
-        + void creerPlanning()
-        + void addTournee(int m, int s, int j, String type_dechet, String type_tournee)
+        + String[] type_dechet
+        - Map<String, List<DayOfWeek>> joursParType
+        - Map<String, Double> frequence
+        + Planifier(Map<String, List<DayOfWeek>> joursParType, Map<String, Double> frequence)
+        + Calendrier creerPlanning(int annee)
+        + void addTournee(LocalDate d, String type_dechet, String type_tournee, Calendrier calendrier, List<DayOfWeek> joursAutorises)
     }
 
-    class Tournee {
-        - int[] date
-        - String type_dechet
-        - String type_tournee
-        + Tournee(int m, int s, int j, String type_dechet, String type_tournee)
-    }
-
-    ' Relations
-    Plannifier --> Calendrier : "utilise"
-    Calendrier --> Tournee : "contient"
-    Plannifier --> Tournee : "crée"
+    Planifier --> Tournee : "instancie"
 }
 @enduml

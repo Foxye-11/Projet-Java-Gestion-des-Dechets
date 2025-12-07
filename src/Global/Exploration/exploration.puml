@@ -1,13 +1,27 @@
 @startuml
 package Global.Exploration {
 
-    class BFS {
-        + void bfs(Sommets depart, Sommets arrivee)
+    class AlgorithmeExplo {
+        + List<Arc> bfsSommet(String, String, Map<String,Sommets>, Map<String,Arc>)
+        + List<Arc> bfsArc(String, String, Map<String,Sommets>, Map<String,Arc>)
+        + List<Arc> bfsMultiArcs(String, Arc[], Map<String,Sommets>, Map<String,Arc>)
+        + List<Sommets> bfsAll(String, Map<String,Sommets>)
+
+        + List<Arc> dfs(String, String, Map<String,Sommets>, Map<String,Arc>)
+        + List<Sommets> dfsAll(String, Map<String,Sommets>)
+
+        + List<Arc> dijkstra(String, String, Map<String,Sommets>, Map<String,Arc>)
+        + List<Arc> dijkstraArc(String, Arc, Map<String,Sommets>, Map<String,Arc>)
+        + List<Arc> dijkstraMultiArc(String, Arc[], Map<String,Sommets>, Map<String,Arc>)
+        + Map<Sommets,Double> dijkstraAll(String, Map<String,Sommets>)
+
+        + List<Arc> hierholzerArcs(String, Map<String,Sommets>)
+        + List<Arc> hierholzerArcsQuartier(String, Map<String,Sommets>, Quartier)
+        + Sommets getNext(Sommets, Arc)
+        + Sommets getNextInQuartier(Sommets, Arc, Quartier)
+
+        + List<Arc> kruskal(List<Sommets>, List<Arc>)
     }
 
-    class Dijkstra {
-        + Map<Sommets, Integer> dijkstra_map(Sommets source)
-        + Map<Sommets, Sommets> dijkstra(Sommets source, Sommets destination)
-    }
 }
 @enduml

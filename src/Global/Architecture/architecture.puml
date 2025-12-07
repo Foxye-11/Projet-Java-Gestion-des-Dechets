@@ -1,56 +1,131 @@
 @startuml
 package Global.Architecture {
 
-    !include Sommet/sommet.puml
-
-        class Fichier {
-            - String nomFichier
-            - Map<String, Set<String>> listeRues
-            - Map<String, Set<String>> listePointsCollectes
-            - Map<String, Set<String>> listePointsDepots
-            - Map<String, Set<String>> listeVertices
-            - Map<String, Set<String>> listeArcs
-
-            + Fichier() throws IOException
-            + Map<String, Set<String>> getListeRues()
-            + Map<String, Set<String>> getListePointsCollectes()
-            + Map<String, Set<String>> getListePointsDepots()
-            + Map<String, Set<String>> getListeVertices()
-            + Map<String, Set<String>> getListeArcs()
-        }
-
-        class Arc {
-            - String nom_rue
-            - int nb_habitations
-            - int longueur
-            - boolean sensUnique
-            - Sommets[2] sommets
-
-            + Arc(String nom_rue, int nb_habitations, int longueur, boolean sensUnique, Sommets sommet1, Sommets sommet2)
-            + String getNom_rue()
-            + int getNb_habitations()
-            + int getLongueur()
-            + boolean isSensUnique()
-            + Sommets[] getSommets()
-            + Sommets chgtSommet(Sommets s)
-        }
-
-        class Rue {
+    package Sommet {
+        class Sommets {
+            - List<Arc> arcsSortants
+            - List<Arc> arcsEntrant
+            - Set<String> rues
             - String nom
-            - LinkedList<Arc> ensemble_rue
 
-            + Rue(String nom, LinkedList<Arc> ensemble_rue)
+            + Sommets(List<Arc>, List<Arc>, Set<String>, String)
+            + List<Arc> getArcsSortants()
+            + List<Arc> getArcsEntrant()
+            + Set<String> getRues()
             + String getNom()
-            + LinkedList<Arc> getEnsemble_rue()
+            + void addArcSortant(Arc)
+            + void addArcEntrant(Arc)
         }
 
-        Arc --> Sommets : "associe deux"
-        Rue --> Arc : "contient"
-        Fichier ..> PointDeDepot : "initialise"
-        Fichier ..> PointDeCollecte : "initialise"
-        Fichier ..> Sommets : "initialise"
-        Fichier ..> Arc : "initialise"
-        Fichier ..> Rue : "initialise"
+        class PointDeCollecte {
+            - String rue
+            - Arc localisation
+            - String nom
+            - int capacite
+            - ArrayList<Poubelle> poubelles
 
+            + PointDeCollecte(String rue, String nom, int capacite)
+            + PointDeCollecte(Arc localisation, String nom, int capacite)
+            + String getRue()
+            + String getNom()
+            + int getCapacite()
+            + int getNombre_poubelles()
+            + ArrayList<Poubelle> getPoubelles()
+            + Arc getLocalisation()
+        }
+
+        class PointDeDepot {
+            - String nom
+            - int capacite
+            - ArrayList<String> poubelles
+
+            + PointDeDepot(String nom)
+            + void chargerCamion(Camion, int)
+            + void dechargerCamion(Camion)
+            + String getNom()
+            + int getCapacite()
+            + ArrayList<String> getPoubelles()
+        }
+    }
+
+    class Rue {
+        - String nom
+        - LinkedList<Arc> ensembleRue
+        - int nbHabitations
+        - float longueur
+
+        + Rue(String, LinkedList<Arc>, int, float)
+        + String getNom()
+        + LinkedList<Arc> getEnsemble_rue()
+        + int getNbHabitations()
+        + float getLongueur()
+        + void addArc(Arc)
+    }
+
+    class Arc {
+        - String nomRue
+        - int nbMaisons
+        - float longueur
+        - int sens
+        - Sommets sommets1
+        - Sommets sommets2
+
+        + Arc(String, int, float, int, Sommets, Sommets)
+        + String getNomRue()
+        + int getNbMaisons()
+        + float getLongueur()
+        + int getSens()
+        + Sommets getSommet1()
+        + Sommets getSommet2()
+        + Sommets chgtSommet(Sommets)
+    }
+
+    class Quartier {
+        - String nom
+        - LinkedList<Rue> rues
+        - boolean[][][] occupation
+        - LinkedList<Quartier> voisins
+        - int couleur
+
+        + Quartier(String)
+        + void addVoisin(Quartier)
+        + void addRue(Rue)
+        + boolean estLibre(int,int,int)
+        + void occuper(int,int,int)
+        + static void colorierQuartiers(LinkedList<Quartier>)
+        + LinkedList<Rue> getRues()
+        + LinkedList<Quartier> getVoisins()
+        + String getNom()
+        + int getCouleur()
+        + void setCouleur(int)
+    }
+
+    class Fichier {
+        - String nomFichier
+        - Map<String, Rue> listeRues
+        - Map<String, PointDeCollecte> listePointsCollectes
+        - Map<String, PointDeDepot> listePointsDepots
+        - Map<String, Sommets> listeSommets
+        - Map<String, Arc> listeArcs
+
+        + Fichier(String) throws IOException
+        + void afficherDonnees()
+        + Map<String,Rue> getListeRues()
+        + Map<String,Sommets> getListeSommets()
+        + Map<String,Arc> getListeArcs()
+        + Map<String,PointDeCollecte> getListePointsCollectes()
+        + Map<String,PointDeDepot> getListePointsDepots()
+    }
+
+    Arc --> Sommets : "relie"
+    Rue --> Arc : "contient"
+    Fichier ..> Sommets : "crée"
+    Fichier ..> Rue : "crée"
+    Fichier ..> Arc : "crée"
+    Fichier ..> PointDeCollecte : "crée"
+    Fichier ..> PointDeDepot : "crée"
+
+    Quartier --> Rue : "contient"
+    Quartier --> Quartier : "voisin"
 }
 @enduml
