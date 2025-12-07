@@ -408,14 +408,14 @@ public class Main {
                                     System.out.println("Entrez le numéro de domicile :");
                                     int domicile = sc.nextInt();
                                     System.out.println("Entrez la rue du domicile : ");
-                                    String rue_temp = sc.next();
+                                    String rue_temp = sc.nextLine();
                                     Rue rue = fichier.getListeRues().get(rue_temp);
 
                                     Encombrant newEncombrant = new Encombrant(rue, domicile);
                                     encombrants.add(newEncombrant);
                                 }
-                                RecupEncombrant re = new RecupEncombrant();
-                                chemin = re.recupEncombrant(encombrants, fichier.getListePointsDepots().get(0).getNom(), fichier.getListeSommets(), fichier.getListeArcs());
+                                //RecupEncombrant re = new RecupEncombrant();
+                                //chemin = re.recupEncombrant(encombrants, fichier.getListePointsDepots().get(0).getNom(), fichier.getListeSommets(), fichier.getListeArcs());
 
                                 break;
                             case 4:
@@ -427,6 +427,16 @@ public class Main {
                                 type_tournee = "Points de collecte";
                                 chemin = null;
                                 break;
+                                /*
+                                      Fichier fichier = new Fichier("ezfherhg"); throw IOException;
+        List<PointDeCollecte> pointsCollecte = new LinkedList<>();
+        for (int i =0; i<fichier.getListePointsCollectes().size();i++) {
+            pointsCollecte.add(fichier.getListePointsCollectes().get(i));
+        }
+
+        List<Arc> cheminPointsCollecte = recupPointsCollecte (pointsCollecte,fichier.getListePointsDepots().get(0).getNom(),fichier.getListeSommets(),fichier.getListeArcs());
+                                 */
+
                             case 5:
                                 try {
                                     System.out.println("* --- Recuperation d'un chemin d'une tournee via sa date --- *");
