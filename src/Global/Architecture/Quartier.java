@@ -1,52 +1,78 @@
 package Global.Architecture;
+import Global.Architecture.Arc;
+import Global.Architecture.Sommet.Sommets;
 
-import java.util.LinkedList;
+import java.util.*;
 
 public class Quartier {
+    private int numQuartier;
+    private Map<String, Sommets> sommets;
+    private Map<String, Arc> arcs;
+    private int couleur;
 
-    private String nom;
-    private LinkedList<Rue> rues;
-    private boolean[][][] occupation = new boolean[12][5][7];
-    private LinkedList<Quartier> voisins = new LinkedList<>();
-    private int couleur = -1;
-
-    public Quartier (String nom){
-        this.nom = nom;
-        this.rues = new LinkedList<>();
+    public Quartier(int idQuartier) {
+        this.numQuartier = idQuartier;
+        this.sommets = new HashMap<>();
+        this.arcs = new HashMap<>();
+        this.couleur = -1; // -1 = pas encore colorié
     }
 
-    public static void colorierQuartiers(LinkedList<Quartier> quartiers){
-        for(Quartier q : quartiers){
-            boolean[] interdit = new boolean[quartiers.size()];
 
-            for (Quartier v : q.getVoisins()){
-                int c = v.getCouleur();
-                if(c != -1){
-                    interdit[c] = true;
+    // getter
+    public int getIdQuartier() {return numQuartier;}
+    public Map<String, Sommets> getSommets() {return sommets;}
+    public Map<String, Arc> getArcs() {return arcs;}
+    public int getCouleur() {return couleur;}
+
+    // setter avec verification
+    public void addSommet(Sommets s) {
+        if (s.getQuartier() == numQuartier) {
+            sommets.put(s.getNom(), s);
+        }
+    }
+    public void addArc(String key, Arc a) {
+        if (a.getQuartier() == numQuartier) {
+            arcs.put(key, a);
+        }
+    }
+    public void setCouleur(int couleur) {this.couleur = couleur;}
+
+
+    // Vérifier si le quartier est connexe (BFS sur les sommets)
+    public boolean estConnexe() {
+        if (sommets.isEmpty()) return true;
+
+        Set<Sommets> visites = new HashSet<>();
+        Queue<Sommets> file = new LinkedList<>();
+
+        Sommets start = sommets.values().iterator().next();
+        file.add(start);
+        visites.add(start);
+
+        while (!file.isEmpty()) {
+            Sommets courant = file.poll();
+            for (Arc arc : courant.getArcsSortants()) {
+                Sommets voisin = arc.getSommet2();
+                if (voisin.getQuartier() == numQuartier && !visites.contains(voisin)) {
+                    visites.add(voisin);
+                    file.add(voisin);
                 }
             }
-
-            int couleur = 0;
-            while(couleur < interdit.length && interdit[couleur]) couleur++;
-            q.setCouleur(couleur);
         }
+
+        return visites.size() == sommets.size();
     }
 
-    public void addVoisin(Quartier q){
-        if (q != this && !voisins.contains(q)){
-            voisins.add(q);
-            q.voisins.add(this);
+    public void afficherQuartier() {
+        System.out.println("\n=== Quartier " + numQuartier + " ===");
+        System.out.println("Sommets:");
+        for (Sommets s : sommets.values()) {
+            System.out.println(" - " + s.getNom() + " (Q" + s.getQuartier() + ")");
         }
+        System.out.println("Arcs:");
+        for (Arc a : arcs.values()) {
+            System.out.println(" - " + a.getNomRue() + " (" + a.getSommet1().getNom() + " -> " + a.getSommet2().getNom() + ")");
+        }
+        System.out.println("Connexe ? " + estConnexe() + "\n");
     }
-
-    public void addRue(Rue r){if (!rues.contains(r)) rues.add(r);}
-    public String getNom(){return nom;}
-    public LinkedList<Rue> getRues(){return rues;}
-    public boolean estLibre(int m, int s, int j){return !occupation[m][s][j];}
-    public void occuper(int m, int s, int j){occupation[m][s][j] = true;}
-    public LinkedList<Quartier> getVoisins(){return voisins;}
-    public int getCouleur(){return couleur;}
-    public void setCouleur(int c){this.couleur = c;}
-
-
 }

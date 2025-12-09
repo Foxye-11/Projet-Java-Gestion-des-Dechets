@@ -646,10 +646,8 @@ public class AlgorithmeExplo {
     //Hierholzer dans un seul quartier
     public static Sommets getNextInQuartier(Sommets depart, Arc arc, Quartier quartier) {
         if (arc.getSommet1().equals(depart)) {
-            for (int i=0; i<quartier.getRues().size();i++){
-                if (quartier.getRues().get(i).getEnsemble_rue().contains(arc)){
-                    return arc.getSommet2();
-                }
+            if (quartier.getArcs().containsValue(arc)){
+                return arc.getSommet2();
             }
         }
         return null;  // L’arc ne part pas de ce sommet

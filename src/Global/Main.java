@@ -5,6 +5,7 @@ import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
 import Global.Architecture.Sommet.PointDeDepot;
+import Global.Architecture.Sommet.Sommets;
 import Global.Entite.Encombrant;
 import Global.Gestion.RecupEncombrant;
 import Global.Graphique.GraphiqueFenetre;
@@ -50,7 +51,53 @@ public class Main {
         return graph;
     }
 
+    public static void colorierQuartiers(Map<Integer, Quartier> quartiers) {
+        // Trier les quartiers par degré décroissant
+        List<Quartier> liste = new ArrayList<>(quartiers.values());
+        liste.sort((q1, q2) -> Integer.compare(degreQuartier(q2, quartiers), degreQuartier(q1, quartiers)));
 
+        int couleur = 1;
+
+        for (Quartier q : liste) {
+            if (q.getCouleur() == -1) {
+                q.setCouleur(couleur);
+
+                // Colorier les quartiers non adjacents avec la même couleur
+                for (Quartier autre : liste) {
+                    if (autre.getCouleur() == -1 && !quartiersAdjacents(q, autre)) {
+                        autre.setCouleur(couleur);
+                    }
+                }
+
+                couleur++;
+            }
+        }
+    }
+
+    // Calcul du degré d’un quartier
+    private static int degreQuartier(Quartier q, Map<Integer, Quartier> quartiers) {
+        int degre = 0;
+        for (Quartier autre : quartiers.values()) {
+            if (!autre.equals(q) && quartiersAdjacents(q, autre)) {
+                degre++;
+            }
+        }
+        return degre;
+    }
+
+    // Vérifie si deux quartiers sont adjacents (au moins un arc entre eux)
+    private static boolean quartiersAdjacents(Quartier q1, Quartier q2) {
+        for (Arc arc : q1.getArcs().values()) {
+            if (arc.getSommet1().getQuartier() == q2.getIdQuartier() ||
+                    arc.getSommet2().getQuartier() == q2.getIdQuartier()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // Entrer avec blindage
     public static double choisirFrequance(){
         Scanner sc = new Scanner(System.in);
         double freq = -1;
@@ -67,17 +114,16 @@ public class Main {
         }
         return freq;
     }
-
-
-    public static List<DayOfWeek> choisirJourAutorise(String type){
+    public static List<DayOfWeek> choisirJourAutorise(String type, List<DayOfWeek> joursInterdits){
         Scanner sc = new Scanner(System.in);
         List<DayOfWeek> joursAutorises = new ArrayList<>();
         boolean saisieValide = false;
 
         while (!saisieValide) {
-            System.out.println("Entrez les jours autorisés pour " + type + " (séparés par des virgules, ex: MONDAY,THURSDAY) : ");
-            String saisie = sc.nextLine().trim().toUpperCase();
+            System.out.println("Entrez les jours autorisés pour " + type + " (séparés par des virgules, ex: MONDAY,THURSDAY).");
+            if (joursInterdits != null){System.out.println("Jours interdits d’office : " + joursInterdits);}
 
+            String saisie = sc.nextLine().trim().toUpperCase();
             String[] jours = saisie.split(",");
             joursAutorises.clear();
             saisieValide = true;
@@ -85,6 +131,13 @@ public class Main {
             for (String j : jours) {
                 try {
                     DayOfWeek jour = DayOfWeek.valueOf(j);
+                    // Vérifie si le jour est interdit
+                    if (joursInterdits.contains(jour)) {
+                        System.out.println("Erreur : " + jour + " est interdit d’office.");
+                        saisieValide = false;
+                        break;
+                    }
+
                     joursAutorises.add(jour);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Erreur, jour invalide : " + j + ". Les jours valides sont MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.");
@@ -95,8 +148,6 @@ public class Main {
         }
         return joursAutorises;
     }
-
-
     public static String choisirTypeDechet(){
         Scanner sc = new Scanner(System.in);
 
@@ -128,8 +179,6 @@ public class Main {
         }
         return typesDechets[choix];
     }
-
-
     public static LocalDate choisirDate(int annee){
         Scanner sc = new Scanner(System.in);
         LocalDate dateChoisie = null;
@@ -154,8 +203,6 @@ public class Main {
         }
         return dateChoisie;
     }
-
-
     public static boolean choisirSortie() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -166,8 +213,6 @@ public class Main {
             else System.out.println("Saisie invalide ! Veuillez entrer OUI ou NON.");
         }
     }
-
-
     public static int choisirQuartier(){
         Scanner sc = new Scanner(System.in);
         int quartier = -1;
@@ -189,6 +234,32 @@ public class Main {
         }
         return quartier;
     }
+    public static int choisirHOX(){
+        Scanner sc = new Scanner(System.in);
+        int choix = -1;
+        boolean saisieValide = false;
+
+        while (!saisieValide) {
+            System.out.print("Selectionner entre 1 et 3 : " +
+                    "\n1. Le graphe est non orienté" +
+                    "\n2. Le graphe est orienté" +
+                    "\n3. Le graphe est orienté et non orienté\n");
+            if (sc.hasNextInt()) {
+                choix = sc.nextInt();
+
+                if (choix >= 1 && choix <= 3) {
+                    saisieValide = true;
+                } else {
+                    System.out.println("Choix invalide, veuillez entrer un nombre entre 1 et 3.");
+                }
+            } else {
+                System.out.println("Saisie incorrecte, veuillez entrer un nombre.");
+            }
+        }
+        return choix;
+    }
+
+
 
 
     public static void main(String[] args) {
@@ -200,80 +271,92 @@ public class Main {
 
             // choix de la ville
             System.out.println("Bienvenue dans le programme");
-            System.out.println("Veuillez choisir votre ville :"); /// "MontBrunlesBainsv2.txt"
+            System.out.println("Veuillez choisir votre ville :"); /// "MontBrunlesBainsv2.txt" "LesAmandiers"
             String fileName = sc.nextLine() + ".txt";
 
             try {
                 // Chargement de la ville
-                Fichier fichier = new Fichier(fileName);
+                int HOX = choisirHOX();
+                Fichier fichier = new Fichier(fileName, HOX);
                 System.out.println("Chargement de la ville effectué");
                 fichier.afficherDonnees();
 
+                // Recuperation des sites de sommets & arcs
+                Map<String, Sommets> listeSommets = fichier.getListeSommets();
+                Map<String, Arc> listeArcs = fichier.getListeArcs();
+
+                // Creation du graphe
                 Map<String, Set<GraphismeControle.Arc>> graphe = construireGraphe(fichier);
                 new GraphiqueFenetre(graphe);
 
                 // -------------------------------------- Repartition par quartier -------------------------------------- //
-                /*
-                System.out.print("Combien de quartiers voulez-vous créer ? ");
-                int nbQuartiers = sc.nextInt();
+                // Création des quartiers
+                Map<Integer, Quartier> quartiers = new HashMap<>();
 
-                LinkedList<Quartier> quartiers = new LinkedList<>();
-                for (int i = 1; i <= nbQuartiers; i++) {
-                    System.out.print("Nom du quartier " + i + " : ");
-                    String nomQuartier = sc.nextLine();
-                    Quartier q = new Quartier(nomQuartier);
-                    quartiers.add(q);
-                }
-                */
-                Quartier q1 = new Quartier("Centre");
-                Quartier q2 = new Quartier("Nord");
-                Quartier q3 = new Quartier("Sud");
-
-                for (Rue r : fichier.getListeRues().values()) {
-                    if (r.getNom().contains("A")) q1.addRue(r);
-                    else if (r.getNom().contains("B")) q2.addRue(r);
-                    else q3.addRue(r);
+                // Initialisation des sommets
+                for (Sommets s : listeSommets.values()) {
+                    quartiers.putIfAbsent(s.getQuartier(), new Quartier(s.getQuartier()));
+                    quartiers.get(s.getQuartier()).addSommet(s);
                 }
 
-                q1.addVoisin(q2);
-                q1.addVoisin(q3);
-                q2.addVoisin(q3);
+                // Initialisation des arcs
+                for (Map.Entry<String, Arc> entry : listeArcs.entrySet()) {
+                    Arc a = entry.getValue();
+                    quartiers.putIfAbsent(a.getQuartier(), new Quartier(a.getQuartier()));
+                    quartiers.get(a.getQuartier()).addArc(entry.getKey(), a);
+                }
 
-                LinkedList<Quartier> quartiers = new LinkedList<>();
-                quartiers.add(q1);
-                quartiers.add(q2);
-                quartiers.add(q3);
+                // Coloration des quartiers
+                colorierQuartiers(quartiers);
 
-                Quartier.colorierQuartiers(quartiers);
-
-                System.out.println("\n--- Couleurs des quartiers ---");
-                for (Quartier q : quartiers) {
-                    System.out.println(q.getNom() + " -> couleur : " + q.getCouleur());
+                // Affichage
+                for (Quartier q : quartiers.values()) {
+                    q.afficherQuartier();
                 }
 
                 // -------------------------------------- Calcul de l'itineraire -------------------------------------- //
 
+                // Récupération du dépôt principal
+                PointDeDepot depotPrincipal = fichier.getListePointsDepots().get("Dépôt principal");
                 //PointDeDepot pd = new PointDeDepot("Dépôt principal", fichier.getListeArcs().get(0));
-                
-                List <Arc> cheminPoubelle = RecupPoubelle.recupPoubelle(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs());
 
-                List <Arc> cheminPoubelle1 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
-                List <Arc> cheminPoubelle2 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
-                List <Arc> cheminPoubelle3 = RecupPoubelle.recupPoubelleQuartier(fichier.getListePointsDepots().get("Dépôt principal"),fichier.getListeSommets(),fichier.getListeArcs(), q1);
+                // Chemin sans consideration des quartiers
+                List <Arc> cheminPoubelleGlobal = RecupPoubelle.recupPoubelle(depotPrincipal, listeSommets, listeArcs);
+
+                // Stocker les chemins par quartier
+                Map<Integer, List<Arc>> cheminsPoubelleQuartier = new HashMap<>();
+
+                // Boucle sur tous les quartiers
+                for (Map.Entry<Integer, Quartier> entry : quartiers.entrySet()) {
+                    int numQuartier = entry.getKey();
+                    Quartier quartier = entry.getValue();
+
+                    List<Arc> chemin = RecupPoubelle.recupPoubelleQuartier(depotPrincipal, listeSommets, listeArcs, quartier);
+                    cheminsPoubelleQuartier.put(numQuartier, chemin);
+                    System.out.println("Chemin pour Quartier " + numQuartier + " : " + chemin);
+                }
+
 
 
                 // -------------------------------------- Creation du planning -------------------------------------- //
+
                 String[] typesDechets = {"OM", "Recyclable", "Verre", "Dechets Organiques"};
                 Map<String, Double> frequence = new HashMap<>();
-                Map<String, List<DayOfWeek>> joursParType = new HashMap<>();
+                Map<String, List<DayOfWeek>> joursParTypeGlobal = new HashMap<>();
 
-                Map<String, List<DayOfWeek>> joursParTypeQ1 = new HashMap<>();
-                Map<String, List<DayOfWeek>> joursParTypeQ2 = new HashMap<>();
-                Map<String, List<DayOfWeek>> joursParTypeQ3 = new HashMap<>();
+                // Stocker les jours par type pour chaque quartier
+                Map<Integer, Map<String, List<DayOfWeek>>> joursParTypeQuartier = new HashMap<>();
 
-                System.out.println("\n********************* Creation du planning *********************\n");
+                // Boucle sur tous les quartiers pour initialiser leur Map
+                for (Map.Entry<Integer, Quartier> entry : quartiers.entrySet()) {
+                    int numQuartier = entry.getKey();
+                    joursParTypeQuartier.put(numQuartier, new HashMap<>());
+                }
 
-                // --- Saisit de l'année --- //
+
+                System.out.println("\n********************* Création du planning *********************\n");
+
+                // --- Saisie de l'année --- //
                 int annee = -1;
                 boolean saisieValide = false;
 
@@ -286,7 +369,7 @@ public class Main {
                         if (annee >= 2020 && annee <= 2050) {
                             saisieValide = true; // sortie de la boucle
                         } else {
-                            System.out.println(" Année invalide, veuillez entrer une année entre 2020 et 2050.");
+                            System.out.println("Année invalide, veuillez entrer une année entre 2020 et 2050.");
                         }
                     } else {
                         System.out.println("Saisie incorrecte, veuillez entrer un nombre.");
@@ -294,7 +377,7 @@ public class Main {
                     }
                 }
 
-
+                // --- Configuration des types de déchets --- //
                 for (String type : typesDechets) {
                     System.out.println("\n--- Configuration pour " + type + " ---");
 
@@ -302,28 +385,59 @@ public class Main {
                     double freq = choisirFrequance();
                     frequence.put(type, freq);
 
-                    // --- Choix des jours autorisés --- //
-                    List<DayOfWeek> joursAutorises = choisirJourAutorise(type);
-                    joursParType.put(type, joursAutorises);
+                    // --- Choix des jours autorisés (global) --- //
+                    System.out.println("\n Choix pour la version global : \n");
+                    List<DayOfWeek> joursAutorisesGlobal = choisirJourAutorise(type, null);
+                    joursParTypeGlobal.put(type, joursAutorisesGlobal);
 
-                    joursParTypeQ1.put(type, Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY));
-                    joursParTypeQ2.put(type, Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY));
-                    joursParTypeQ3.put(type, Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY));
+
+                    // --- Choix des jours autorisés par couleur --- //
+                    // On regroupe les quartiers par couleur
+                    Map<Integer, List<Integer>> quartiersParCouleur = new HashMap<>();
+                    for (Quartier q : quartiers.values()) {
+                        quartiersParCouleur.computeIfAbsent(q.getCouleur(), c -> new ArrayList<>()).add(q.getIdQuartier());
+                    }
+
+
+                    // Liste cumulative des jours interdits (commence vide)
+                    List<DayOfWeek> joursInterditsCumul = new ArrayList<>();
+
+                    // Pour chaque couleur, demander une fois les jours autorisés
+                    for (Map.Entry<Integer, List<Integer>> entry : quartiersParCouleur.entrySet()) {
+                        int couleur = entry.getKey();
+                        List<Integer> quartiersDeCetteCouleur = entry.getValue();
+
+                        System.out.println("\nChoix des jours pour la couleur " + couleur + " (quartiers " + quartiersDeCetteCouleur + ")");
+                        List<DayOfWeek> joursAutorisesQuartier = choisirJourAutorise(type, joursInterditsCumul);
+                        joursInterditsCumul.addAll(joursAutorisesQuartier);
+
+                        // Assigner les jours choisis à tous les quartiers de cette couleur
+                        for (int numQuartier : quartiersDeCetteCouleur) {
+                            joursParTypeQuartier.get(numQuartier).put(type, joursAutorisesQuartier);
+                        }
+                    }
                 }
 
 
-                Planifier p1 = new Planifier(joursParTypeQ1, frequence);
-                Calendrier c1 = p1.creerPlanning(annee, null);
-
-                Planifier p2 = new Planifier(joursParTypeQ2, frequence);
-                Calendrier c2 = p2.creerPlanning(annee, null);
-
-                Planifier p3 = new Planifier(joursParTypeQ3, frequence);
-                Calendrier c3 = p3.creerPlanning(annee, null);
+                // --- Création des plannings par quartier --- //
+                Map<Integer, Calendrier> calendriersQuartier = new HashMap<>();
+                Map<Integer, Planifier> planifiersQuartier = new HashMap<>();
 
 
-                Planifier planifier = new Planifier(joursParType, frequence);
-                Calendrier calendrier = planifier.creerPlanning(annee, null);
+                for (Map.Entry<Integer, Quartier> entry : quartiers.entrySet()) {
+                    int numQuartier = entry.getKey();
+                    Map<String, List<DayOfWeek>> joursQuartier = joursParTypeQuartier.get(numQuartier);
+
+                    Planifier planifierQuartier = new Planifier(joursQuartier, frequence);
+                    Calendrier calendrierQuartier = planifierQuartier.creerPlanning(annee, null);
+
+                    planifiersQuartier.put(numQuartier, planifierQuartier);
+                    calendriersQuartier.put(numQuartier, calendrierQuartier);
+                }
+
+                // --- Création du planning global --- //
+                Planifier planifierGlobal = new Planifier(joursParTypeGlobal, frequence);
+                Calendrier calendrierGlobal = planifierGlobal.creerPlanning(annee, null);
 
 
 
@@ -358,31 +472,28 @@ public class Main {
                                 System.out.println("\n* --- Affichage du calendrier --- *\n");
                                 quartier = choisirQuartier();
                                 if (quartier==0) {
-                                    calendrier.getContentPane().removeAll();
-                                    calendrier.affichage(annee);
-                                    calendrier.setVisible(true);
+                                    calendrierGlobal.getContentPane().removeAll();
+                                    calendrierGlobal.affichage(annee);
+                                    calendrierGlobal.setVisible(true);
                                 }
-                                else if (quartier==1) {
-                                    c1.getContentPane().removeAll();
-                                    c1.affichage(annee);
-                                    c1.setVisible(true);
-                                }
-                                else if (quartier==2) {
-                                    c2.getContentPane().removeAll();
-                                    c2.affichage(annee);
-                                    c2.setVisible(true);
-                                }
-                                else if (quartier==3) {
-                                    c3.getContentPane().removeAll();
-                                    c3.affichage(annee);
-                                    c3.setVisible(true);
+                                else {
+                                    for (Map.Entry<Integer, Calendrier> entry : calendriersQuartier.entrySet()) {
+                                        int numQuartier = entry.getKey();
+                                        Calendrier calendrier = entry.getValue();
+
+                                        if (quartier == numQuartier) {
+                                            calendrier.getContentPane().removeAll();
+                                            calendrier.affichage(annee);
+                                            calendrier.setVisible(true);
+                                        }
+                                    }
                                 }
                                 break;
                             case 2:
                                 System.out.println("\n* --- Ajout d'une collecte auprès de chaque habitation --- *\n");
                                 quartier = choisirQuartier();
                                 type = choisirTypeDechet();
-                                joursAutorises = choisirJourAutorise(type);
+                                joursAutorises = choisirJourAutorise(type, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Habitations";
                                 if (quartier==0) chemin = null;
@@ -394,7 +505,7 @@ public class Main {
                             case 3:
                                 System.out.println("* --- Ajout d'une collecte d'encombrant --- *");
                                 quartier = choisirQuartier();
-                                joursAutorises = choisirJourAutorise(null);
+                                joursAutorises = choisirJourAutorise(null, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Encombrants";
 
@@ -419,7 +530,7 @@ public class Main {
                                 System.out.println("* --- Ajout d'une collecte des points de collectes --- *");
                                 quartier = choisirQuartier();
                                 type = choisirTypeDechet();
-                                joursAutorises = choisirJourAutorise(type);
+                                joursAutorises = choisirJourAutorise(type, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Points de collecte";
                                 chemin = null;
@@ -445,7 +556,7 @@ public class Main {
 
                                     date = LocalDate.of(annee, mois, jour);
 
-                                    Tournee tournee = calendrier.getTournee(date);
+                                    Tournee tournee = calendrierGlobal.getTournee(date);
 
                                     if (tournee != null) {
                                         List<Arc> arcs = tournee.getListe();
@@ -474,11 +585,21 @@ public class Main {
                         }
 
 
-                        if(choix>=2 && choix<=4) {
-                            if (quartier==0) planifier.addTournee(date, type, type_tournee, calendrier, joursAutorises, chemin);
-                            else if (quartier==1) p1.addTournee(date, type, type_tournee, c1, joursAutorises,  chemin);
-                            else if (quartier==2) p2.addTournee(date, type, type_tournee, c2, joursAutorises, chemin);
-                            else if (quartier==3) p3.addTournee(date, type, type_tournee, c3, joursAutorises, chemin);
+                        if (choix >= 2 && choix <= 4) {
+                            if (quartier == 0) { // Cas global
+                                planifierGlobal.addTournee(date, type, type_tournee, calendrierGlobal, joursAutorises, chemin);
+                            } else { // Cas par quartier (boucle générique)
+                                for (Map.Entry<Integer, Planifier> entry : planifiersQuartier.entrySet()) {
+                                    int numQuartier = entry.getKey();
+                                    Planifier planifierQuartier = entry.getValue();
+                                    Calendrier calendrierQuartier = calendriersQuartier.get(numQuartier);
+
+                                    if (quartier == numQuartier && planifierQuartier != null && calendrierQuartier != null) {
+                                        planifierQuartier.addTournee(date, type, type_tournee, calendrierQuartier, joursAutorises, chemin);
+                                        break; // Sorti dès qu'on a trouvé le bon quartier
+                                    }
+                                }
+                            }
                         }
 
                     } else {

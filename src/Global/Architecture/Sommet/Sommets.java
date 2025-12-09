@@ -10,12 +10,14 @@ public class Sommets {
     private List<Arc> arcsEntrant;
     private Set<String> rues;
     private String nom;
+    private int quartier;
 
-    public Sommets(List<Arc> arcsSortants, List<Arc> arcsEntrant, Set<String> rues, String nom) {
+    public Sommets(List<Arc> arcsSortants, List<Arc> arcsEntrant, Set<String> rues, String nom, int quartier) {
         this.arcsSortants = arcsSortants;
         this.arcsEntrant = arcsEntrant;
         this.rues = rues;
         this.nom = nom;
+        this.quartier = quartier;
     }
 
     // getter
@@ -23,6 +25,7 @@ public class Sommets {
     public List<Arc> getArcsEntrant() {return arcsEntrant;}
     public Set<String> getRues() {return rues;}
     public String getNom() {return nom;}
+    public int getQuartier() {return quartier;}
 
     // setter
     public void addArcSortant(Arc arc) {

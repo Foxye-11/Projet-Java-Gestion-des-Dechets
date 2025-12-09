@@ -19,12 +19,12 @@ public class Fichier {
     public Map<String, Sommets> listeSommets = new LinkedHashMap<>();
     public Map<String, Arc> listeArcs = new LinkedHashMap<>();
 
-    public Fichier(String nomFichier) throws IOException {
+    public Fichier(String nomFichier, int HOX) throws IOException {
         this.nomFichier = nomFichier;
-        chargerAgglo();
+        chargerAgglo(HOX);
     }
 
-    private void chargerAgglo() throws IOException {
+    private void chargerAgglo(int HOX) throws IOException {
         String motCle1 = "MAISONS PAR RUE:";
         String motCle2 = "CARREFOURS";
         String motCle3 = "ARCS";
@@ -99,8 +99,9 @@ public class Fichier {
                 List<Arc> arcsEntrant = new ArrayList<>();
                 for (int i = 2; i < parts.length; i++)
                     rues.add(parts[i].trim());
+                int quartier = Integer.parseInt(parts[4].trim());
 
-                Sommets newSommets = new Sommets(ArcsSortants, arcsEntrant, rues, sommet);
+                Sommets newSommets = new Sommets(ArcsSortants, arcsEntrant, rues, sommet, quartier);
                 listeSommets.putIfAbsent(sommet, newSommets);
                 continue;
             }
@@ -121,33 +122,61 @@ public class Fichier {
                 String cooX = parts[4].trim();
                 String cooY = parts[5].trim();
                 int sens =  Integer.parseInt(parts[6].trim());
+                int quartier = Integer.parseInt(parts[7].trim());
 
-                Arc newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets1, sommets2);
-                Arc newArc2 = new Arc(nomRue, nbMaisons, longueur, sens, sommets2, sommets1);
-                listeArcs.put(nomArc, newArc);
+                // Création des arcs selon HOX et sens
+                Arc newArc = null; // déclaration en amont
+                Arc newArc2 = null;
 
+                if (HOX == 1) { // bidirectionnel
+                    newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets1, sommets2, quartier);
+                    newArc2 = new Arc(nomRue, nbMaisons, longueur, sens, sommets2, sommets1, quartier);
+
+                    listeArcs.put(nomArc + "_direct", newArc);
+                    listeArcs.put(nomArc + "_oppose", newArc2);
+
+                    sommets1.addArcSortant(newArc);
+                    sommets2.addArcEntrant(newArc);
+
+                    sommets2.addArcSortant(newArc2);
+                    sommets1.addArcEntrant(newArc2);
+
+                } else if (HOX == 2 || HOX == 3) {
+                    if (sens == 0) { // sens direct
+                        newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets1, sommets2, quartier);
+                        listeArcs.put(nomArc + "_direct", newArc);
+
+                        sommets1.addArcSortant(newArc);
+                        sommets2.addArcEntrant(newArc);
+
+                    } else if (sens == 1) { // sens opposé
+                        newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets2, sommets1, quartier);
+                        listeArcs.put(nomArc + "_oppose", newArc);
+
+                        sommets2.addArcSortant(newArc);
+                        sommets1.addArcEntrant(newArc);
+
+                    } else if (sens == 2) { // bidirectionnel
+                        newArc = new Arc(nomRue, nbMaisons, longueur, sens, sommets1, sommets2, quartier);
+                        newArc2 = new Arc(nomRue, nbMaisons, longueur, sens, sommets2, sommets1, quartier);
+
+                        listeArcs.put(nomArc + "_direct", newArc);
+                        listeArcs.put(nomArc + "_oppose", newArc2);
+
+                        sommets1.addArcSortant(newArc);
+                        sommets2.addArcEntrant(newArc);
+
+                        sommets2.addArcSortant(newArc2);
+                        sommets1.addArcEntrant(newArc2);
+                    }
+                }
+
+                // Association avec la rue
                 Rue rue = listeRues.get(nomRue);
                 if (rue == null) System.err.println("Rue introuvable : '" + nomRue + "' dans l'arc '" + nomArc + "'");
-                else rue.addArc(newArc);
+                else if (newArc != null) rue.addArc(newArc);
 
-                if (sens == 0){ // sens direct
-                    sommets1.addArcEntrant(newArc);
-                    sommets1.addArcSortant(newArc2);
-                    sommets2.addArcEntrant(newArc);
-                    sommets2.addArcSortant(newArc2);
-                }
-                else if (sens == 1) { // sens opposé
-                    sommets1.addArcEntrant(newArc);
-                    sommets1.addArcSortant(newArc2);
-                    sommets2.addArcEntrant(newArc);
-                    sommets2.addArcSortant(newArc2);
-                }
-                else if (sens == 2) { // bidirectionnel
-                    sommets1.addArcEntrant(newArc);
-                    sommets1.addArcSortant(newArc2);
-                    sommets2.addArcEntrant(newArc);
-                    sommets2.addArcSortant(newArc2);
-                }
+
                 continue;
             }
 
@@ -197,6 +226,7 @@ public class Fichier {
         System.out.println("\n=== LISTE DES SOMMETS ===");
         for (Sommets sommets : listeSommets.values()) {
             System.out.println("Sommet: " + sommets.getNom() +
+                    ", Quartier: " + sommets.getQuartier() +   // <-- ajout quartier
                     ", Rues reliées: " + sommets.getRues());
         }
 
@@ -208,8 +238,11 @@ public class Fichier {
                     ", Longueur: " + arc.getLongueur() +
                     ", Maisons: " + arc.getNbMaisons() +
                     ", Sens: " + arc.getSens() +
+                    ", Quartier: " + arc.getQuartier() +       // <-- ajout quartier
                     ", De: " + sommets1.getNom() +
-                    " -> " + sommets2.getNom());
+                    " (Q" + sommets1.getQuartier() + ")" +     // <-- quartier du sommet1
+                    " -> " + sommets2.getNom() +
+                    " (Q" + sommets2.getQuartier() + ")");     // <-- quartier du sommet2
         }
 
         System.out.println("\n=== POINTS DE COLLECTE ===");
@@ -224,9 +257,11 @@ public class Fichier {
             Arc a = pd.getLocalisation();
             if (a == null) {
                 System.out.println("Point de Depot n'existe pas");
-            }
-            else{
-                System.out.println("Point de Dépôt: " + a.getSommet1().getNom() + a.getSommet2().getNom() );
+            } else {
+                System.out.println("Point de Dépôt: " +
+                        a.getSommet1().getNom() + " (Q" + a.getSommet1().getQuartier() + ")" +
+                        " -> " +
+                        a.getSommet2().getNom() + " (Q" + a.getSommet2().getQuartier() + ")");
             }
         }
     }
