@@ -39,7 +39,7 @@ public class RecupPoubelle {
 
         int i=0;
         Camion camion = new Camion(69, pointDeDepot.getNom());
-        while(cheminNonBindsize() > i) {
+        while(cheminNonBind.size() > i) {
             camion.charger(cheminNonBind.get(i).getNbMaisons()); ;
             if(!(camion.getCharge_actuelle() <= camion.getCharge_max())) {
                 List <Arc> temp = new LinkedList<>();
