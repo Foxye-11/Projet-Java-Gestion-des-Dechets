@@ -30,46 +30,46 @@ Route du Clôt ; 52 ; 514.362
 Chemin de la Citadelle ; 14 ; 353.111
 
 CARREFOURS
-A ; 44.174745,5.441666 ; Le Chabrérieux ; Chemin d’Entressargue-Seramian
-B ; 44.175994,5.444351 ; Rue Notre-Dame ; Route de Ferrassières
-C ; 44.174459,5.445122 ; Chemin d’Entressargue-Seramian ; Route de Ferrassières ; Le Chabrérieux ; Rue Notre-Dame
-D ; 44.175417,5.4398 ; Basse Rue ; Montée de la Calade
-E ; 44.17571,5.440413 ; Montée de la Calade ; Rue de la Bourgade
-F ; 44.175777,5.441776 ; Rue Notre-Dame
-G ; 44.175869,5.439376 ; Calade du Château ; Montée de la Saute
-H ; 44.175776,5.438574 ; Montée de la Saute ; Rue du Beffroi
-I ; 44.175649,5.439317 ; Rue du Beffroi
-J ; 44.176372,5.439352 ; Calade du Château ; Maiil du Château
-K ; 44.176519,5.440152 ; Maiil du Château ; Mail du Château
-L ; 44.176464,5.440421 ; Maiil du Château ; Mail du Château
-M ; 44.175436,5.437957 ; Basse Rue
-N ; 44.175189,5.441624 ; Basse Rue ; Le Chabrérieux
-O ; 44.175726,5.440943 ; Mail du Château ; Rue Notre-Dame ; Rue de la Bourgade ; Route des Alpes
-P ; 44.187385,5.470729 ; Route de Montbrun ; Route des Alpes ; Mail du Château
-Q ; 44.174900,5.438900 ; Chemin du Moulin ; Chemin des Vignes
-R ; 44.175200,5.437900 ; Chemin des Vignes ; Route d'Aulan
-S ; 44.175600,5.438200 ; Route d'Aulan ; Basse Rue
-T ; 44.176900,5.441300 ; Haute Rue ; Route du Plateau
-U ; 44.177400,5.442100 ; Haute Rue ; Chemin du Château d’Eau
-V ; 44.177900,5.443100 ; Route du Plateau ; Chemin du Château d’Eau
-W ; 44.178400,5.440600 ; Route du Col ; Sentier du Rocher
-X ; 44.178900,5.441200 ; Sentier du Rocher ; Route du Col
-Y ; 44.175000,5.440000 ; Rue du Grand Soleil
-Z ; 44.174900,5.441100 ; La Condamine
-A.B ; 44.175300,5.440300 ; Route Vallée du Toulourenc
-A.C ; 44.175100,5.439300 ; Calade du Mouret
-A.D ; 44.174950,5.440450 ; Place du Grand Soleil
-A.E ; 44.175500,5.439700 ; Promenade de l'Anary
-A.F ; 44.175200,5.441900 ; L'Autin
-A.G ; 44.175650,5.441000 ; Rue Sous Notre-Dame
-A.H ; 44.176000,5.439000 ; Rue Petite Fontaine
-A.I ; 44.176900,5.442000 ; Route du Château
-A.J ; 44.174850,5.441300 ; Soustet de l'Église
-A.K ; 44.175350,5.442600 ; Route de la Justice
-A.L ; 44.174650,5.441000 ; La Boucoule
-A.M ; 44.176150,5.441600 ; Chemin de la Vilette
-A.N ; 44.176000,5.441100 ; Route du Clôt
-A.O ; 44.176300,5.439900 ; Chemin de la Citadelle
+A ; 44.174745,5.441666 ; Le Chabrérieux ; Chemin d’Entressargue-Seramian ; 1
+B ; 44.175994,5.444351 ; Rue Notre-Dame ; Route de Ferrassières ; 1
+C ; 44.174459,5.445122 ; Chemin d’Entressargue-Seramian ; Route de Ferrassières ; Le Chabrérieux ; Rue Notre-Dame ; 1
+D ; 44.175417,5.4398 ; Basse Rue ; Montée de la Calade ; 1
+E ; 44.17571,5.440413 ; Montée de la Calade ; Rue de la Bourgade ; 1
+F ; 44.175777,5.441776 ; Rue Notre-Dame ; 1
+G ; 44.175869,5.439376 ; Calade du Château ; Montée de la Saute ; 1
+H ; 44.175776,5.438574 ; Montée de la Saute ; Rue du Beffroi ; 2
+I ; 44.175649,5.439317 ; Rue du Beffroi ; 2
+J ; 44.176372,5.439352 ; Calade du Château ; Mail du Château ; 2
+K ; 44.176519,5.440152 ; Mail du Château ; Mail du Château ; 2
+L ; 44.176464,5.440421 ; Mail du Château ; Mail du Château ; 2
+M ; 44.175436,5.437957 ; Basse Rue ; 2
+N ; 44.175189,5.441624 ; Basse Rue ; Le Chabrérieux ; 2
+O ; 44.175726,5.440943 ; Mail du Château ; Rue Notre-Dame ; Rue de la Bourgade ; Route des Alpes ; 3
+P ; 44.187385,5.470729 ; Route de Montbrun ; Route des Alpes ; Mail du Château ; 3
+Q ; 44.174900,5.438900 ; Chemin du Moulin ; Chemin des Vignes ; 3
+R ; 44.175200,5.437900 ; Chemin des Vignes ; Route d'Aulan ; 3
+S ; 44.175600,5.438200 ; Route d'Aulan ; Basse Rue ; 3
+T ; 44.176900,5.441300 ; Haute Rue ; Route du Plateau ; 3
+U ; 44.177400,5.442100 ; Haute Rue ; Chemin du Château d’Eau ; 3
+V ; 44.177900,5.443100 ; Route du Plateau ; Chemin du Château d’Eau ; 4
+W ; 44.178400,5.440600 ; Route du Col ; Sentier du Rocher ; 4
+X ; 44.178900,5.441200 ; Sentier du Rocher ; Route du Col ; 4
+Y ; 44.175000,5.440000 ; Rue du Grand Soleil ; 4
+Z ; 44.174900,5.441100 ; La Condamine ; 4
+A.B ; 44.175300,5.440300 ; Route Vallée du Toulourenc ; 4
+A.C ; 44.175100,5.439300 ; Calade du Mouret ; 4
+A.D ; 44.174950,5.440450 ; Place du Grand Soleil ; 4
+A.E ; 44.175500,5.439700 ; Promenade de l'Anary ; 4
+A.F ; 44.175200,5.441900 ; L'Autin ; 4
+A.G ; 44.175650,5.441000 ; Rue Sous Notre-Dame ; 4
+A.H ; 44.176000,5.439000 ; Rue Petite Fontaine ; 4
+A.I ; 44.176900,5.442000 ; Route du Château ; 4
+A.J ; 44.174850,5.441300 ; Soustet de l'Église ; 4
+A.K ; 44.175350,5.442600 ; Route de la Justice ; 4
+A.L ; 44.174650,5.441000 ; La Boucoule ; 4
+A.M ; 44.176150,5.441600 ; Chemin de la Vilette ; 4
+A.N ; 44.176000,5.441100 ; Route du Clôt ; 4
+A.O ; 44.176300,5.439900 ; Chemin de la Citadelle ; 4
 
 ARCS
 A-B ; Le Chabrérieux ; 3 ; 50.0 ; 44.174745,5.441666 ; 44.175189,5.441624 ; 2 ; 1
