@@ -165,6 +165,7 @@ X-D ; Route du Col ; 2 ; 1150.0 ; 44.178900,5.441200 ; 44.175417,5.4398 ; 2 ; 4
 
 
 
+
 POINTS DE COLLECTE:
 Mairie ; 6 ; A-B ; 40.73
 Camping ; 8 ; G-H ; 127.69
