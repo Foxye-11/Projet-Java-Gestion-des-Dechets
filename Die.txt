@@ -1,0 +1,119 @@
+MAISONS PAR RUE:
+Rue des Cordeliers ; 28 ; 310.442
+Rue de la Manutention ; 15 ; 150.210
+Chemin des Vignes Hautes ; 42 ; 430.554
+Rue du Silo ; 10 ; 82.441
+Boulevard du Glandasse ; 55 ; 690.771
+Avenue de la Clairette ; 33 ; 540.449
+Rue du Mandarom ; 7 ; 15.770
+Rue des Tanneurs ; 25 ; 210.665
+Rue du Bourg ; 36 ; 290.884
+Chemin du Pas de L'Ours ; 50 ; 1420.112
+Rue de la Combe ; 18 ; 188.552
+Promenade du Torrent ; 24 ; 260.445
+Chemin du Château Vieux ; 17 ; 210.778
+Place du Marché ; 9 ; 5.001
+Route d'Ausson ; 65 ; 2420.991
+Sentier du Pic ; 40 ; 580.113
+Chemin des Serres ; 48 ; 1220.660
+Rue du Couvent ; 14 ; 130.771
+Rue des Fossés ; 12 ; 95.220
+Allée des Platanes ; 20 ; 220.880
+Chemin du Gué ; 9 ; 48.330
+Passage des Remparts ; 11 ; 75.110
+Rue du Verger ; 16 ; 210.005
+Route de la Drôme ; 30 ; 890.900
+
+CARREFOURS
+A ; 44.752100,5.370100 ; Rue des Cordeliers ; Rue du Silo ; 1
+B ; 44.752850,5.371000 ; Rue de la Manutention ; Rue des Cordeliers ; 1
+C ; 44.753300,5.372200 ; Chemin des Vignes Hautes ; Boulevard du Glandasse ; 1
+D ; 44.753700,5.370800 ; Rue du Silo ; Rue des Tanneurs ; 1
+E ; 44.753900,5.372900 ; Rue du Mandarom ; Rue du Bourg ; 1
+F ; 44.752500,5.373500 ; Avenue de la Clairette ; Rue de la Combe ; 1
+G ; 44.751900,5.372800 ; Rue des Tanneurs ; Promenade du Torrent ; 1
+H ; 44.751600,5.371900 ; Chemin du Château Vieux ; Place du Marché ; 2
+I ; 44.752350,5.372200 ; Route d'Ausson ; Sentier du Pic ; 2
+J ; 44.752900,5.370300 ; Rue du Couvent ; Rue des Cordeliers ; 2
+K ; 44.753600,5.374300 ; Chemin des Serres ; Route d'Ausson ; 2
+L ; 44.754200,5.374900 ; Sentier du Pic ; Avenue de la Clairette ; 2
+M ; 44.751800,5.374100 ; Rue du Bourg ; Chemin des Vignes Hautes ; 2
+N ; 44.752450,5.375400 ; Boulevard du Glandasse ; Rue du Couvent ; 2
+O ; 44.754500,5.370400 ; Route d'Ausson ; Place du Marché ; 3
+P ; 44.753100,5.375900 ; Promenade du Torrent ; Chemin des Serres ; 3
+Q ; 44.751500,5.370900 ; Place du Marché ; Avenue de la Clairette ; 3
+R ; 44.752050,5.374900 ; Rue de la Combe ; Sentier du Pic ; 3
+S ; 44.754000,5.372000 ; Rue des Fossés ; Passage des Remparts ; 3
+T ; 44.753200,5.371400 ; Allée des Platanes ; Chemin du Gué ; 3
+U ; 44.754800,5.373500 ; Passage des Remparts ; Rue du Verger ; 4
+V ; 44.751400,5.375000 ; Rue du Verger ; Chemin du Pas de L'Ours ; 4
+W ; 44.751200,5.372200 ; Route de la Drôme ; Rue du Bourg ; 4
+X ; 44.753900,5.375200 ; Chemin du Gué ; Route de la Drôme ; 4
+Y ; 44.752600,5.376400 ; Rue des Fossés ; Route de la Drôme ; 4
+Z ; 44.751900,5.371200 ; Allée des Platanes ; Rue des Tanneurs ; 4
+
+ARCS
+A-B ; Rue des Cordeliers ; 28 ; 110.442 ; 44.752100,5.370100 ; 44.752850,5.371000 ; 0 ; 1
+B-C ; Rue de la Manutention ; 15 ; 205.330 ; 44.752850,5.371000 ; 44.753300,5.372200 ; 0 ; 1
+C-D ; Chemin des Vignes Hautes ; 42 ; 285.771 ; 44.753300,5.372200 ; 44.753700,5.370800 ; 0 ; 1
+D-E ; Rue du Silo ; 10 ; 70.112 ; 44.753700,5.370800 ; 44.753900,5.372900 ; 0 ; 1
+E-F ; Rue du Mandarom ; 7 ; 130.449 ; 44.753900,5.372900 ; 44.752500,5.373500 ; 0 ; 1
+F-G ; Avenue de la Clairette ; 33 ; 78.330 ; 44.752500,5.373500 ; 44.751900,5.372800 ; 2 ; 2
+G-H ; Rue des Tanneurs ; 25 ; 56.220 ; 44.751900,5.372800 ; 44.751600,5.371900 ; 0 ; 2
+H-I ; Chemin du Château Vieux ; 17 ; 88.441 ; 44.751600,5.371900 ; 44.752350,5.372200 ; 2 ; 2
+I-J ; Route d'Ausson ; 65 ; 380.550 ; 44.752350,5.372200 ; 44.752900,5.370300 ; 0 ; 2
+J-A ; Rue du Couvent ; 14 ; 92.004 ; 44.752900,5.370300 ; 44.752100,5.370100 ; 1 ; 2
+
+C-K ; Chemin des Vignes Hautes ; 42 ; 330.440 ; 44.753300,5.372200 ; 44.753600,5.374300 ; 0 ; 3
+K-L ; Chemin des Serres ; 48 ; 210.770 ; 44.753600,5.374300 ; 44.754200,5.374900 ; 1 ; 3
+L-M ; Sentier du Pic ; 40 ; 175.554 ; 44.754200,5.374900 ; 44.751800,5.374100 ; 2 ; 3
+M-N ; Rue du Bourg ; 36 ; 118.990 ; 44.751800,5.374100 ; 44.752450,5.375400 ; 2 ; 3
+N-O ; Boulevard du Glandasse ; 55 ; 260.441 ; 44.752450,5.375400 ; 44.754500,5.370400 ; 0 ; 4
+O-P ; Route d'Ausson ; 65 ; 280.770 ; 44.754500,5.370400 ; 44.753100,5.375900 ; 1 ; 4
+P-Q ; Promenade du Torrent ; 24 ; 190.002 ; 44.753100,5.375900 ; 44.751500,5.370900 ; 1 ; 4
+Q-R ; Place du Marché ; 9 ; 130.998 ; 44.751500,5.370900 ; 44.752050,5.374900 ; 0 ; 4
+R-A ; Rue de la Combe ; 18 ; 70.554 ; 44.752050,5.374900 ; 44.752100,5.370100 ; 2 ; 4
+
+F-I ; Avenue de la Clairette ; 33 ; 320.330 ; 44.752500,5.373500 ; 44.752350,5.372200 ; 0 ; 3
+I-M ; Sentier du Pic ; 40 ; 250.998 ; 44.752350,5.372200 ; 44.751800,5.374100 ; 1 ; 3
+M-E ; Rue du Bourg ; 36 ; 410.330 ; 44.751800,5.374100 ; 44.753900,5.372900 ; 0 ; 2
+D-H ; Rue des Tanneurs ; 25 ; 290.557 ; 44.753700,5.370800 ; 44.751600,5.371900 ; 1 ; 2
+A-G ; Rue des Cordeliers ; 28 ; 220.770 ; 44.752100,5.370100 ; 44.751900,5.372800 ; 0 ; 1
+C-O ; Boulevard du Glandasse ; 55 ; 270.554 ; 44.753300,5.372200 ; 44.754500,5.370400 ; 1 ; 4
+Q-B ; Place du Marché ; 9 ; 185.440 ; 44.751500,5.370900 ; 44.752850,5.371000 ; 0 ; 1
+P-F ; Promenade du Torrent ; 24 ; 225.770 ; 44.753100,5.375900 ; 44.752500,5.373500 ; 1 ; 3
+
+S-T ; Rue des Fossés ; 12 ; 95.220 ; 44.754000,5.372000 ; 44.753200,5.371400 ; 0 ; 3
+T-U ; Allée des Platanes ; 20 ; 140.330 ; 44.753200,5.371400 ; 44.754800,5.373500 ; 1 ; 3
+U-V ; Passage des Remparts ; 11 ; 180.770 ; 44.754800,5.373500 ; 44.751400,5.375000 ; 0 ; 4
+V-W ; Rue du Verger ; 16 ; 260.441 ; 44.751400,5.375000 ; 44.751200,5.372200 ; 1 ; 4
+W-X ; Route de la Drôme ; 30 ; 300.550 ; 44.751200,5.372200 ; 44.753900,5.375200 ; 0 ; 4
+X-Y ; Chemin du Gué ; 9 ; 210.002 ; 44.753900,5.375200 ; 44.752600,5.376400 ; 1 ; 4
+Y-Z ; Rue des Fossés ; 12 ; 150.998 ; 44.752600,5.376400 ; 44.751900,5.371200 ; 0 ; 4
+Z-S ; Allée des Platanes ; 20 ; 170.554 ; 44.751900,5.371200 ; 44.754000,5.372000 ; 1 ; 4
+
+K-X ; Chemin des Serres ; 48 ; 220.330 ; 44.753600,5.374300 ; 44.753900,5.375200 ; 0 ; 4
+X-N ; Route de la Drôme ; 30 ; 210.990 ; 44.753900,5.375200 ; 44.752450,5.375400 ; 1 ; 4
+V-M ; Rue du Verger ; 16 ; 240.770 ; 44.751400,5.375000 ; 44.751800,5.374100 ; 0 ; 3
+S-R ; Rue des Fossés ; 12 ; 190.440 ; 44.754000,5.372000 ; 44.752050,5.374900 ; 0 ; 3
+T-J ; Allée des Platanes ; 20 ; 185.330 ; 44.753200,5.371400 ; 44.752900,5.370300 ; 1 ; 3
+
+I-N ; Sentier d’Ausson Nord ; 6 ; 88.440 ; 44.752350,5.372200 ; 44.752450,5.375400 ; 2 ; 2
+O-R ; Traverse du Pic ; 5 ; 140.220 ; 44.754500,5.370400 ; 44.752050,5.374900 ; 0 ; 3
+P-T ; Chemin des Serres Hautes ; 7 ; 155.900 ; 44.753100,5.375900 ; 44.754200,5.374900 ; 1 ; 3
+S-Q ; Passage du Marché ; 6 ; 88.110 ; 44.752050,5.374900 ; 44.751500,5.370900 ; 2 ; 3
+R-Q ; Rue du Réciproque ; 6 ; 85.220 ; 44.752050,5.374900 ; 44.751500,5.370900 ; 0 ; 3
+P-O ; Chemin du Retour ; 8 ; 130.440 ; 44.752350,5.372200 ; 44.754500,5.370400 ; 0 ; 3
+V-Y ; Rue de la Liaison ; 7 ; 120.330 ; 44.751400,5.375000 ; 44.752600,5.376400 ; 0 ; 4
+X-U ; Boulevard du Cercle ; 9 ; 140.110 ; 44.753900,5.375200 ; 44.754800,5.373500 ; 0 ; 4
+Z-W ; Promenade du Retour ; 5 ; 95.880 ; 44.751900,5.371200 ; 44.751200,5.372200 ; 0 ; 4
+
+POINTS DE COLLECTE:
+Hôtel de Ville ; 5 ; A-B ; 44.20
+Collège du Vercors ; 4 ; H-I ; 32.22
+Piscine municipale ; 6 ; L-M ; 90.40
+Zone artisanale ; 8 ; P-Q ; 123.12
+Parc relais ; 6 ; S-T ; 60.00
+
+DEPOT:
+Dépôt communal ; O-P ; 52.10
