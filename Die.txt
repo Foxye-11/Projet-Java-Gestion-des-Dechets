@@ -116,4 +116,8 @@ Zone artisanale ; 8 ; P-Q ; 123.12
 Parc relais ; 6 ; S-T ; 60.00
 
 DEPOT:
+<<<<<<< Updated upstream
 Dépôt général ; O-P ; 52.10
+=======
+Dépôt principal ; O-P ; 52.10
+>>>>>>> Stashed changes
