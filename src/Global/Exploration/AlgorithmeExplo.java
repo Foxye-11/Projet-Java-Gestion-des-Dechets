@@ -410,7 +410,8 @@ public class AlgorithmeExplo {
             Map<String, Arc> arcs) {
 
         Sommets depart = sommets.get(nomDepart);
-
+        System.out.println("nomDepart : "+nomDepart);
+        System.out.println("Depart : "+depart);
         if (depart == null || destination == null) {
             throw new IllegalArgumentException("Sommet inconnu.");
         }
@@ -458,17 +459,19 @@ public class AlgorithmeExplo {
         }
 
         List<Arc> chemin = new LinkedList<>();
-        Sommets courant = destination.getSommet1();
+        Sommets courant = destination.getSommet2(); // sommet final
 
         while (!courant.equals(depart)) {
             Arc arc = precedent.get(courant);
+            if (arc == null) {
+                throw new IllegalStateException("Erreur : arc précédent non trouvé pour " + courant.getNom());
+            }
             chemin.add(0, arc);
             courant = arc.getSommet1();
         }
-
         return chemin;
     }
-
+    /*
     public static List<Arc> dijkstraMultiArc(
             String nomDepart,
             Arc [] destination,
@@ -544,7 +547,94 @@ public class AlgorithmeExplo {
         }
 
         return chemin;
+    }*/
+    public static List<Arc> dijkstraMultiArc(
+            String nomDepart,
+            Arc[] destinations,
+            Map<String, Sommets> sommets,
+            Map<String, Arc> arcs) {
+
+        Sommets depart = sommets.get(nomDepart);
+
+        if (depart == null || destinations == null || destinations.length == 0) {
+            throw new IllegalArgumentException("Paramètres invalides.");
+        }
+
+        // Vérifie si on est déjà sur un des arcs de destination
+        for (Arc dest : destinations) {
+            if (depart.equals(dest.getSommet1())) {
+                return new ArrayList<>(); // déjà dessus → chemin vide
+            }
+        }
+
+        // Distances et prédécesseurs
+        Map<Sommets, Double> distance = new HashMap<>();
+        Map<Sommets, Arc> precedent = new HashMap<>();
+
+        for (Sommets s : sommets.values()) {
+            distance.put(s, Double.POSITIVE_INFINITY);
+        }
+        distance.put(depart, 0.0);
+
+        PriorityQueue<Sommets> file =
+                new PriorityQueue<>(Comparator.comparingDouble(distance::get));
+
+        file.add(depart);
+
+        Arc arrive = null;
+
+        // -----------------
+        // ALGORITHME
+        // -----------------
+        while (!file.isEmpty()) {
+            Sommets courant = file.poll();
+
+            // 1️⃣ Vérifier si courant est un sommet d'arrivée
+            for (Arc dest : destinations) {
+                if (courant.equals(dest.getSommet2())) {
+                    arrive = dest;
+                    file.clear(); // STOP complet du Dijkstra
+                    break;
+                }
+            }
+
+            if (arrive != null) break; // fin du Dijkstra multi-destination
+
+            // 2️⃣ Exploration normale
+            for (Arc arc : courant.getArcsSortants()) {
+                Sommets voisin = arc.getSommet2();
+                double coutArc = arc.getLongueur();
+                double nouvelleDistance = distance.get(courant) + coutArc;
+
+                if (nouvelleDistance < distance.get(voisin)) {
+                    distance.put(voisin, nouvelleDistance);
+                    precedent.put(voisin, arc);
+
+                    file.remove(voisin);
+                    file.add(voisin);
+                }
+            }
+        }
+
+        // -----------------
+        // RECONSTRUCTION
+        // -----------------
+
+        if (arrive == null) return null; // aucun encombrant atteint
+
+        Sommets courant = arrive.getSommet2();
+        List<Arc> chemin = new LinkedList<>();
+
+        while (!courant.equals(depart)) {
+            Arc arc = precedent.get(courant);
+            if (arc == null) return null; // protection anti NPE
+            chemin.add(0, arc);
+            courant = arc.getSommet1();
+        }
+
+        return chemin;
     }
+
 
 
     public static Map<Sommets, Double> dijkstraAll(

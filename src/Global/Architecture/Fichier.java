@@ -204,8 +204,9 @@ public class Fichier {
                 String nom = parts[0].trim();
                 String arc = parts[1].trim();
                 String longueur = parts[2].trim();
-                Arc location = listeArcs.get(arc);
-
+                Arc location = getListeArcs().get(arc+"_oppose");
+                System.out.println("Clé arc : "+arc);
+                System.out.println("localisation : "+location);
                 PointDeDepot pointDeDepot = new PointDeDepot(nom, location);
                 listePointsDepots.putIfAbsent(nom, pointDeDepot);
                 continue;
