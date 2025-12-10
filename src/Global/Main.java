@@ -18,6 +18,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
+import static Global.Gestion.RecupEncombrant.recupEncombrant;
+
 public class Main {
 
     public static Map<String, Set<GraphismeControle.Arc>> construireGraphe(Fichier fichier) {
@@ -95,6 +97,61 @@ public class Main {
         return false;
     }
 
+    public static List<String> saisirArcsChoisis(List<String> nomsArcs) {
+        Scanner sc = new Scanner(System.in);
+        List<String> arcsChoisis = new ArrayList<>();
+        boolean saisieValide = false;
+
+        while (!saisieValide) {
+            System.out.println("Entrez les numéros des arcs que vous voulez utiliser (séparés par des virgules, max 10) : ");
+            String saisie = sc.nextLine().trim();
+            String[] temp = saisie.split(",");
+
+            if (temp.length < 1 || temp.length > 10) {
+                System.out.println("Erreur : vous devez choisir entre 1 et 10 arcs.");
+                continue;
+            }
+
+            arcsChoisis.clear();
+            saisieValide = true;
+
+            for (String t : temp) {
+                try {
+                    int index = Integer.parseInt(t.trim());
+                    if (index < 1 || index > nomsArcs.size()) {
+                        System.out.println("Erreur : index " + index + " invalide.");
+                        saisieValide = false;
+                        break;
+                    }
+                    arcsChoisis.add(nomsArcs.get(index - 1));
+                } catch (NumberFormatException e) {
+                    System.out.println("Erreur : '" + t + "' n’est pas un nombre valide.");
+                    saisieValide = false;
+                    break;
+                }
+            }
+        }
+        return arcsChoisis;
+    }
+
+    public static List<String> afficherArcsDisponibles(Map<String, Arc> listeArcs, int quartierChoisi) {
+        System.out.println("\n--- Arcs disponibles ---");
+        List<String> nomsArcs = new ArrayList<>();
+        int i = 1;
+
+        for (Map.Entry<String, Arc> entry : listeArcs.entrySet()) {
+            Arc arc = entry.getValue();
+
+            // Si quartier == 0 -> global (on prend tous les arcs)
+            // Sinon -> on filtre par quartier
+            if (quartierChoisi == 0 || arc.getQuartier() == quartierChoisi) {
+                nomsArcs.add(entry.getKey());
+                System.out.println(i + " : " + entry.getKey());
+                i++;
+            }
+        }
+        return nomsArcs;
+    }
 
     // Entrer avec blindage
     public static double choisirFrequance(){
@@ -275,6 +332,36 @@ public class Main {
             }
         }
         return choix;
+    }
+    public static List<String> choisirArcs(Map<String, Arc> listeArcs) {
+        Scanner sc = new Scanner(System.in);
+        List<String> arcsChoisis = new ArrayList<>();
+        boolean saisieValide = false;
+
+        while (!saisieValide) {
+            System.out.println("Entrez les noms des arcs que vous voulez utiliser (séparés par des virgules, max 10) : ");
+            String saisie = sc.nextLine().trim();
+            String[] tokens = saisie.split(",");
+
+            if (tokens.length < 1 || tokens.length > 10) {
+                System.out.println("Erreur : vous devez choisir entre 1 et 10 arcs.");
+                continue;
+            }
+
+            arcsChoisis.clear();
+            saisieValide = true;
+
+            for (String t : tokens) {
+                String nomArc = t.trim();
+                if (!listeArcs.containsKey(nomArc)) {
+                    System.out.println("Erreur : l’arc " + nomArc + " n’existe pas.");
+                    saisieValide = false;
+                    break;
+                }
+                arcsChoisis.add(nomArc);
+            }
+        }
+        return arcsChoisis;
     }
 
 
@@ -483,9 +570,6 @@ public class Main {
                 String type_tournee = null;
                 int quartier = -1;
                 List<Arc> chemin = null;
-                List<Arc> chemin1 = null;
-                List<Arc> chemin2 = null;
-                List<Arc> chemin3 = null;
 
                 boolean end2 = false;
                 while (!end2) {
@@ -530,38 +614,40 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(type, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Habitations";
-                                if (quartier==0) chemin = null;
-                                else if (quartier==1) chemin = null;
-                                else if (quartier==2) chemin = null;
-                                else if (quartier==3) chemin = null;
+                                chemin = null;
 
                                 break;
                             case 3: // Thème 1 p1
-                                System.out.println("* --- Ajout d'une collecte d'encombrant --- *");
+                                System.out.println("\n* --- Ajout d'une collecte d'encombrant --- *\n");
                                 quartier = choisirQuartier();
                                 joursAutorises = choisirJourAutorise(null, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Encombrants";
 
-                                System.out.println("Combien y'a t'il d'encombrants ?");
-                                int nombre = sc.nextInt();
-                                List <Encombrant> encombrants = new LinkedList<>();
-                                for (int i = 0; i < nombre; i++) {
-                                    System.out.println("Entrez le numéro de domicile :");
-                                    int domicile = sc.nextInt();
-                                    System.out.println("Entrez la rue du domicile : ");
-                                    String rue_temp = sc.nextLine();
-                                    Rue rue = fichier.getListeRues().get(rue_temp);
-
-                                    Encombrant newEncombrant = new Encombrant(rue, domicile);
-                                    encombrants.add(newEncombrant);
+                                List<String> nomsArcs = afficherArcsDisponibles(fichier.getListeArcs(), quartier);
+                                List<String> arcsChoisis = saisirArcsChoisis(nomsArcs);
+                                // Création des encombrants choisis
+                                List<Encombrant> encombrants = new LinkedList<>();
+                                for (String nomArc : arcsChoisis) {
+                                    encombrants.add(new Encombrant(fichier.getListeArcs().get(nomArc)));
                                 }
-                                //RecupEncombrant re = new RecupEncombrant();
-                                //chemin = re.recupEncombrant(encombrants, fichier.getListePointsDepots().get(0).getNom(), fichier.getListeSommets(), fichier.getListeArcs());
+                                // Récupération du chemin
+                                chemin = recupEncombrant(
+                                        encombrants,
+                                        fichier.getListePointsDepots().get("Dépôt principal").getLocalisation().getSommet1().getNom(),
+                                        fichier.getListeSommets(),
+                                        fichier.getListeArcs()
+                                );
+                                // Affichage du chemin
+                                System.out.println("\n--- Chemin des encombrants ---");
+                                System.out.println(chemin.getFirst().getSommet1().getNom());
+                                for (Arc arc : chemin) {
+                                    System.out.print(" -> " + arc.getSommet2().getNom());
+                                }
 
                                 break;
                             case 4: // Thème 2
-                                System.out.println("* --- Ajout d'une collecte des points de collectes --- *");
+                                System.out.println("\n* --- Ajout d'une collecte des points de collectes --- *\n");
                                 quartier = choisirQuartier();
                                 type = choisirTypeDechet();
                                 joursAutorises = choisirJourAutorise(type, null);
