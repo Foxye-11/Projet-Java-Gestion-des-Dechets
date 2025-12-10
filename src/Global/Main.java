@@ -4,6 +4,7 @@ import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
+import Global.Architecture.Sommet.PointDeDepot;
 import Global.Architecture.Sommet.Sommets;
 import Global.Entite.Encombrant;
 import Global.Graphique.GraphiqueFenetre;
@@ -19,6 +20,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static Global.Gestion.RecupEncombrant.recupEncombrant;
+import static Global.Gestion.RecupPoubelle.recupPoubelle;
+import static Global.Gestion.RecupPoubelle.recupPoubelleQuartier;
 
 public class Main {
 
@@ -420,28 +423,35 @@ public class Main {
                 }
 
                 // -------------------------------------- Calcul de l'itineraire -------------------------------------- //
-                /*
+
                 // Récupération du dépôt principal
                 PointDeDepot depotPrincipal = fichier.getListePointsDepots().get("Dépôt principal");
                 //PointDeDepot pd = new PointDeDepot("Dépôt principal", fichier.getListeArcs().get(0));
 
                 // Chemin sans consideration des quartiers
-                List <Arc> cheminPoubelleGlobal = RecupPoubelle.recupPoubelle(depotPrincipal, listeSommets, listeArcs);
+                List <Arc> cheminPoubelleGlobal = recupPoubelle(depotPrincipal, listeSommets, listeArcs);
+                System.out.println("\n--- Chemin de collecte global ---");
+                System.out.print(cheminPoubelleGlobal.getFirst().getSommet1().getNom());
+                for (Arc arc : cheminPoubelleGlobal) {
+                    if (arc != null) System.out.print(" -> " + arc.getSommet2().getNom());
+                }
+
 
                 // Stocker les chemins par quartier
                 Map<Integer, List<Arc>> cheminsPoubelleQuartier = new HashMap<>();
-
                 // Boucle sur tous les quartiers
                 for (Map.Entry<Integer, Quartier> entry : quartiers.entrySet()) {
                     int numQuartier = entry.getKey();
                     Quartier quartier = entry.getValue();
 
-                    List<Arc> chemin = RecupPoubelle.recupPoubelleQuartier(depotPrincipal, listeSommets, listeArcs, quartier);
+                    List<Arc> chemin = recupPoubelleQuartier(depotPrincipal, listeSommets, listeArcs, quartier);
                     cheminsPoubelleQuartier.put(numQuartier, chemin);
-                    System.out.println("Chemin pour Quartier " + numQuartier + " : " + chemin);
+                    //System.out.println("\nChemin de collecte pour Quartier " + numQuartier);
+                    //System.out.print(chemin.getFirst().getSommet1().getNom());
+                    //for (Arc arc : chemin) {if (arc != null) System.out.print(" -> " + arc.getSommet2().getNom());}
                 }
 
-                 */
+
 
 
 
@@ -506,6 +516,17 @@ public class Main {
                 // Création du planning global //
                 Planifier planifierGlobal = new Planifier(joursParTypeGlobal, frequenceGlobal);
                 Calendrier calendrierGlobal = planifierGlobal.creerPlanning(annee, null);
+
+                // Ajout du chemin des tournee créé
+                for (Map.Entry<LocalDate, Tournee> entry : calendrierGlobal.getTournees().entrySet()) {
+                    LocalDate date = entry.getKey();
+                    Tournee tournee = entry.getValue();
+
+                    List<Arc> arcsPourTournee = new ArrayList<>(listeArcs.values());
+                    tournee.setListe(arcsPourTournee);
+
+                    System.out.println("Tournee du " + date + " mise à jour avec " + arcsPourTournee.size() + " arcs.");
+                }
 
 
 
@@ -614,8 +635,14 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(type, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Habitations";
-                                chemin = null;
-
+                                if (quartier==0) chemin = cheminPoubelleGlobal;
+                                else {
+                                    for (Map.Entry<Integer, Calendrier> entry : calendriersQuartier.entrySet()){
+                                        int numQuartier = entry.getKey();
+                                        Calendrier calendrier = entry.getValue();
+                                        if (quartier == numQuartier) chemin = cheminsPoubelleQuartier.get(numQuartier);
+                                    }
+                                }
                                 break;
                             case 3: // Thème 1 p1
                                 System.out.println("\n* --- Ajout d'une collecte d'encombrant --- *\n");
@@ -640,7 +667,7 @@ public class Main {
                                 );
                                 // Affichage du chemin
                                 System.out.println("\n--- Chemin des encombrants ---");
-                                System.out.println(chemin.getFirst().getSommet1().getNom());
+                                System.out.print(chemin.getFirst().getSommet1().getNom());
                                 for (Arc arc : chemin) {
                                     System.out.print(" -> " + arc.getSommet2().getNom());
                                 }
@@ -684,9 +711,11 @@ public class Main {
                                             System.out.println("Aucun arc dans la tournee du " + date);
                                         } else {
                                             System.out.println("Liste des arcs pour la tournee du " + date + " :");
+                                            System.out.print( arcs.getFirst().getSommet1().getNom());
                                             for (Arc arc : arcs) {
-                                                System.out.println(" - " + arc);
+                                                System.out.print( " -> " + arc.getSommet2().getNom());
                                             }
+                                            System.out.println(" ");
                                         }
                                     } else {
                                         System.out.println("Aucune tournee trouvee pour la date " + date);

@@ -14,6 +14,7 @@ public class Calendrier extends JFrame {
     // setter & getter
     public void addTournee(Tournee t) {planning.put(t.getDate(), t);}
     public Tournee getTournee(LocalDate date) {return planning.get(date);}
+    public Map<LocalDate, Tournee> getTournees() {return planning;}
 
 
     // Méthode d’affichage
