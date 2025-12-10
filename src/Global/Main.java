@@ -4,19 +4,18 @@ import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Rue;
-import Global.Architecture.Sommet.PointDeDepot;
 import Global.Architecture.Sommet.Sommets;
 import Global.Entite.Encombrant;
-import Global.Gestion.RecupEncombrant;
 import Global.Graphique.GraphiqueFenetre;
 import Global.Graphique.GraphismeControle;
 import Global.Planification.Calendrier;
 import Global.Planification.Planifier;
-import Global.Gestion.RecupPoubelle;
 import Global.Planification.Tournee;
 
 import java.io.IOException;
-import java.time.*;
+import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Main {

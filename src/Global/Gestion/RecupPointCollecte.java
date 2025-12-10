@@ -1,7 +1,6 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Fichier;
 import Global.Architecture.Sommet.PointDeCollecte;
 import Global.Architecture.Sommet.Sommets;
 import Global.Exploration.AlgorithmeExplo;

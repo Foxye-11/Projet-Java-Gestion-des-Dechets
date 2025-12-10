@@ -810,7 +810,7 @@ public class AlgorithmeExplo {
         }
 
         // Trier les aretes par poids croissant
-        aretes.sort(Comparator.comparingDouble(Global.Architecture.Arc::getLongueur));
+        aretes.sort(Comparator.comparingDouble(Arc::getLongueur));
 
         // Tant que nb_aretes < ordre - 1
         while (nb_aretes < sommets.size() - 1) {

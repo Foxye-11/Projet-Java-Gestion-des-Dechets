@@ -1,7 +1,6 @@
 package Global.Gestion;
 
 import Global.Architecture.Arc;
-import Global.Architecture.Fichier;
 import Global.Architecture.Quartier;
 import Global.Architecture.Sommet.PointDeDepot;
 import Global.Architecture.Sommet.Sommets;
@@ -11,7 +10,6 @@ import Global.Exploration.AlgorithmeExplo;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class RecupPoubelle {
     public static List<Arc> allerRetourPointDeDepot(PointDeDepot pointDeDepot, Sommets sommet,

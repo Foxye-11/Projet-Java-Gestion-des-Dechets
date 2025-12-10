@@ -4,8 +4,6 @@ import Global.Architecture.Arc;
 import Global.Entite.Camion;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 public class PointDeDepot {
     private String nom;

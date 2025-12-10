@@ -1,8 +1,13 @@
 package Global.Planification;
+
 import Global.Architecture.Arc;
 
-import java.time.*;
-import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Planifier {

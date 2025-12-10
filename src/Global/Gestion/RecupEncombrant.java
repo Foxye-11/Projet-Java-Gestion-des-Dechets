@@ -2,18 +2,14 @@ package Global.Gestion;
 
 import Global.Architecture.Arc;
 import Global.Architecture.Fichier;
-import Global.Architecture.Rue;
 import Global.Architecture.Sommet.Sommets;
 import Global.Entite.Encombrant;
 import Global.Exploration.AlgorithmeExplo;
 
-
 import java.io.IOException;
-import java.util.*;
-
-
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static Global.Main.choisirHOX;
 
