@@ -100,6 +100,7 @@ public class Main {
         return false;
     }
 
+    // Choix arc ajouter tournee
     public static List<String> saisirArcsChoisis(List<String> nomsArcs) {
         Scanner sc = new Scanner(System.in);
         List<String> arcsChoisis = new ArrayList<>();
@@ -650,6 +651,7 @@ public class Main {
                                 joursAutorises = choisirJourAutorise(null, null);
                                 date = choisirDate(annee);
                                 type_tournee = "Encombrants";
+                                type = "OM";
 
                                 List<String> nomsArcs = afficherArcsDisponibles(fichier.getListeArcs(), quartier);
                                 List<String> arcsChoisis = saisirArcsChoisis(nomsArcs);
@@ -671,6 +673,7 @@ public class Main {
                                 for (Arc arc : chemin) {
                                     System.out.print(" -> " + arc.getSommet2().getNom());
                                 }
+                                System.out.println();
 
                                 break;
                             case 4: // Thème 2
