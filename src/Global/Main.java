@@ -13,6 +13,8 @@ import Global.Planification.Calendrier;
 import Global.Planification.Planifier;
 import Global.Planification.Tournee;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -53,6 +55,50 @@ public class Main {
         }
 
         return graph;
+    }
+
+    public static Map<String, Integer> construireQuartiers(String cheminFichier) {
+        Map<String, Integer> mapQuartiers = new LinkedHashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(cheminFichier))) {
+            String line;
+            boolean inCarrefours = false;
+
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                // Repère le début de la section CARREFOURS (si présent dans ton fichier)
+                if (!inCarrefours) {
+                    if (line.equalsIgnoreCase("CARREFOURS")) {
+                        inCarrefours = true;
+                    }
+                    continue;
+                }
+
+                // Une fois dans la section CARREFOURS on parse les lignes
+                // Ignorer commentaires ou lignes mal formées
+                if (!line.contains(";")) continue;
+
+                String[] parts = line.split(";");
+                if (parts.length < 5) continue; // on attend au moins 5 champs
+
+                String sommet = parts[0].trim();
+                String quartierStr = parts[4].trim();
+                try {
+                    int quartier = Integer.parseInt(quartierStr);
+                    mapQuartiers.put(sommet, quartier);
+                } catch (NumberFormatException nfe) {
+                    // Si le champ n'est pas un entier, on ignore ou met 0 par défaut
+                    mapQuartiers.put(sommet, 0);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Optionnel: tu peux relancer l'exception ou gérer autrement
+        }
+
+        return mapQuartiers;
     }
 
     public static void colorierQuartiers(Map<Integer, Quartier> quartiers) {
@@ -396,7 +442,7 @@ public class Main {
 
                 // Creation du graphe
                 Map<String, Set<GraphismeControle.Arc>> graphe = construireGraphe(fichier);
-                new GraphiqueFenetre(graphe);
+                new GraphiqueFenetre(graphe, listeSommets);
 
                 // -------------------------------------- Repartition par quartier -------------------------------------- //
                 // Création des quartiers

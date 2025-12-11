@@ -1,117 +1,128 @@
-    package Global.Graphique;
+package Global.Graphique;
 
-    import javax.swing.*;
-    import java.awt.*;
-    import java.util.HashSet;
-    import java.util.LinkedHashMap;
-    import java.util.Map;
-    import java.util.Set;
+import Global.Architecture.Sommet.Sommets;
 
-    public class GraphismeControle extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashMap;
 
-        public static class Arc {
-            public String dest;
-            public int type; // 0 = sortante, 1 = entrante, 2 = bidirectionnelle
+public class GraphismeControle extends JPanel {
 
-            public Arc(String dest, int type) {
-                this.dest = dest;
-                this.type = type;
-            }
+    public static class Arc {
+        public String dest;
+        public int type; // 0 sortante, 1 entrante, 2 bidirectionnelle
+
+        public Arc(String dest, int type) {
+            this.dest = dest;
+            this.type = type;
         }
+    }
 
-        private final Map<String, Set<Arc>> adjacencyList;
-        private final Map<String, Point> positions = new LinkedHashMap<>();
+    private final Map<String, Set<Arc>> adjacencyList;
+    private final Map<String, Sommets> sommets;   // <-- quartier disponible ici
+    private final Map<String, Point> positions = new LinkedHashMap<>();
 
-        public GraphismeControle(Map<String, Set<Arc>> adjacencyList) {
-            this.adjacencyList = adjacencyList;
-            setPreferredSize(new Dimension(900, 700));
-            genererPositionsCirculaires();
+    public GraphismeControle(Map<String, Set<Arc>> adjacencyList,
+                             Map<String, Sommets> sommets) {
+        this.adjacencyList = adjacencyList;
+        this.sommets = sommets;
+        setPreferredSize(new Dimension(900, 700));
+        genererPositionsCirculaires();
+    }
+
+    private void genererPositionsCirculaires() {
+        int n = adjacencyList.size();
+        int radius = 250;
+        int cx = 450, cy = 350;
+
+        int i = 0;
+        for (String node : adjacencyList.keySet()) {
+            double angle = 2 * Math.PI * i / n;
+            int x = cx + (int)(Math.cos(angle) * radius);
+            int y = cy + (int)(Math.sin(angle) * radius);
+            positions.put(node, new Point(x, y));
+            i++;
         }
+    }
 
-        private void genererPositionsCirculaires() {
-            int n = adjacencyList.size();
-            int radius = 250;
-            int centerX = 450;
-            int centerY = 350;
+    private Color getCouleurQuartier(int q) {
+        return switch (q) {
+            case 1 -> new Color(80, 120, 255);
+            case 2 -> new Color(80, 200, 120);
+            case 3 -> new Color(255, 180, 80);
+            case 4 -> new Color(255, 90, 90);
+            default -> Color.GRAY;
+        };
+    }
 
-            int i = 0;
-            for (String node : adjacencyList.keySet()) {
-                double angle = 2 * Math.PI * i / n;
-                int x = centerX + (int) (Math.cos(angle) * radius);
-                int y = centerY + (int) (Math.sin(angle) * radius);
-                positions.put(node, new Point(x, y));
-                i++;
-            }
-        }
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setStroke(new BasicStroke(2));
 
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setStroke(new BasicStroke(2));
+        int arrowSize = 10;
 
-            int arrowSize = 10;
-            Set<String> drawn = new HashSet<>();
+        // ============= DESSIN DES ARCS =====================
+        for (String src : adjacencyList.keySet()) {
+            Point p1 = positions.get(src);
 
-            for (String src : adjacencyList.keySet()) {
-                Point p1 = positions.get(src);
+            for (Arc arc : adjacencyList.get(src)) {
+                Point p2 = positions.get(arc.dest);
+                if (p2 == null) continue;
 
-                for (Arc arc : adjacencyList.get(src)) {
-                    String dest = arc.dest;
-                    int type = arc.type;
+                // ---- couleur selon le type ----
+                switch (arc.type) {
+                    case 0 -> g2.setColor(Color.RED);        // sortante
+                    case 1 -> g2.setColor(Color.GREEN);      // entrante
+                    case 2 -> g2.setColor(Color.DARK_GRAY);  // bidirectionnelle
+                }
 
-                    Point p2 = positions.get(dest);
-                    if (p2 == null) continue;
+                g2.drawLine(p1.x, p1.y, p2.x, p2.y);
 
-                    switch (type) {
-                        case 0 -> g2.setColor(Color.RED);        // sortante
-                        case 1 -> g2.setColor(Color.GREEN);      // entrante
-                        case 2 -> g2.setColor(Color.DARK_GRAY);  // bidirectionnelle
-                    }
-
-                    g2.drawLine(p1.x, p1.y, p2.x, p2.y);
-
-                    if (type == 0) {
-                        drawArrow(g2, p1, p2, arrowSize);
-                    } else if (type == 1) {
-                        drawArrow(g2, p1, p2, arrowSize);
-                    } else {
-                        drawArrow(g2, p1, p2, arrowSize);
-                        drawArrow(g2, p2, p1, arrowSize);
-                    }
+                // ---- flèches ----
+                if (arc.type == 0) {
+                    drawArrow(g2, p1, p2, arrowSize);
+                } else if (arc.type == 1) {
+                    drawArrow(g2, p1, p2, arrowSize);
+                } else {
+                    drawArrow(g2, p1, p2, arrowSize);
+                    drawArrow(g2, p2, p1, arrowSize);
                 }
             }
-
-            for (String node : adjacencyList.keySet()) {
-                Point p = positions.get(node);
-
-                // Cercle du sommet
-                g2.setColor(new Color(80, 120, 255));
-                g2.fillOval(p.x - 15, p.y - 15, 30, 30);
-
-                g2.setColor(Color.BLACK);
-                g2.drawOval(p.x - 15, p.y - 15, 30, 30);
-
-                FontMetrics fm = g2.getFontMetrics();
-                int textWidth = fm.stringWidth(node);
-                int textHeight = fm.getAscent();
-                g2.drawString(node, p.x - textWidth / 2, p.y + textHeight / 4);
-            }
         }
 
-        private void drawArrow(Graphics2D g2, Point p1, Point p2, int arrowSize) {
-            double angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        // ============= DESSIN DES SOMMETS =====================
+        for (String node : adjacencyList.keySet()) {
 
-            int xArrow = p2.x - (int)(Math.cos(angle) * 15);
-            int yArrow = p2.y - (int)(Math.sin(angle) * 15);
+            Point p = positions.get(node);
 
-            Polygon arrowHead = new Polygon();
-            arrowHead.addPoint(xArrow, yArrow);
-            arrowHead.addPoint(xArrow - (int)(arrowSize * Math.cos(angle - Math.PI / 6)),
-                    yArrow - (int)(arrowSize * Math.sin(angle - Math.PI / 6)));
-            arrowHead.addPoint(xArrow - (int)(arrowSize * Math.cos(angle + Math.PI / 6)),
-                    yArrow - (int)(arrowSize * Math.sin(angle + Math.PI / 6)));
-            g2.fill(arrowHead);
+            int q = sommets.get(node).getQuartier();     // <-- QUARTIER ICI
+            g2.setColor(getCouleurQuartier(q));
+            g2.fillOval(p.x - 15, p.y - 15, 30, 30);
+
+            g2.setColor(Color.BLACK);
+            g2.drawOval(p.x - 15, p.y - 15, 30, 30);
+
+            g2.drawString(node, p.x - 4, p.y + 4);
         }
-
     }
+
+    private void drawArrow(Graphics2D g2, Point p1, Point p2, int size) {
+        double angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        int x = p2.x - (int)(Math.cos(angle) * 15);
+        int y = p2.y - (int)(Math.sin(angle) * 15);
+
+        Polygon arrow = new Polygon();
+        arrow.addPoint(x, y);
+        arrow.addPoint(x - (int)(size * Math.cos(angle - Math.PI / 6)),
+                y - (int)(size * Math.sin(angle - Math.PI / 6)));
+        arrow.addPoint(x - (int)(size * Math.cos(angle + Math.PI / 6)),
+                y - (int)(size * Math.sin(angle + Math.PI / 6)));
+
+        g2.fill(arrow);
+    }
+}
